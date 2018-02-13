@@ -6,12 +6,18 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-    res.send({ express: 'Party was created' });
+    const party = {
+        partyId: req.body.partyId,
+    };
+    res.send({ 
+        express: 'Party was created',
+        party: party
+    });
 });
 
 router.get('/:partyid', (req, res, next) => {
     const userID = req.params.partyid;
-    res.send({ express: 'You changed party:' + userID });
+    res.send({ express: 'Party details:' + userID });
     
 });
 

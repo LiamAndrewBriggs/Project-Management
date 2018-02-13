@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-
 
 class User extends Component {
     state = {
@@ -9,7 +7,7 @@ class User extends Component {
     
     componentDidMount() {
        this.callApi()
-        .then(res => this.setState({ response: res.express }))
+        .then(res => this.setState({ response: res.name }))
         .catch(err => console.log(err));
     }
     
@@ -25,6 +23,7 @@ class User extends Component {
     };
   
       render() {
+          console.log(this.state);
           return (
               <div>
                   <h3>{this.state.response}</h3>
