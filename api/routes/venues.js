@@ -37,7 +37,7 @@ router.get('/', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
     const venue = new Venue({
-        _id: new mongoose.Types.ObjectId(),
+        _id: mongoose.Types.ObjectId(),
         name: req.body.name,
         price: req.body.price,
         capactity: req.body.capactity,
@@ -62,7 +62,6 @@ router.post('/', (req, res, next) => {
         });
     })
     .catch(err => {
-        console.log(err)
         res.status(500).json({
             error: err
         })
@@ -74,16 +73,14 @@ router.get('/:id', (req, res, next) => {
     Venue.findById(venueID)
         .exec()
         .then(doc => {
-            console.log(doc);
             if(doc) {
                 res.send(doc);
             }
             else {
                 res.status(404).json({
-                    message: "No valid entry found"
+                    message: "Venue not found"
                 });
             }
-            
         })
         .catch(err => {
             console.log(err)
@@ -118,10 +115,11 @@ router.delete('/:id', (req, res, next) => {
     Venue.remove({ _id: venueID })
         .exec()
         .then(result => {
-            res.send(result);
+            res.send(result => {
+                message: 'Venue Deleted'
+            });
         })
         .catch(err => {
-            console.log(err)
             res.status(404).json({
                 error: err
             });          

@@ -2,19 +2,20 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const session = require('express-session');
 
 const port = process.env.PORT || 5000;
 
 const venueRoutes = require('./api/routes/venues');
 const partyRoutes = require('./api/routes/partys');
+const userRoutes = require('./api/routes/users');
 
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json());
+app.use(session({secret: 'bufekbuf123thv', resave: false, saveUninitialized: true}));
 
 mongoose.connect('mongodb://LiamTwiggy:University13@project-management-shard-00-00-oeb62.mongodb.net:27017,project-management-shard-00-01-oeb62.mongodb.net:27017,project-management-shard-00-02-oeb62.mongodb.net:27017/test?ssl=true&replicaSet=project-management-shard-0&authSource=admin');
 mongoose.Promise = global.Promise;
-
-
 
 app.get('/home', (req, res) => {
   res.send({ express: 'Hello From Express' });
@@ -22,7 +23,9 @@ app.get('/home', (req, res) => {
 
 //Routes to handle requests
 app.use('/venues', venueRoutes);
-app.use('/party', partyRoutes);
+app.use('/partys', partyRoutes);
+app.use('/user', userRoutes);
+
 
 app.use((req, res, next) => {
   const error = new Error('Not found');
