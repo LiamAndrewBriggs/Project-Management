@@ -5,10 +5,14 @@ const mongoose = require('mongoose');
 const Party = require('../models/party');
 
 router.get('/', (req, res, next) => {
+    
     if (!req.session.user) {
         return res.status(401).json({
             message: "Please log in"
         });  
+    }
+    else {
+        return res.send({ message: 'Hello From Express' });
     }
 
     Party.find()
@@ -18,7 +22,7 @@ router.get('/', (req, res, next) => {
         .then(docs => {
             const response = {
                 count: docs.length,
-                venues: docs.map(doc => {
+                partys: docs.map(doc => {
                     return {
                         name: doc.name,
                         description: doc.description,

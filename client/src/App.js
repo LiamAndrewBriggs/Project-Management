@@ -6,6 +6,7 @@ import Root from './components/Root';
 import Venues from './components/Venues';
 import Venue from './components/Venue';
 import Party from './components/Party';
+import LogIn from './components/LogIn';
 
 class App extends Component {
   
@@ -19,8 +20,9 @@ class App extends Component {
               <Route path="/home" component={Home} />
               <Route exact path="/venues" component={Venues} />
               <Route path="/venues/:venueID" component={Venue} />
-              <Route exact path="/party" component={Party} />
-              <Route path="/party/:partyID" component={Party} />
+              <Route exact path="/partys" component={Party} />
+              <Route path="/partys/:partyID" component={Party} />
+              <Route path="/user/login" component={LogIn} />
             </Switch>
           </Root>
         </div>

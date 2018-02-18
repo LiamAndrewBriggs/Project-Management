@@ -1,0 +1,33 @@
+.loginForm {
+    position: absolute;
+    width: 315px;
+    height: 300px;
+    z-index: 15;
+    top: 40%;
+    left: 50%;
+    margin: -100px 0 0 -150px;
+    background-color: gainsboro;
+    border: 3px solid black;
+    padding: 10px;
+}
+
+#input {
+    text-align: center;
+}
+
+#logInA {
+    float: right;
+}
+
+.title {
+    font-size: x-large;
+    font-weight: bolder;
+    padding: 6px 15px;
+    color: rgb(0, 0, 0);
+    text-align: center;
+}
+
+p {
+    margin-top: 10px;
+    text-align: center;
+}

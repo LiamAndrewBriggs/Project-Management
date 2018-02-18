@@ -24,7 +24,9 @@ router.post('/signup', (req, res, next) => {
                         const user = new User({
                             _id: mongoose.Types.ObjectId(),
                             email: req.body.email,
-                            password: hash
+                            password: hash,
+                            name: req.body.name,
+                            userLevel: req.body.userLevel
                         });
                         user
                             .save()
@@ -44,6 +46,10 @@ router.post('/signup', (req, res, next) => {
         })
 });
 
+router.get('/login', (req, res, next) => {
+    res.send({ express: 'Log In Form' });
+});
+
 router.post('/login', (req, res, next) => {
     User.find({email: req.body.email})
         .exec()
@@ -61,7 +67,7 @@ router.post('/login', (req, res, next) => {
                 }
                 if (response) {
                     req.session.user = user[0];
-                     return res.send({ 
+                    return res.send({ 
                         message: 'User Authorisation Successful'
                     });
                 }

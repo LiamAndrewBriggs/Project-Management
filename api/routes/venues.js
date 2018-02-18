@@ -5,33 +5,43 @@ const mongoose = require('mongoose');
 const Venue = require('../models/venue');
 
 router.get('/', (req, res, next) => {
-  Venue.find()
-  .select('name userName _id capactity image')
-  .exec()
-  .then(docs => {
-    const response = {
-        count: docs.length,
-        venues: docs.map(doc => {
-            return {
-                name: doc.name,
-                image: doc.image,
-                capactity: doc.capactity,
-                 _id: doc._id,
-                request: {
-                    type:'GET',
-                    url: 'http://localhost:3000/venues/' + doc._id 
+    var user;
+
+    if(!req.session.user) {
+        user = "No User";
+    }
+    else {
+        user = req.session.user;
+    }
+
+    Venue.find()
+    .select('name userName _id capactity image')
+    .exec()
+    .then(docs => {
+        const response = {
+            loggedIn: user,
+            count: docs.length,
+            venues: docs.map(doc => {
+                return {
+                    name: doc.name,
+                    image: doc.image,
+                    capactity: doc.capactity,
+                    _id: doc._id,
+                    request: {
+                        type:'GET',
+                        url: 'http://localhost:3000/venues/' + doc._id 
+                    }
                 }
-            }
-        })
-    };
-    res.send(response);
-   })
-  .catch(err => {
-        console.log(err)
-        res.status(500).json({
-            error: err
-        })
-    });
+            })
+        };
+        res.send(response);
+    })
+    .catch(err => {
+            console.log(err)
+            res.status(500).json({
+                error: err
+            })
+        });
 });
 
 router.post('/', (req, res, next) => {

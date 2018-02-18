@@ -7,14 +7,19 @@ class Party extends Component {
     
     componentDidMount() {
        this.callApi()
-        .then(res => this.setState({ response: res.express }))
+        .then(res => {
+            console.log(res);
+            this.setState({ response: res.message })
+        })
         .catch(err => console.log(err));
     }
     
     callApi = async () => {
         
         var path = this.props.location.pathname;
-        const response = await fetch(path);
+        const response = await fetch(path, {
+            credentials: "include"
+        });
         const body = await response.json();
     
         if (response.status !== 200) throw Error(body.message);
