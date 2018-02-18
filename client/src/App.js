@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Home from './components/Home';
 import Root from './components/Root';
-import User from './components/User';
+import Venues from './components/Venues';
+import Venue from './components/Venue';
 import Party from './components/Party';
 
 class App extends Component {
@@ -16,10 +17,10 @@ class App extends Component {
             <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/home" component={Home} />
-              <Route path="/venues" component={User} />
-              <Route exact path="/venues/:id" component={User} />
-              <Route path="/party" component={Party} />
-              <Route exact path="/party/:partyID" component={Party} />
+              <Route exact path="/venues" component={Venues} />
+              <Route path="/venues/:venueID" component={Venue} />
+              <Route exact path="/party" component={Party} />
+              <Route path="/party/:partyID" component={Party} />
             </Switch>
           </Root>
         </div>

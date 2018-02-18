@@ -6,12 +6,12 @@ class Root extends Component {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col-xs-10 col-xs-offset-1">
+                    <div className="col">
                         <Header />
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-xs-10 col-xs-offset-1">
+                    <div className="col">
                         {this.props.children}
                     </div>
                 </div>

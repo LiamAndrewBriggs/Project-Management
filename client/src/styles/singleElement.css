@@ -1,0 +1,39 @@
+h3 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: bold;
+    font-size: 30px;
+
+}
+
+#singleBody {
+    margin-left: 20px;
+}
+
+p { 
+    font-weight: bold;
+    font-size: 20px;
+    text-align: justify;
+}
+
+#info {
+    margin-top: 15px;
+    margin-right: 15px;
+}
+
+#websiteLink {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#headerLine {
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+#backButton {
+    position: absolute;
+    left: 0;
+    background-color: black;
+  }

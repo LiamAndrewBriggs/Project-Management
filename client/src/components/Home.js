@@ -1,29 +1,19 @@
 import React, { Component } from 'react';
+import '../styles/home.css';
 
 class Home extends Component {
-    state = {
-        response: ''
-      };
     
-    componentDidMount() {
-      this.callApi()
-        .then(res => this.setState({ response: res.express }))
-        .catch(err => console.log(err));
-    }
-    
-    callApi = async () => {
-      const response = await fetch('/home');
-      const body = await response.json();
-    
-      if (response.status !== 200) throw Error(body.message);
-    
-      return body;
-    };
-
     render() {
         return (
-            <div>
-                <h3>{this.state.response}</h3>
+            <div id="body">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <h1>Everything you need to plan a party, all in one place</h1>
+                    </div>
+                    <div class="col-sm-8">
+                        <img src={require("../images/office-party.jpg")} alt="Office Party"/>
+                    </div>
+                </div>
             </div>
         );
     }

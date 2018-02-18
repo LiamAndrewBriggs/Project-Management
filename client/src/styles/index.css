@@ -1,0 +1,15 @@
+body {
+  background-color: gainsboro;
+}
+
+#container {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif; 
+}
+
+#root {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}

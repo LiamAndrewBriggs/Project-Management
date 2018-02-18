@@ -6,7 +6,7 @@ const Venue = require('../models/venue');
 
 router.get('/', (req, res, next) => {
   Venue.find()
-  .select('name userName _id')
+  .select('name userName _id capactity image')
   .exec()
   .then(docs => {
     const response = {
@@ -14,10 +14,9 @@ router.get('/', (req, res, next) => {
         venues: docs.map(doc => {
             return {
                 name: doc.name,
-                price: doc.price,
+                image: doc.image,
                 capactity: doc.capactity,
-                location: doc.location,
-                _id: doc._id,
+                 _id: doc._id,
                 request: {
                     type:'GET',
                     url: 'http://localhost:3000/venues/' + doc._id 
@@ -39,9 +38,13 @@ router.post('/', (req, res, next) => {
     const venue = new Venue({
         _id: mongoose.Types.ObjectId(),
         name: req.body.name,
+        type: req.body.type,
         price: req.body.price,
+        image: req.body.image,
         capactity: req.body.capactity,
         location: req.body.location,
+        website: req.body.website,
+        description: req.body.description
     });
     venue
     .save()
@@ -50,9 +53,6 @@ router.post('/', (req, res, next) => {
             express: 'Created Venue',
             Venue: {
                 name: result.name,
-                price: result.price,
-                capactity: result.capactity,
-                location: result.location,
                 _id: result._id,
                 request: {
                     type:'GET',

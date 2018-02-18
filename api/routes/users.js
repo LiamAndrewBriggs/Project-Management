@@ -57,11 +57,11 @@ router.post('/login', (req, res, next) => {
                 if(err) {
                     return res.status(401).json({
                         message: "User Not Authorised"
-                    });  
+                    });
                 }
                 if (response) {
                     req.session.user = user[0];
-                    return res.send({ 
+                     return res.send({ 
                         message: 'User Authorisation Successful'
                     });
                 }
