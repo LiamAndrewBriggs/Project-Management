@@ -11,7 +11,6 @@ class Venues extends Component {
     componentDidMount() {
        this.callApi()
         .then(res => {
-            console.log(res);
             this.setState({ 
                 count: res.count,
                 venues: res.venues
@@ -24,7 +23,6 @@ class Venues extends Component {
         
         var path = this.props.location.pathname;
         const response = await fetch(path, {
-            method: 'GET',
             credentials: 'include'
         });
         const body = await response.json();

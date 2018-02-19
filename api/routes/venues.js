@@ -79,12 +79,21 @@ router.post('/', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
+    var user;
+
+    if(!req.session.user) {
+        user = "No User";
+    }
+    else {
+        user = req.session.user;
+    }
+
     const venueID = req.params.id;
     Venue.findById(venueID)
         .exec()
         .then(doc => {
             if(doc) {
-                res.send(doc);
+                res.send({loggedIn: user, doc: doc});
             }
             else {
                 res.status(404).json({

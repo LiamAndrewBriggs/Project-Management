@@ -5,20 +5,11 @@ class Root extends Component {
     state = {
         user: '',
     };
-    
-    componentDidMount() {
-       this.callApi()
-        .then(res => {
-            //console.log(res);
-            this.setState({ 
-                user: res.loggedIn
-            })
-        })
-        .catch(err => console.log(err));
-    }
-    
+
     callApi = async () => {
-        const response = await fetch(window.location.pathname);
+        const response = await fetch(window.location.pathname, {
+            credentials: "include"
+        });
         const body = await response.json();
     
         if (response.status !== 200) throw Error(body.message);
@@ -28,6 +19,16 @@ class Root extends Component {
 
 
     render() {
+        if (!this.state.user) {
+            this.callApi()
+            .then(res => {
+                this.setState({ 
+                    user: res.loggedIn
+                })
+            })
+            .catch(err => console.log(err));
+        }
+        
         return (
             <div className="container">
                 <div className="row">

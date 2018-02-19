@@ -12,38 +12,37 @@ router.get('/', (req, res, next) => {
         });  
     }
     else {
-        return res.send({ message: 'Hello From Express' });
-    }
-
-    Party.find()
-        .select('name description date venue _id')
-        .populate('venue', 'name')
-        .exec()
-        .then(docs => {
-            const response = {
-                count: docs.length,
-                partys: docs.map(doc => {
-                    return {
-                        name: doc.name,
-                        description: doc.description,
-                        date: doc.date,
-                        venue: doc.venue,
-                        _id: doc._id,
-                        request: {
-                            type:'GET',
-                            url: 'http://localhost:3000/partys/' + doc._id 
+        Party.find()
+            .select('name description date venue _id')
+            .populate('venue', 'name')
+            .exec()
+            .then(docs => {
+                const response = {
+                    loggedIn: req.session.user,
+                    count: docs.length,
+                    partys: docs.map(doc => {
+                        return {
+                            name: doc.name,
+                            description: doc.description,
+                            date: doc.date,
+                            venue: doc.venue,
+                            _id: doc._id,
+                            request: {
+                                type:'GET',
+                                url: 'http://localhost:3000/partys/' + doc._id 
+                            }
                         }
-                    }
-                })
-            };
-            res.send(response);
-        })
-        .catch(err => {
-                console.log(err)
-                res.status(500).json({
-                    error: err
-                })
-            });
+                    })
+                };
+                res.send(response);
+            })
+            .catch(err => {
+                    console.log(err)
+                    res.status(500).json({
+                        error: err
+                    })
+                });
+        }
 });
 
 router.post('/', (req, res, next) => {

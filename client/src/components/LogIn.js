@@ -36,8 +36,6 @@ class LogIn extends Component {
         else {
             console.log(body);
         }
-
-        //console.log(data.email);
     }
  
       render() {
@@ -47,9 +45,9 @@ class LogIn extends Component {
                     <header className="title">Login</header>
                     <form onSubmit={this.logIn.bind(this)}>
                         <div id="input">
-                            <p> Email </p>
+                            <p id="loginp"> Email </p>
                             <input ref= "email" type="text" placeholder="Email" />
-                            <p> Password </p>
+                            <p id="loginp"> Password </p>
                             <input ref= "password" type="text" placeholder="Password" />
                             <br/>
                             <br/>

@@ -7,3 +7,9 @@
     padding-left: 20px;
     padding-top: 25px;
 }
+
+#logout {
+    color: black;
+    margin-top: 7px;
+    margin-right: 10px;
+}
