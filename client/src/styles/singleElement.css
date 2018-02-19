@@ -16,9 +16,17 @@ p {
     text-align: justify;
 }
 
+label {
+    font-size: 20px;
+}
+
 #info {
     margin-top: 15px;
     margin-right: 15px;
+}
+
+#editinfo {
+    margin-left: 10px;
 }
 
 #websiteLink {
@@ -37,3 +45,40 @@ p {
     left: 0;
     background-color: black;
   }
+
+#editButton {
+    background-color: green;
+    margin-right: 20px;
+}
+
+#deleteButton {
+    background-color: red;
+    margin-right: 20px;
+}
+
+#adminButtons {
+    position: absolute;
+    right:0;
+}
+
+#inputs {
+    width: 98%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#areainputs {
+    width: 98%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+

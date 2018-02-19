@@ -53,7 +53,7 @@ class LogIn extends Component {
                             <p id="loginp"> Email </p>
                             <input id="inputfield" ref= "email" type="text" placeholder="Email" />
                             <p id="loginp"> Password </p>
-                            <input id="inputfield" ref="password" type="text" placeholder="Password" />
+                            <input id="inputfield" ref="password" type="password" placeholder="Password" />
                             <br/>
                             <p id="errortext">{this.state.error}</p>
                             <input id="loginbutton" className="btn btn-primary" type="submit" value="Log In" />

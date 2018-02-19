@@ -5,7 +5,7 @@ import '../styles/tables.css';
 class Venues extends Component {
     state = {
         count: '',
-        venues: ''
+        venues: '',
     };
     
     componentDidMount() {
@@ -32,6 +32,8 @@ class Venues extends Component {
         return body;
     };
 
+
+
     render() {
         var rows = [];
         for (var i = 0; i < this.state.count; i++) {
@@ -45,7 +47,7 @@ class Venues extends Component {
                     
             );
         }
-        
+
         return (
             <div id="venuesBody">
                 <h3> Venues </h3>
