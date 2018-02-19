@@ -17,12 +17,13 @@ class App extends Component {
           <Root>
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route path="/home" component={Home} />
+              <Route exact path="/home" component={Home} />
               <Route exact path="/venues" component={Venues} />
-              <Route path="/venues/:venueID" component={Venue} />
+              <Route exact path="/venues/:venueID" component={Venue} />
               <Route exact path="/partys" component={Party} />
-              <Route path="/partys/:partyID" component={Party} />
-              <Route path="/user/login" component={LogIn} />
+              <Route exact path="/partys/:partyID" component={Party} />
+              <Route exact path="/user/login" component={LogIn} />
+              <Route exact path="/user/logout" component={Home} />
             </Switch>
           </Root>
         </div>

@@ -5,7 +5,7 @@ class Root extends Component {
     state = {
         user: '',
     };
-
+    
     callApi = async () => {
         const response = await fetch(window.location.pathname, {
             credentials: "include"

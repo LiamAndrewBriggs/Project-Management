@@ -5,6 +5,10 @@ const bcrypt = require('bcrypt');
 
 const User = require('../models/user');
 
+router.get('/signup', (req, res, next) => {
+    res.send({ express: 'Log In Form' });
+});
+
 router.post('/signup', (req, res, next) => {
     User.find({email: req.body.email})
         .exec()
@@ -56,13 +60,13 @@ router.post('/login', (req, res, next) => {
         .then(user => {
             if(user.length < 1) {
                 return res.status(401).json({
-                    message: "User Not Authorised"
+                    message: "Invalid email or password"
                 });  
             }
             bcrypt.compare(req.body.password, user[0].password, (err, response) => {
                 if(err) {
                     return res.status(401).json({
-                        message: "User Not Authorised"
+                        message: "Invalid email or password"
                     });
                 }
                 if (response) {
@@ -72,7 +76,7 @@ router.post('/login', (req, res, next) => {
                     });
                 }
                 res.status(401).json({
-                    message: "User Not Authorised"
+                    message: "Invalid email or password"
                 }); 
             });
         })
@@ -85,9 +89,7 @@ router.post('/login', (req, res, next) => {
 
 router.get('/logout', (req, res, next) => {
     req.session.destroy();
-    res.send({ 
-        message: 'Session Ended'
-    });
+    res.redirect("/home");
 });
 
 router.delete('/:userId', (req, res, next) => {

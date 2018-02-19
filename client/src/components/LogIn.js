@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 import '../styles/login.css';
 
 class LogIn extends Component {
+    state = {
+        error: ''
+    }
 
     logIn = async (e) => {
 
@@ -30,28 +33,30 @@ class LogIn extends Component {
         
         if(status === 200)
         {
-            console.log(body);
             this.props.history.push("/partys");
         }
         else {
-            console.log(body);
+            this.state.error = body.message;
+            this.refs.email.value = null;
+            this.refs.password.value = null;
+            this.setState(this.state);
         }
     }
  
       render() {
-          return (
-              <div id="body">
+        return (
+            <div id="body">
                 <div className="loginForm">
                     <header className="title">Login</header>
                     <form onSubmit={this.logIn.bind(this)}>
                         <div id="input">
                             <p id="loginp"> Email </p>
-                            <input ref= "email" type="text" placeholder="Email" />
+                            <input id="inputfield" ref= "email" type="text" placeholder="Email" />
                             <p id="loginp"> Password </p>
-                            <input ref= "password" type="text" placeholder="Password" />
+                            <input id="inputfield" ref="password" type="text" placeholder="Password" />
                             <br/>
-                            <br/>
-                            <input className="btn btn-primary" type="submit" value="Log In" />
+                            <p id="errortext">{this.state.error}</p>
+                            <input id="loginbutton" className="btn btn-primary" type="submit" value="Log In" />
                         </div>
                     </form>
                     <a id="logInA" href="/user/signup">Sign Up</a>

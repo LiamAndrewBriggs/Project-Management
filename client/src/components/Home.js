@@ -3,6 +3,14 @@ import '../styles/home.css';
 
 class Home extends Component {
     
+    //redirect home on logout
+    componentDidMount() {
+        if(window.location.pathname === "/user/logout")
+        {
+            this.props.history.push('/home');
+        }
+    }
+
     render() {
         return (
             <div id="body">

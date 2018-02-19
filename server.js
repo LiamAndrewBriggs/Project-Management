@@ -28,7 +28,17 @@ app.use(session({
 }));
 
 app.get('/home', (req, res) => {
-  res.send({ express: 'Hello From Express' });
+  if(!req.session.user) {
+    user = "No User";
+  }
+  else {
+      user = req.session.user;
+  }
+
+  res.send({
+        loggedIn: user,
+        express: 'Welcome Home' 
+  });
 });
 
 //Routes to handle requests
