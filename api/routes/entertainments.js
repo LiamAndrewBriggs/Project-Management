@@ -21,7 +21,7 @@ router.get('/', (req, res, next) => {
         const response = {
             loggedIn: user,
             count: docs.length,
-            venues: docs.map(doc => {
+            entertainment: docs.map(doc => {
                 return {
                     name: doc.name,
                     image: doc.image,
@@ -52,7 +52,7 @@ router.post('/', (req, res, next) => {
         image: req.body.image,
         location: req.body.location,
         website: req.body.website,
-        genre: req.body.foodType
+        genre: req.body.genre
     });
     entertainment
     .save()

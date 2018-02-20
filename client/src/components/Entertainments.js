@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import '../styles/singleElement.css';
 import '../styles/tables.css';
 
-class Transports extends Component {
+class Entertainments extends Component {
     state = {
         count: '',
-        transports: '',
+        entertainment: '',
         userLevel: '',
         create: false
     };
@@ -22,7 +22,7 @@ class Transports extends Component {
             }
             this.setState({ 
                 count: res.count,
-                transports: res.transports,
+                entertainment: res.entertainment,
                 userLevel: userLevel
             })
         })
@@ -52,7 +52,7 @@ class Transports extends Component {
         this.setState(this.state);
     }
 
-    createTransport = async (e) => {
+    createVenue = async (e) => {
 
         e.preventDefault();
 
@@ -62,8 +62,7 @@ class Transports extends Component {
             "image": this.refs.image.value,
             "location": this.refs.location.value,
             "website": this.refs.website.value,
-            "mincarsize": this.refs.mincarsize.value,
-            "maxcarsize": this.refs.maxcarsize.value,
+            "genre": this.refs.genre.value,
         }  
 
         const options = {
@@ -98,10 +97,10 @@ class Transports extends Component {
         for (var i = 0; i < this.state.count; i++) {
             rows.push(
                     <tr key={i}>
-                        <td> <img src={this.state.transports[i].image} height="150" width="300" alt={this.state.transports[i].name}/> </td>
-                        <td> {this.state.transports[i].name} </td>
-                        <td> {this.state.transports[i].maxcarsize} </td>
-                        <td> <a id="tablelink" href={this.state.transports[i].request.url}> To Transport Page </a> </td>
+                        <td> <img src={this.state.entertainment[i].image} height="150" width="300" alt={this.state.entertainment[i].name}/> </td>
+                        <td> {this.state.entertainment[i].name} </td>
+                        <td> {this.state.entertainment[i].genre} </td>
+                        <td> <a id="tablelink" href={this.state.entertainment[i].request.url}> To Entertainment Page </a> </td>
                     </tr>
                     
             );
@@ -118,9 +117,9 @@ class Transports extends Component {
         if(this.state.create) {
             return (
                 <div id="singleBody">
-                    <form onSubmit={this.createTransport.bind(this)}>
+                    <form onSubmit={this.createVenue.bind(this)}>
                         <div id="headerLine">
-                            <h3>Create Transport </h3>
+                            <h3>Create Entertainment </h3>
                             <div id="adminButtons">
                                 <button id="deleteButton" type="button" onClick={() => this.cancelTrigger()} className="btn btn-primary">Cancel</button>
                                 <input id="editButton" className="btn btn-primary" type="submit" value="Save" />
@@ -131,10 +130,12 @@ class Transports extends Component {
                             <div id="editinfo">
                                     <label> Name: </label>
                                     <input id="inputs" ref= "name" type="text" placeholder="Name" required />
-                                    <br/> <br/>
-                                    <label> Price Per Mile: </label>
-                                    <input id="inputs" ref= "price" type="text" placeholder="Price" required />
-                                    <br/> <br/>
+                                    <br/>
+                                    <br/>
+                                    <label> Price: </label>
+                                    <input id="inputs" ref= "price" type="number" placeholder="Price" required />
+                                    <br/>
+                                    <br/>
                                     <label> Image: </label>
                                     <input id="inputs" ref= "image" type="text" placeholder="Image" required />
                                     <br/> <br/>
@@ -144,10 +145,8 @@ class Transports extends Component {
                                     <label> Website: </label>
                                     <input id="inputs" ref= "website" type="text" placeholder="Website" required />
                                     <br/> <br/>
-                                    <label> Minumum Car Size: </label>
-                                    <input id="inputs" ref= "mincarsize" type="number" placeholder="Maximum Car Size" required />
-                                    <label> Maximum Car Size: </label>
-                                    <input id="inputs" ref= "maxcarsize" type="number" placeholder="Maximum Car Size" required />
+                                    <label> Genre: </label>
+                                    <input id="inputs" ref= "genre" type="text" placeholder="Genre" required />
                                     <br/> <br/>
                                 </div>
                             </div>
@@ -160,15 +159,15 @@ class Transports extends Component {
             return (
             <div id="venuesBody">
                 <div id="headerLine">
-                    <h3> Transports </h3>
+                    <h3> Entertainment </h3>
                     {button}
                 </div>
                 <table id="tables">
                     <thead>
                         <tr>
-                            <th>Transport </th>
-                            <th>Transport Company</th>
-                            <th>Max Car Size</th>
+                            <th>Entertainment </th>
+                            <th>Act Name</th>
+                            <th>Genre</th>
                             <th>More Info</th>
                         </tr>
                     </thead>
@@ -182,4 +181,4 @@ class Transports extends Component {
       }
 }
 
-export default Transports;
+export default Entertainments;

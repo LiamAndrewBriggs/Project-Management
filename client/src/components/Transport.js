@@ -211,7 +211,7 @@ class Transport extends Component {
             return (
                 <div id="singleBody">
                     <div id="headerLine">
-                        <button id="backButton" onClick={() => this.onNavigateHome()} className="btn btn-primary">Back To Venues</button>
+                        <button id="backButton" onClick={() => this.onNavigateHome()} className="btn btn-primary">Back To Transporters</button>
                         <h3> {this.state.name} </h3>
                         {button}
                     </div>

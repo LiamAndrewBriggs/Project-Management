@@ -9,6 +9,12 @@ import SignUp from './components/user_components/Signup';
 import Venues from './components/Venues';
 import Venue from './components/Venue';
 
+import Caterings from './components/Caterings';
+import Catering from './components/Catering';
+
+import Entertainments from './components/Entertainments';
+import Entertainment from './components/Entertainment';
+
 import Transports from './components/Transports';
 import Transport from './components/Transport';
 
@@ -31,6 +37,10 @@ class App extends Component {
               <Route exact path="/user/signup" component={SignUp} />
               <Route exact path="/venues" component={Venues} />
               <Route exact path="/venues/:venueID" component={Venue} />
+              <Route exact path="/caterings" component={Caterings} />
+              <Route exact path="/caterings/:cateringID" component={Catering} />
+              <Route exact path="/entertainments" component={Entertainments} />
+              <Route exact path="/entertainments/:entertainmentID" component={Entertainment} />
               <Route exact path="/transports" component={Transports} />
               <Route exact path="/transports/:transportID" component={Transport} />
               <Route exact path="/partys" component={Party} />

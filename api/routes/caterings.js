@@ -21,7 +21,7 @@ router.get('/', (req, res, next) => {
         const response = {
             loggedIn: user,
             count: docs.length,
-            venues: docs.map(doc => {
+            caterings: docs.map(doc => {
                 return {
                     name: doc.name,
                     image: doc.image,

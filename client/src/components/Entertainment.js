@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 import '../styles/singleElement.css';
 
-class Venue extends Component {
+class Entertainment extends Component {
     state = {
         userlevel: '',
         id: '',
         name: '',
-        type: '',
         price: '',
         image: '',
-        capactity: '',
         location: '',
         website: '',
-        description: '', 
+        genre: '', 
         edit: false
     };
     
@@ -31,13 +29,11 @@ class Venue extends Component {
                 userlevel: userLevel,
                 id: res.doc._id,
                 name: res.doc.name,
-                type: res.doc.type,
                 price: res.doc.price,
                 image: res.doc.image,
-                capactity: res.doc.capactity,
                 location: res.doc.location,
                 website: res.doc.website,
-                description: res.doc.description
+                genre: res.doc.genre
             })
         })
         .catch(err => console.log(err));
@@ -81,31 +77,23 @@ class Venue extends Component {
         }  
 
         body[1] = {
-            "propName": "type", "value": this.refs.type.value,
-        }    
-
-        body[2] = {
             "propName": "price", "value": this.refs.price.value,
         }    
 
-        body[3] = {
+        body[2] = {
             "propName": "image", "value": this.refs.image.value,
         }    
 
-        body[4] = {
-            "propName": "capactity", "value": this.refs.capactity.value,
-        }    
-
-        body[5] = {
+        body[3] = {
             "propName": "location", "value": this.refs.location.value,
         }  
 
-        body[6] = {
+        body[4] = {
             "propName": "website", "value": this.refs.website.value,
         }  
 
-        body[7] = {
-            "propName": "description", "value": this.refs.description.value,
+        body[5] = {
+            "propName": "genre", "value": this.refs.genre.value,
         }  
 
         const options = {
@@ -183,21 +171,12 @@ class Venue extends Component {
                             <div id="editinfo">
                                     <label> Name: </label>
                                     <input id="inputs" ref= "name" type="text" defaultValue={this.state.name} required />
-                                    <br/>
-                                    <br/>
-                                    <label> Type: </label>
-                                    <input id="inputs" ref= "type" type="text" defaultValue={this.state.type} required />
-                                    <br/>
-                                    <br/>
+                                    <br/> <br/>
                                     <label> Price: </label>
                                     <input id="inputs" ref= "price" type="number" defaultValue={this.state.price} required />
-                                    <br/>
-                                    <br/>
+                                    <br/> <br/>
                                     <label> Image: </label>
                                     <input id="inputs" ref= "image" type="text" defaultValue={this.state.image} required />
-                                    <br/> <br/>
-                                    <label> Capactity: </label>
-                                    <input id="inputs" ref= "capactity" type="number" defaultValue={this.state.capactity} required />
                                     <br/> <br/>
                                     <label> Location: </label>
                                     <input id="inputs" ref= "location" type="text" defaultValue={this.state.location} required />
@@ -205,8 +184,9 @@ class Venue extends Component {
                                     <label> Website: </label>
                                     <input id="inputs" ref= "website" type="text" defaultValue={this.state.website} required />
                                     <br/> <br/>
-                                    <label> Description: </label>
-                                    <textarea id="areainputs" ref= "description" type="text" defaultValue= {this.state.description} required />
+                                    <label> Genre: </label>
+                                    <input id="inputs" ref= "genre" type="text" defaultValue={this.state.genre} required />
+                                    <br/> <br/>
                                 </div>
                             </div>
                         </div>
@@ -219,7 +199,7 @@ class Venue extends Component {
             return (
                 <div id="singleBody">
                     <div id="headerLine">
-                        <button id="backButton" onClick={() => this.onNavigateHome()} className="btn btn-primary">Back To Venues</button>
+                        <button id="backButton" onClick={() => this.onNavigateHome()} className="btn btn-primary">Back To Entertainment</button>
                         <h3> {this.state.name} </h3>
                         {button}
                     </div>
@@ -230,13 +210,9 @@ class Venue extends Component {
                         </div>
                         <div className="col-sm-5">
                             <div id="info">
-                                <p> Venue Type: {this.state.type} </p>
-                                <br/>
-                                <p> Description: {this.state.description} </p>
+                                <p> Genre: {this.state.genre} </p>
                                 <br/>
                                 <p> Location: {this.state.location} </p>
-                                <br/>
-                                <p> Party Capacity: {this.state.capactity} </p>
                                 <br/>
                                 <p> Price: £{this.state.price} </p>
                                 <br/>
@@ -252,4 +228,4 @@ class Venue extends Component {
     }
 }
 
-export default Venue;
+export default Entertainment;
