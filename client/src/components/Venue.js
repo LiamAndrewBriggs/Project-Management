@@ -166,7 +166,7 @@ class Venue extends Component {
                             <button id="editButton" type="button" onClick={() => this.editTrigger()} className="btn btn-primary">Edit</button>
                             <input id="deleteButton" className="btn btn-primary" type="submit" value="Delete" />
                         </form>
-                    </div> ;
+                    </div>;
         }   
         
         if(this.state.edit) {
@@ -212,8 +212,7 @@ class Venue extends Component {
                                 </div>
                             </div>
                         </div>
-                </form>
-                    
+                    </form>
                 </div>
             );
         } 
