@@ -43,13 +43,21 @@ class Transports extends Component {
     };
 
     cancelTrigger() {
-        this.state.create = false;
-        this.setState(this.state);
+        this.setState({ 
+            count: this.state.count,
+            transports: this.state.caterings,
+            userLevel: this.state.userLevel,
+            create: false
+        })
     }
 
     createTrigger() {
-        this.state.create = true;
-        this.setState(this.state);
+        this.setState({ 
+            count: this.state.count,
+            transports: this.state.caterings,
+            userLevel: this.state.userLevel,
+            create: true
+        })
     }
 
     createTransport = async (e) => {

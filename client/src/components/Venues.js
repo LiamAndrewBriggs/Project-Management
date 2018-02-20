@@ -43,13 +43,21 @@ class Venues extends Component {
     };
 
     cancelTrigger() {
-        this.state.create = false;
-        this.setState(this.state);
+        this.setState({ 
+            count: this.state.count,
+            venues: this.state.venues,
+            userLevel: this.state.userLevel,
+            create: false
+        });
     }
 
     createTrigger() {
-        this.state.create = true;
-        this.setState(this.state);
+        this.setState({ 
+            count: this.state.count,
+            venues: this.state.venues,
+            userLevel: this.state.userLevel,
+            create: true
+        });
     }
 
     createVenue = async (e) => {
@@ -184,8 +192,6 @@ class Venues extends Component {
             </div>
           );
         }
-
-        
       }
 }
 

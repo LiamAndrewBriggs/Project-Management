@@ -33,7 +33,7 @@ class LogIn extends Component {
         
         if(status === 200)
         {
-            this.props.history.push("/partys");
+            this.props.history.push("/user/partys");
         }
         else {
             this.state.error = body.message;
@@ -51,9 +51,9 @@ class LogIn extends Component {
                     <form onSubmit={this.logIn.bind(this)}>
                         <div id="input">
                             <p id="loginp"> Email </p>
-                            <input id="inputfield" ref= "email" type="text" placeholder="Email" />
+                            <input className="loginputfield" ref= "email" type="text" placeholder="Email" />
                             <p id="loginp"> Password </p>
-                            <input id="inputfield" ref="password" type="password" placeholder="Password" />
+                            <input className="loginputfield" ref="password" type="password" placeholder="Password" />
                             <br/>
                             <p id="errortext">{this.state.error}</p>
                             <input id="loginbutton" className="btn btn-primary" type="submit" value="Log In" />

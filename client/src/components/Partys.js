@@ -2,38 +2,38 @@ import React, { Component } from 'react';
 import '../styles/singleElement.css';
 import '../styles/tables.css';
 
-class Caterings extends Component {
+class Partys extends Component {
     state = {
         count: '',
-        caterings: '',
-        userLevel: '',
+        partys: '',
+        userLevel: 0,
         create: false
     };
     
     componentDidMount() {
-       this.callApi()
+        this.callApi()
         .then(res => {
-            var userLevel = '';
-            if(res.loggedIn === "No User") {
-                userLevel = 0;
-            }
-            else {
-                userLevel = res.loggedIn.userLevel;
-            }
-            this.setState({ 
-                count: res.count,
-                caterings: res.caterings,
-                userLevel: userLevel
+                var userLevel = '';
+                if(res.loggedIn === "No User") {
+                    userLevel = 0;
+                }
+                else {
+                    userLevel = res.loggedIn.userLevel;
+                }
+                this.setState({ 
+                    count: res.count,
+                    partys: res.partys,
+                    userLevel: userLevel
+                })
             })
-        })
-        .catch(err => console.log(err));
+            .catch(err => console.log(err));
     }
     
     callApi = async () => {
         
         var path = this.props.location.pathname;
         const response = await fetch(path, {
-            credentials: 'include'
+            credentials: "include"
         });
         const body = await response.json();
     
@@ -45,7 +45,7 @@ class Caterings extends Component {
     cancelTrigger() {
         this.setState({ 
             count: this.state.count,
-            caterings: this.state.caterings,
+            partys: this.state.caterings,
             userLevel: this.state.userLevel,
             create: false
         })
@@ -54,82 +54,46 @@ class Caterings extends Component {
     createTrigger() {
         this.setState({ 
             count: this.state.count,
-            caterings: this.state.caterings,
+            partys: this.state.caterings,
             userLevel: this.state.userLevel,
             create: true
         })
     }
 
-    createVenue = async (e) => {
-
-        e.preventDefault();
-
-        var body = {
-            "name": this.refs.name.value,
-            "price": this.refs.price.value,
-            "image": this.refs.image.value,
-            "location": this.refs.location.value,
-            "website": this.refs.website.value,
-            "foodType": this.refs.foodtype.value,
-        }  
-
-        const options = {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(body)
-        }
-
-        const request = new Request(window.location.pathname, options);
-        const response = await fetch(request);
-        const status = await response.status;
-        const result = await response.json();
-
-        if(status === 200)
-        {
-            window.location.reload();
-        }
-        else {
-            console.log(result);
-        }
-
+    navigateToLogin() {
+        this.props.history.push("/user/login");
     }
 
-
-
+  
     render() {
-
-        console.log(this.state.caterings);
         var rows = [];
         for (var i = 0; i < this.state.count; i++) {
             rows.push(
                     <tr key={i}>
-                        <td> <img src={this.state.caterings[i].image} height="150" width="300" alt={this.state.caterings[i].name}/> </td>
-                        <td> {this.state.caterings[i].name} </td>
-                        <td> {this.state.caterings[i].foodType} </td>
-                        <td> <a id="tablelink" href={this.state.caterings[i].request.url}> To Caterers Page </a> </td>
+                        <td> <img src={this.state.partys[i].image} height="150" width="300" alt={this.state.partys[i].name}/> </td>
+                        <td> {this.state.partys[i].name} </td>
+                        <td> {this.state.partys[i].date} </td>
+                        <td> <a id="tablelink" href={this.state.partys[i].request.url}> To Party Page </a> </td>
                     </tr>
                     
             );
         }
 
-        var button = '';
-        if (this.state.userLevel === 1)
+        if (this.state.userLevel === 0)
         {
-            button =  <div id="adminButtons">
-                        <button id="editButton" type="button" onClick={() => this.createTrigger()} className="btn btn-primary">Create</button>
-                       </div>;
-        }  
+            return (
+                <div id="headerLine">
+                    <h3 id="headererror">Please Login </h3>
+                </div>
+            );
+        }
 
         if(this.state.create) {
             return (
                 <div id="singleBody">
                     <form onSubmit={this.createVenue.bind(this)}>
                         <div id="headerLine">
-                            <h3>Create Caterer </h3>
+                            <h3>Create Venue </h3>
                             <div id="adminButtons">
                                 <button id="deleteButton" type="button" onClick={() => this.cancelTrigger()} className="btn btn-primary">Cancel</button>
                                 <input id="editButton" className="btn btn-primary" type="submit" value="Save" />
@@ -142,12 +106,19 @@ class Caterings extends Component {
                                     <input id="inputs" ref= "name" type="text" placeholder="Name" required />
                                     <br/>
                                     <br/>
-                                    <label> Price Per Head From: </label>
+                                    <label> Type: </label>
+                                    <input id="inputs" ref= "type" type="text" placeholder="Type" required />
+                                    <br/>
+                                    <br/>
+                                    <label> Price: </label>
                                     <input id="inputs" ref= "price" type="number" placeholder="Price" required />
                                     <br/>
                                     <br/>
                                     <label> Image: </label>
                                     <input id="inputs" ref= "image" type="text" placeholder="Image" required />
+                                    <br/> <br/>
+                                    <label> Capactity: </label>
+                                    <input id="inputs" ref= "capactity" type="number" placeholder="Capacity" required />
                                     <br/> <br/>
                                     <label> Location: </label>
                                     <input id="inputs" ref= "location" type="text" placeholder="Location" required />
@@ -155,9 +126,8 @@ class Caterings extends Component {
                                     <label> Website: </label>
                                     <input id="inputs" ref= "website" type="text" placeholder="Website" required />
                                     <br/> <br/>
-                                    <label> Food Type: </label>
-                                    <input id="inputs" ref= "foodtype" type="text" placeholder="Food Type" required />
-                                    <br/> <br/>
+                                    <label> Description: </label>
+                                    <textarea id="areainputs" ref= "description" type="text" placeholder="Description" required />
                                 </div>
                             </div>
                         </div>
@@ -169,15 +139,17 @@ class Caterings extends Component {
             return (
             <div id="venuesBody">
                 <div id="headerLine">
-                    <h3> Caterers </h3>
-                    {button}
+                    <h3> Your Partys </h3>
+                    <div id="adminButtons">
+                        <button id="editButton" type="button" onClick={() => this.createTrigger()} className="btn btn-primary">Create</button>
+                    </div>;
                 </div>
                 <table id="tables">
                     <thead>
                         <tr>
-                            <th>Caterer </th>
-                            <th>Caterers Name</th>
-                            <th>Food Type</th>
+                            <th>Party </th>
+                            <th>Party Name</th>
+                            <th>Event Date</th>
                             <th>More Info</th>
                         </tr>
                     </thead>
@@ -186,9 +158,7 @@ class Caterings extends Component {
             </div>
           );
         }
-
-        
       }
 }
 
-export default Caterings;
+export default Partys;

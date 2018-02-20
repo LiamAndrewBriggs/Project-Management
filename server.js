@@ -8,7 +8,7 @@ var cors = require('cors');
 const port = process.env.PORT || 5000;
 
 const venueRoutes = require('./api/routes/venues');
-const partyRoutes = require('./api/routes/partys');
+const userPartyRoutes = require('./api/routes/userPartys');
 const userRoutes = require('./api/routes/users');
 const cateringRoutes = require('./api/routes/caterings');
 const entertainmentRoutes = require('./api/routes/entertainments');
@@ -46,7 +46,7 @@ app.get('/home', (req, res) => {
 
 //Routes to handle requests
 app.use('/venues', venueRoutes);
-app.use('/partys', partyRoutes);
+app.use('/user/partys', userPartyRoutes);
 app.use('/user', userRoutes);
 app.use('/caterings', cateringRoutes);
 app.use('/entertainments', entertainmentRoutes);

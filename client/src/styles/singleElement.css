@@ -86,4 +86,8 @@ label {
     max-height:100%;
 }
 
+#headererror { 
+    color: red;
+}
+
 

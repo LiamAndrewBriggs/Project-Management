@@ -28,8 +28,8 @@ const Header = (props) => {
                 </div>
                 <ul className="nav navbar-nav">
                     <li><NavLink  to={"/home"} activeStyle={{color: "red"}}>Home</NavLink ></li>
-                    <li><NavLink  to={"/partys"} activeStyle={{color: "red"}}>Your Partys</NavLink></li>
-                    <li><NavLink  to={"/partys"} activeStyle={{color: "red"}}>Invited To Partys</NavLink></li>
+                    <li><NavLink  to={"/user/partys"} activeStyle={{color: "red"}}>Your Partys</NavLink></li>
+                    <li><NavLink  to={"/user/guests"} activeStyle={{color: "red"}}>Invited To Partys</NavLink></li>
                     <li><NavLink  to={"/venues"} activeStyle={{color: "red"}}>Venues</NavLink></li>
                     <li><NavLink  to={"/caterings"} activeStyle={{color: "red"}}>Catering</NavLink></li>
                     <li><NavLink  to={"/entertainments"} activeStyle={{color: "red"}}>Entertainment</NavLink></li>
