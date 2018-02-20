@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 import '../styles/singleElement.css';
 
-class Venue extends Component {
+class Transport extends Component {
     state = {
         userlevel: '',
         id: '',
         name: '',
-        type: '',
         price: '',
         image: '',
-        capactity: '',
         location: '',
         website: '',
-        description: '', 
+        mincarsize: '',
+        maxcarsize: '', 
         edit: false
     };
     
@@ -31,13 +30,12 @@ class Venue extends Component {
                 userlevel: userLevel,
                 id: res.doc._id,
                 name: res.doc.name,
-                type: res.doc.type,
                 price: res.doc.price,
                 image: res.doc.image,
-                capactity: res.doc.capactity,
                 location: res.doc.location,
                 website: res.doc.website,
-                description: res.doc.description
+                mincarsize: res.doc.mincarsize,
+                maxcarsize: res.doc.maxcarsize
             })
         })
         .catch(err => console.log(err));
@@ -57,7 +55,7 @@ class Venue extends Component {
     };
 
     onNavigateHome() {
-        this.props.history.push("/venues");
+        this.props.history.push("/transports");
     }
 
     editTrigger() {
@@ -81,32 +79,30 @@ class Venue extends Component {
         }  
 
         body[1] = {
-            "propName": "type", "value": this.refs.type.value,
-        }    
-
-        body[2] = {
             "propName": "price", "value": this.refs.price.value,
         }    
 
-        body[3] = {
+        body[2] = {
             "propName": "image", "value": this.refs.image.value,
         }    
 
-        body[4] = {
-            "propName": "capactity", "value": this.refs.capactity.value,
-        }    
-
-        body[5] = {
+        body[3] = {
             "propName": "location", "value": this.refs.location.value,
         }  
 
-        body[6] = {
+        body[4] = {
             "propName": "website", "value": this.refs.website.value,
         }  
 
-        body[7] = {
-            "propName": "description", "value": this.refs.description.value,
+        body[5] = {
+            "propName": "mincarsize", "value": this.refs.mincarsize.value,
         }  
+
+        body[6] = {
+            "propName": "maxcarsize", "value": this.refs.maxcarsize.value,
+        }  
+
+        console.log(body);
 
         const options = {
             method: 'PATCH',
@@ -151,7 +147,7 @@ class Venue extends Component {
                 
         if(status === 200)
         {
-            this.props.history.push("/venues");
+            this.props.history.push("/transports");
         }
     }
     
@@ -185,28 +181,24 @@ class Venue extends Component {
                                     <input id="inputs" ref= "name" type="text" defaultValue={this.state.name} required />
                                     <br/>
                                     <br/>
-                                    <label> Type: </label>
-                                    <input id="inputs" ref= "type" type="text" defaultValue={this.state.type} required />
-                                    <br/>
-                                    <br/>
-                                    <label> Price: </label>
-                                    <input id="inputs" ref= "price" type="number" defaultValue={this.state.price} required />
-                                    <br/>
-                                    <br/>
+                                    <label> Price Per Mile: </label>
+                                    <input id="inputs" ref= "price" type="text" defaultValue={this.state.price} required />
+                                    <br/> <br/>
                                     <label> Image: </label>
                                     <input id="inputs" ref= "image" type="text" defaultValue={this.state.image} required />
                                     <br/> <br/>
-                                    <label> Capactity: </label>
-                                    <input id="inputs" ref= "capactity" type="number" defaultValue={this.state.capactity} required />
-                                    <br/> <br/>
                                     <label> Location: </label>
-                                    <input id="inputs" ref= "location" type="text" defaultValue={this.state.image} required />
+                                    <input id="inputs" ref= "location" type="text" defaultValue={this.state.location} required />
                                     <br/> <br/>
                                     <label> Website: </label>
                                     <input id="inputs" ref= "website" type="text" defaultValue={this.state.website} required />
                                     <br/> <br/>
-                                    <label> Description: </label>
-                                    <textarea id="areainputs" ref= "description" type="text" defaultValue= {this.state.description} required />
+                                    <label> Minimum Car Size: </label>
+                                    <input id="inputs" ref= "mincarsize" type="number" defaultValue={this.state.mincarsize} required />
+                                    <br/> <br/>
+                                    <label> Maximum Car Size: </label>
+                                    <input id="inputs" ref= "maxcarsize" type="number" defaultValue={this.state.maxcarsize} required />
+                                    <br/> <br/>
                                 </div>
                             </div>
                         </div>
@@ -230,15 +222,13 @@ class Venue extends Component {
                         </div>
                         <div className="col-sm-5">
                             <div id="info">
-                                <p> Venue Type: {this.state.type} </p>
-                                <br/>
-                                <p> Description: {this.state.description} </p>
+                                <p> Price Per Mile: {this.state.price} </p>
                                 <br/>
                                 <p> Location: {this.state.location} </p>
                                 <br/>
-                                <p> Party Capacity: {this.state.capactity} </p>
+                                <p> Minimum Car Size: {this.state.mincarsize} </p>
                                 <br/>
-                                <p> Price: £{this.state.price} </p>
+                                <p> Maximum Car Size: {this.state.maxcarsize} </p>
                                 <br/>
                                 <p>Website: </p> <a id="websiteLink" href={this.state.website}> {this.state.website} </a>
                             </div>
@@ -252,4 +242,4 @@ class Venue extends Component {
     }
 }
 
-export default Venue;
+export default Transport;

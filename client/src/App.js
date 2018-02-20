@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import Home from './components/Home';
-import Root from './components/Root';
+import Home from './components/route_components/Home';
+import Root from './components/route_components/Root';
+import LogIn from './components/user_components/LogIn';
+import SignUp from './components/user_components/Signup';
+
 import Venues from './components/Venues';
 import Venue from './components/Venue';
+
+import Transports from './components/Transports';
+import Transport from './components/Transport';
+
+
 import Party from './components/Party';
-import LogIn from './components/LogIn';
-import SignUp from './components/Signup';
+
 
 class App extends Component {
   
@@ -19,13 +26,15 @@ class App extends Component {
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/home" component={Home} />
-              <Route exact path="/venues" component={Venues} />
-              <Route exact path="/venues/:venueID" component={Venue} />
-              <Route exact path="/partys" component={Party} />
-              <Route exact path="/partys/:partyID" component={Party} />
               <Route exact path="/user/login" component={LogIn} />
               <Route exact path="/user/logout" component={Home} />
               <Route exact path="/user/signup" component={SignUp} />
+              <Route exact path="/venues" component={Venues} />
+              <Route exact path="/venues/:venueID" component={Venue} />
+              <Route exact path="/transports" component={Transports} />
+              <Route exact path="/transports/:transportID" component={Transport} />
+              <Route exact path="/partys" component={Party} />
+              <Route exact path="/partys/:partyID" component={Party} />
             </Switch>
           </Root>
         </div>

@@ -10,6 +10,9 @@ const port = process.env.PORT || 5000;
 const venueRoutes = require('./api/routes/venues');
 const partyRoutes = require('./api/routes/partys');
 const userRoutes = require('./api/routes/users');
+const cateringRoutes = require('./api/routes/caterings');
+const entertainmentRoutes = require('./api/routes/entertainments');
+const transportRoutes = require('./api/routes/transports');
 
 mongoose.connect('mongodb://LiamTwiggy:University13@project-management-shard-00-00-oeb62.mongodb.net:27017,project-management-shard-00-01-oeb62.mongodb.net:27017,project-management-shard-00-02-oeb62.mongodb.net:27017/test?ssl=true&replicaSet=project-management-shard-0&authSource=admin');
 mongoose.Promise = global.Promise;
@@ -45,6 +48,9 @@ app.get('/home', (req, res) => {
 app.use('/venues', venueRoutes);
 app.use('/partys', partyRoutes);
 app.use('/user', userRoutes);
+app.use('/caterings', cateringRoutes);
+app.use('/entertainments', entertainmentRoutes);
+app.use('/transports', transportRoutes);
 
 
 app.use((req, res, next) => {

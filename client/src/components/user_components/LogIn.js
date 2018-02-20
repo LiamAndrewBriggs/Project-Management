@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import '../styles/login.css';
+import '../../styles/login.css';
 
 class LogIn extends Component {
     state = {

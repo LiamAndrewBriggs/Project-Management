@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import '../styles/signup.css';
+import '../../styles/signup.css';
 
 class Signup extends Component {
     state = {
@@ -46,7 +46,6 @@ class Signup extends Component {
                     this.props.history.push("/user/login");
                 }
                 else {
-                    console.log(body);
                     this.state.emailerror = body.message;
                     this.refs.password.value = null;
                     this.refs.confirmpassword.value = null;
@@ -68,15 +67,15 @@ class Signup extends Component {
                     <form onSubmit={this.logIn.bind(this)}>
                         <div id="input">
                             <p id="signupp"> Full Name </p>
-                            <input id="inputfield" ref= "name" type="text" placeholder="Full Name" />
+                            <input id="inputfield" ref= "name" type="text" placeholder="Full Name" required />
                             <p id="errortext">{this.state.nameerror}</p>
                             <p id="signupp"> Email </p>
-                            <input id="inputfield" ref= "email" type="text" placeholder="Email" />
+                            <input id="inputfield" ref= "email" type="text" placeholder="Email" required />
                             <p id="errortext">{this.state.emailerror}</p>
                             <p id="signupp"> Password </p>
-                            <input type="password" id="inputfield" ref="password" placeholder="Password" />
+                            <input type="password" id="inputfield" ref="password" placeholder="Password" required />
                             <p id="signupp"> Confirm Password </p>
-                            <input type="password" id="inputfield" ref="confirmpassword" placeholder="Confirm Password" />
+                            <input type="password" id="inputfield" ref="confirmpassword" placeholder="Confirm Password" required />
                             <br/>
                             <p id="errortext">{this.state.passworderror}</p>
                             <input id="signupbutton" className="btn btn-primary" type="submit" value="Sign Up" />

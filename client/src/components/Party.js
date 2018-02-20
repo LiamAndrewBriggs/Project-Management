@@ -8,7 +8,6 @@ class Party extends Component {
     componentDidMount() {
        this.callApi()
         .then(res => {
-            console.log(res);
             this.setState({ response: res.message })
         })
         .catch(err => console.log(err));

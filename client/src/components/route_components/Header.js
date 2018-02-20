@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
-import '../styles/header.css';
+import '../../styles/header.css';
 
 const Header = (props) => {
     var button;
@@ -31,9 +31,9 @@ const Header = (props) => {
                     <li><NavLink  to={"/partys"} activeStyle={{color: "red"}}>Your Partys</NavLink></li>
                     <li><NavLink  to={"/partys"} activeStyle={{color: "red"}}>Invited To Partys</NavLink></li>
                     <li><NavLink  to={"/venues"} activeStyle={{color: "red"}}>Venues</NavLink></li>
-                    <li><NavLink  to={"/catering"} activeStyle={{color: "red"}}>Catering</NavLink></li>
-                    <li><NavLink  to={"/entertainment"} activeStyle={{color: "red"}}>Entertainment</NavLink></li>
-                    <li><NavLink  to={"/transport"} activeStyle={{color: "red"}}>Transport</NavLink></li>
+                    <li><NavLink  to={"/caterings"} activeStyle={{color: "red"}}>Catering</NavLink></li>
+                    <li><NavLink  to={"/entertainments"} activeStyle={{color: "red"}}>Entertainment</NavLink></li>
+                    <li><NavLink  to={"/transports"} activeStyle={{color: "red"}}>Transport</NavLink></li>
                 </ul>
                 {button}
             </div>
