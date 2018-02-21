@@ -92,6 +92,26 @@ router.get('/logout', (req, res, next) => {
     res.redirect("/home");
 });
 
+router.patch('/:userid', (req, res, next) => {
+    const userID = req.params.userid;
+    const updateOps = {};
+    for (const ops of req.body) {
+        updateOps[ops.propName] = ops.value;
+    }
+    User.update({ _id: userID }, { $set: updateOps })
+    .exec()
+    .then(result => {
+      console.log(result);
+      res.send(result);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+});
+
 router.delete('/:userId', (req, res, next) => {
     const userID = req.params.userId;
     User.remove({_id: userID})

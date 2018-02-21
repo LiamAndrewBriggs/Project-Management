@@ -18,8 +18,8 @@ import Entertainment from './components/Entertainment';
 import Transports from './components/Transports';
 import Transport from './components/Transport';
 
-
 import Partys from './components/Partys';
+import Party from './components/Party';
 
 
 class App extends Component {
@@ -44,6 +44,7 @@ class App extends Component {
               <Route exact path="/transports" component={Transports} />
               <Route exact path="/transports/:transportID" component={Transport} />
               <Route exact path="/user/partys" component={Partys} />
+              <Route exact path="/user/partys/:partyID" component={Party} />
             </Switch>
           </Root>
         </div>

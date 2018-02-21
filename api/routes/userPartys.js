@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 const Party = require('../models/party');
+const User = require('../models/user');
 
 router.get('/', (req, res, next) => {
     
@@ -12,36 +13,50 @@ router.get('/', (req, res, next) => {
         });  
     }
     else {
-        Party.find()
-            .select('name description date venue _id')
-            .populate('venue', 'name')
-            .exec()
-            .then(docs => {
-                const response = {
-                    loggedIn: req.session.user,
-                    count: docs.length,
-                    partys: docs.map(doc => {
-                        return {
-                            name: doc.name,
-                            description: doc.description,
-                            date: doc.date,
-                            venue: doc.venue,
-                            _id: doc._id,
-                            request: {
-                                type:'GET',
-                                url: 'http://localhost:3000/partys/' + doc._id 
+        console.log(req.session.user);
+        User.findById(req.session.user._id)
+        .select('partys')
+        .exec()
+        .then(docs => {
+             Party.find({
+                    '_id': { $in: docs.partys }
+                })
+                .select('name description startDate venue _id')
+                .populate('venue', 'name')
+                .exec()
+                .then(docss => {
+                    const response = {
+                        loggedIn: req.session.user,
+                        count: docss.length,
+                        partys: docss.map(doc => {
+                            return {
+                                name: doc.name,
+                                description: doc.description,
+                                date: doc.startDate,
+                                _id: doc._id,
+                                request: {
+                                    type:'GET',
+                                    url: 'http://localhost:3000/user/partys/' + doc._id 
+                                }
                             }
-                        }
-                    })
-                };
-                res.send(response);
+                        })
+                    };
+                    console.log(response);
+                    res.send(response);
+                })
+                .catch(err => {
+                        console.log(err)
+                        res.status(500).json({
+                            error: err
+                        })
+                    });
             })
             .catch(err => {
-                    console.log(err)
-                    res.status(500).json({
-                        error: err
-                    })
-                });
+                console.log(err)
+                res.status(500).json({
+                    error: err
+                })
+            });
         }
 });
 
@@ -50,8 +65,8 @@ router.post('/', (req, res, next) => {
         _id: mongoose.Types.ObjectId(),
         name: req.body.name,
         description: req.body.description,
-        date: req.body.date,
-        venue: req.body.venue,
+        startDate: req.body.startDate,
+        endDate: req.body.endDate
     });
     party
         .save()
@@ -61,12 +76,12 @@ router.post('/', (req, res, next) => {
                 Party: {
                     name: result.name,
                     description: result.description,
-                    date: result.date,
-                    venue: result.venue,
+                    startDate: result.startDate,
+                    endDate: result.endDate,
                     _id: result._id,
                     request: {
                         type:'GET',
-                        url: 'http://localhost:3000/partys/' + result._id 
+                        url: 'http://localhost:3000/user/partys/' + result._id 
                     }
                 }
             });
@@ -80,13 +95,21 @@ router.post('/', (req, res, next) => {
 });
 
 router.get('/:partyid', (req, res, next) => {
+    var user;
+
+    if(!req.session.user) {
+        user = "No User";
+    }
+    else {
+        user = req.session.user;
+    }
+    
     const partyID = req.params.partyid;
     Party.findById(partyID)
-        .populate('venue', 'name location')
         .exec()
         .then(doc => {
             if(doc) {
-                res.send(doc);
+                res.send({loggedIn: user, doc: doc});
             }
             else {
                 res.status(404).json({
@@ -100,6 +123,25 @@ router.get('/:partyid', (req, res, next) => {
                 error: err
             });
         });
+});
+
+router.patch('/:partyid', (req, res, next) => {
+    const partyID = req.params.partyid;
+    const updateOps = {};
+    for (const ops of req.body) {
+        updateOps[ops.propName] = ops.value;
+    }
+    Party.update({ _id: partyID }, { $set: updateOps })
+    .exec()
+    .then(result => {
+      res.send(result);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
 });
 
 router.delete('/:partyid', (req, res, next) => {

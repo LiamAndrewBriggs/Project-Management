@@ -1,0 +1,27 @@
+#date p {
+    display: inline-block;
+    vertical-align: top;
+}
+
+#endDate {
+    float: right;
+    margin-right: 15px;
+}
+
+#description { 
+    text-align: center;
+}
+
+#singleBody {
+    color: darkgreen;
+}
+
+#container {
+    margin-top: 27px;
+    border-top: black 1px solid;
+}
+
+#left {
+    border-right: black 1px solid;
+    margin-left: 25px;
+}

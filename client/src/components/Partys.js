@@ -6,6 +6,7 @@ class Partys extends Component {
     state = {
         count: '',
         partys: '',
+        user: '',
         userLevel: 0,
         create: false
     };
@@ -23,7 +24,8 @@ class Partys extends Component {
                 this.setState({ 
                     count: res.count,
                     partys: res.partys,
-                    userLevel: userLevel
+                    userLevel: userLevel,
+                    user: res.loggedIn
                 })
             })
             .catch(err => console.log(err));
@@ -60,19 +62,87 @@ class Partys extends Component {
         })
     }
 
-    navigateToLogin() {
-        this.props.history.push("/user/login");
+    createParty = async (e) => {
+
+        e.preventDefault();
+
+        var body = {
+            "name": this.refs.name.value,
+            "description": this.refs.description.value,
+            "startDate": this.refs.startDate.value,
+            "endDate": this.refs.endDate.value,
+        }  
+
+        const options = {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(body)
+        }
+
+        const request = new Request(window.location.pathname, options);
+        const response = await fetch(request);
+        const status = await response.status;
+        const result = await response.json();
+
+        if(status === 200)
+        {
+            var secondBody = [];
+
+            var userPartys = this.state.user.partys;
+
+            var toAdd = result.Party._id;
+
+            userPartys.push(toAdd);
+
+            console.log(userPartys);
+
+            secondBody[0] = { "propName": "partys", "value": userPartys }
+
+            console.log(secondBody);
+
+            const secondOptions = {
+                method: 'PATCH',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(secondBody)
+            }
+    
+            const secondRequest = new Request("/user/" + this.state.user._id, secondOptions);
+            const secondResponse = await fetch(secondRequest);
+            const secondStatus = await secondResponse.status;
+            const secondResult = await secondResponse.json();
+    
+            if(secondStatus === 200)
+            {
+                //window.location.reload();
+            }
+            else {
+                console.log(secondResult);
+            }
+        }
+        else {
+            console.log(result);
+        }
     }
 
   
     render() {
         var rows = [];
         for (var i = 0; i < this.state.count; i++) {
+            var date = new Date(this.state.partys[i].date);
+            date = date.toUTCString();
             rows.push(
                     <tr key={i}>
                         <td> <img src={this.state.partys[i].image} height="150" width="300" alt={this.state.partys[i].name}/> </td>
                         <td> {this.state.partys[i].name} </td>
-                        <td> {this.state.partys[i].date} </td>
+                        <td> {date} </td>
                         <td> <a id="tablelink" href={this.state.partys[i].request.url}> To Party Page </a> </td>
                     </tr>
                     
@@ -89,9 +159,24 @@ class Partys extends Component {
         }
 
         if(this.state.create) {
+
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth()+1; 
+            var yyyy = today.getFullYear();
+            if(dd<10){
+                dd='0'+dd
+            } 
+            if(mm<10){
+                mm='0'+mm
+            } 
+
+            today = yyyy+'-'+mm+'-'+dd;
+
+
             return (
                 <div id="singleBody">
-                    <form onSubmit={this.createVenue.bind(this)}>
+                    <form onSubmit={this.createParty.bind(this)}>
                         <div id="headerLine">
                             <h3>Create Venue </h3>
                             <div id="adminButtons">
@@ -103,31 +188,17 @@ class Partys extends Component {
                         <div className="row">
                             <div id="editinfo">
                                     <label> Name: </label>
-                                    <input id="inputs" ref= "name" type="text" placeholder="Name" required />
-                                    <br/>
-                                    <br/>
-                                    <label> Type: </label>
-                                    <input id="inputs" ref= "type" type="text" placeholder="Type" required />
-                                    <br/>
-                                    <br/>
-                                    <label> Price: </label>
-                                    <input id="inputs" ref= "price" type="number" placeholder="Price" required />
-                                    <br/>
-                                    <br/>
-                                    <label> Image: </label>
-                                    <input id="inputs" ref= "image" type="text" placeholder="Image" required />
-                                    <br/> <br/>
-                                    <label> Capactity: </label>
-                                    <input id="inputs" ref= "capactity" type="number" placeholder="Capacity" required />
-                                    <br/> <br/>
-                                    <label> Location: </label>
-                                    <input id="inputs" ref= "location" type="text" placeholder="Location" required />
-                                    <br/> <br/>
-                                    <label> Website: </label>
-                                    <input id="inputs" ref= "website" type="text" placeholder="Website" required />
+                                    <input id="inputs" ref="name" type="text" placeholder="Name" required />
                                     <br/> <br/>
                                     <label> Description: </label>
-                                    <textarea id="areainputs" ref= "description" type="text" placeholder="Description" required />
+                                    <textarea id="areainputs" ref="description" type="text" placeholder="Description" required />
+                                    <br/> <br/>
+                                    <label> Start Date: </label>
+                                    <input id="inputs" ref="startDate" type="datetime-local" min={today} placeholder={today} required />
+                                    <br/> <br/>
+                                    <label> End Date: </label>
+                                    <input id="inputs" ref="endDate" type="datetime-local" min={today} placeholder={today} required />
+                                    <br/> <br/>
                                 </div>
                             </div>
                         </div>

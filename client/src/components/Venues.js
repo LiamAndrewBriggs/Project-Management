@@ -97,10 +97,7 @@ class Venues extends Component {
         else {
             console.log(result);
         }
-
     }
-
-
 
     render() {
         var rows = [];

@@ -11,7 +11,10 @@ const userSchema = mongoose.Schema({
     password: { type: String, required: true },
     name: { type: String, required: true },
     userLevel: { type: Number, required: true },
-    partys: [{ type: mongoose.Schema.Types.ObjectId, ref:  'Party' }]
+    partys: [{ type: mongoose.Schema.Types.ObjectId, ref:  'Party' }],
+    invitedTo: [{ type: mongoose.Schema.Types.ObjectId, ref:  'Party' }],
+    goingTo: [{ type: mongoose.Schema.Types.ObjectId, ref:  'Party' }],
+    rejected: [{ type: mongoose.Schema.Types.ObjectId, ref:  'Party' }]
 });
 
 module.exports = mongoose.model('User', userSchema);
