@@ -1,3 +1,9 @@
+body {
+    overflow: hidden;
+    margin:0;
+    height:100%;
+}
+
 #date p {
     display: inline-block;
     vertical-align: top;
@@ -24,4 +30,32 @@
 #left {
     border-right: black 1px solid;
     margin-left: 25px;
+}
+
+#inviteInput {
+    width: 50%;
+    padding: 12px 20px;
+    margin-left:25%;
+    margin-top: 5px;
+    margin-right: 5px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    box-sizing: border-box;
+}
+
+#tabs {
+    margin-top: 20px;
+    margin-left:32%;
+    width: 41%;
+}
+
+#content {
+    margin-left: 0px;
+    margin-top: 10px;
+    float: left;
+    height: 200px;
+    border-top: none;
+    overflow-y: auto;
+    width: 105%;
 }

@@ -10,10 +10,12 @@ const partySchema = mongoose.Schema({
     //catering: { type: mongoose.Schema.Types.ObjectId, ref: 'Catering', required: true },
     //entertainment: { type: mongoose.Schema.Types.ObjectId, ref: 'Entertainment', required: true },
     //transport: { type: mongoose.Schema.Types.ObjectId, ref: 'Transport', required: true },
-    //invitedGuests: [{ type: mongoose.Schema.Types.ObjectId, ref:  'User' }],
-    //confirmedGuests: [{ type: mongoose.Schema.Types.ObjectId, ref:  'User' }],
-    //maybeGuests: [{ type: mongoose.Schema.Types.ObjectId, ref:  'User' }],
-    //declinedGuests: [{ type: mongoose.Schema.Types.ObjectId, ref:  'User' }]
+    invitedGuests: [{ type: mongoose.Schema.Types.ObjectId, ref:  'User' }],
+    confirmedGuests: [{ type: mongoose.Schema.Types.ObjectId, ref:  'User' }],
+    declinedGuests: [{ type: mongoose.Schema.Types.ObjectId, ref:  'User' }],
+    invitedGuestsNames: [{ type: String}],
+    confirmedGuestsNames: [{ type: String}],
+    declinedGuestsNames: [{ type: String}]
 });
 
 module.exports = mongoose.model('Party', partySchema);

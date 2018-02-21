@@ -98,11 +98,7 @@ class Partys extends Component {
 
             userPartys.push(toAdd);
 
-            console.log(userPartys);
-
             secondBody[0] = { "propName": "partys", "value": userPartys }
-
-            console.log(secondBody);
 
             const secondOptions = {
                 method: 'PATCH',
@@ -121,7 +117,7 @@ class Partys extends Component {
     
             if(secondStatus === 200)
             {
-                //window.location.reload();
+                window.location.reload();
             }
             else {
                 console.log(secondResult);
@@ -178,7 +174,7 @@ class Partys extends Component {
                 <div id="singleBody">
                     <form onSubmit={this.createParty.bind(this)}>
                         <div id="headerLine">
-                            <h3>Create Venue </h3>
+                            <h3>Create Party </h3>
                             <div id="adminButtons">
                                 <button id="deleteButton" type="button" onClick={() => this.cancelTrigger()} className="btn btn-primary">Cancel</button>
                                 <input id="editButton" className="btn btn-primary" type="submit" value="Save" />

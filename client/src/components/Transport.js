@@ -59,12 +59,16 @@ class Transport extends Component {
     }
 
     editTrigger() {
-        this.state.edit = true;
+        this.setState({
+            edit: true
+        })
         this.setState(this.state);
     }
 
     cancelTrigger() {
-        this.state.edit = false;
+        this.setState({
+            edit: false
+        })
         this.setState(this.state);
     }
 

@@ -116,7 +116,6 @@ router.patch('/:id', (req, res, next) => {
     Entertainment.update({ _id: entertainmentID }, { $set: updateOps })
     .exec()
     .then(result => {
-      console.log(result);
       res.send(result);
     })
     .catch(err => {

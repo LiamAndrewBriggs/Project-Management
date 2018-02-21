@@ -53,16 +53,20 @@ class Entertainment extends Component {
     };
 
     onNavigateHome() {
-        this.props.history.push("/venues");
+        this.props.history.push("/entertainments");
     }
 
     editTrigger() {
-        this.state.edit = true;
+        this.setState({
+            edit: true
+        })
         this.setState(this.state);
     }
 
     cancelTrigger() {
-        this.state.edit = false;
+        this.setState({
+            edit: false
+        })
         this.setState(this.state);
     }
 
@@ -139,7 +143,7 @@ class Entertainment extends Component {
                 
         if(status === 200)
         {
-            this.props.history.push("/venues");
+            this.props.history.push("/entertainments");
         }
     }
     

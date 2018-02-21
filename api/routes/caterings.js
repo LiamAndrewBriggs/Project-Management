@@ -116,7 +116,6 @@ router.patch('/:id', (req, res, next) => {
     Catering.update({ _id: cateringID }, { $set: updateOps })
     .exec()
     .then(result => {
-      console.log(result);
       res.send(result);
     })
     .catch(err => {

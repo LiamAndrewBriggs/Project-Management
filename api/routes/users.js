@@ -5,6 +5,42 @@ const bcrypt = require('bcrypt');
 
 const User = require('../models/user');
 
+router.get('/', (req, res, next) => {
+    
+    var user;
+
+    if(!req.session.user) {
+        user = "No User";
+    }
+    else {
+        user = req.session.user;
+       
+        User.find()
+        .select('name email _id')
+        .exec()
+        .then(docs => {
+            const response = {
+                loggedIn: user,
+                count: docs.length,
+                users: docs.map(doc => {
+                    return {
+                        name: doc.name,
+                        email: doc.email,
+                        _id: doc._id
+                    }
+                })
+            };
+            res.send(response);
+        })
+        .catch(err => {
+                console.log(err)
+                res.status(500).json({
+                    error: err
+                })
+            });
+    }
+});
+
 router.get('/signup', (req, res, next) => {
     res.send({ express: 'Log In Form' });
 });
@@ -101,11 +137,9 @@ router.patch('/:userid', (req, res, next) => {
     User.update({ _id: userID }, { $set: updateOps })
     .exec()
     .then(result => {
-      console.log(result);
       res.send(result);
     })
     .catch(err => {
-      console.log(err);
       res.status(500).json({
         error: err
       });

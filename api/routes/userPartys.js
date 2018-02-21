@@ -13,7 +13,6 @@ router.get('/', (req, res, next) => {
         });  
     }
     else {
-        console.log(req.session.user);
         User.findById(req.session.user._id)
         .select('partys')
         .exec()
@@ -41,7 +40,6 @@ router.get('/', (req, res, next) => {
                             }
                         })
                     };
-                    console.log(response);
                     res.send(response);
                 })
                 .catch(err => {

@@ -118,7 +118,6 @@ router.patch('/:id', (req, res, next) => {
     Venue.update({ _id: venueID }, { $set: updateOps })
     .exec()
     .then(result => {
-      console.log(result);
       res.send(result);
     })
     .catch(err => {
