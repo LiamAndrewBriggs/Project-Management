@@ -7,6 +7,7 @@ import 'react-web-tabs/dist/react-web-tabs.css';
 class Venue extends Component {
     state = {
         userlevel: '',
+        user: '',
         _id: '',
         description: '',
         startDate: '',
@@ -33,6 +34,7 @@ class Venue extends Component {
             
             this.setState({ 
                 userlevel: userLevel,
+                user: res.loggedIn,
                 _id: res.doc._id,
                 name: res.doc.name,
                 description: res.doc.description,
@@ -141,7 +143,34 @@ class Venue extends Component {
         
         if(status === 200)
         {
-            this.props.history.push("/user/partys");
+            var secondBody = [];
+
+            var userPartys = [];
+
+            secondBody[0] = { "propName": "partys", "value": userPartys }
+
+            const secondOptions = {
+                method: 'PATCH',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(secondBody)
+            }
+
+            const secondRequest = new Request("/user/" + this.state.user._id, secondOptions);
+            const secondResponse = await fetch(secondRequest);
+            const secondStatus = await secondResponse.status;
+            const secondResult = await secondResponse.json();
+    
+            if(secondStatus === 200)
+            {
+                this.props.history.push("/user/partys");
+            }
+            else {
+                console.log(secondResult);
+            }   
         }
 }
 

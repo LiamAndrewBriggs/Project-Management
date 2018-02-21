@@ -48,7 +48,7 @@ class Entertainments extends Component {
             entertainment: this.state.caterings,
             userLevel: this.state.userLevel,
             create: false
-        })
+        }, this.setState(this.state))
     }
 
     createTrigger() {
@@ -57,7 +57,7 @@ class Entertainments extends Component {
             entertainment: this.state.caterings,
             userLevel: this.state.userLevel,
             create: true
-        })
+        }, this.setState(this.state))
     }
 
     createVenue = async (e) => {

@@ -130,6 +130,7 @@ class Partys extends Component {
 
   
     render() {
+        console.log(this.state.user);
         var rows = [];
         for (var i = 0; i < this.state.count; i++) {
             var date = new Date(this.state.partys[i].date);
