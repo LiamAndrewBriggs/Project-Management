@@ -44,6 +44,48 @@ router.get('/', (req, res, next) => {
     }
 });
 
+router.get('/login', (req, res, next) => {
+    res.send({ express: 'Log In Form' });
+});
+
+router.post('/login', (req, res, next) => {
+    User.find({email: req.body.email})
+        .exec()
+        .then(user => {
+            if(user.length < 1) {
+                return res.status(401).json({
+                    message: "Invalid email or password"
+                });  
+            }
+            bcrypt.compare(req.body.password, user[0].password, (err, response) => {
+                if(err) {
+                    return res.status(401).json({
+                        message: "Invalid email or password"
+                    });
+                }
+                if (response) {
+                    req.session.user = user[0];
+                    return res.send({ 
+                        message: 'User Authorisation Successful'
+                    });
+                }
+                res.status(401).json({
+                    message: "Invalid email or password"
+                }); 
+            });
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            }); 
+        });
+});
+
+router.get('/logout', (req, res, next) => {
+    req.session.destroy();
+    res.redirect("/home");
+});
+
 router.get('/signup', (req, res, next) => {
     res.send({ express: 'Log In Form' });
 });
@@ -89,46 +131,38 @@ router.post('/signup', (req, res, next) => {
         })
 });
 
-router.get('/login', (req, res, next) => {
-    res.send({ express: 'Log In Form' });
-});
+router.get('/:userid', (req, res, next) => {
+    var user;
+    const userID = req.params.userid;
 
-router.post('/login', (req, res, next) => {
-    User.find({email: req.body.email})
+    if(!req.session.user) {
+        user = "No User";
+    }
+    else {
+        user = req.session.user;
+    }
+
+    if(user._id === userID || user.userLevel === 1)
+    {
+        User.findById(userID)
         .exec()
-        .then(user => {
-            if(user.length < 1) {
-                return res.status(401).json({
-                    message: "Invalid email or password"
-                });  
+        .then(doc => {
+            if(doc) {
+                res.send({loggedIn: user, doc: doc});
             }
-            bcrypt.compare(req.body.password, user[0].password, (err, response) => {
-                if(err) {
-                    return res.status(401).json({
-                        message: "Invalid email or password"
-                    });
-                }
-                if (response) {
-                    req.session.user = user[0];
-                    return res.send({ 
-                        message: 'User Authorisation Successful'
-                    });
-                }
-                res.status(401).json({
-                    message: "Invalid email or password"
-                }); 
-            });
+            else {
+                res.status(404).json({
+                    message: "User not found"
+                });
+            }
         })
         .catch(err => {
-            res.status(500).json({
+            console.log(err)
+            res.status(404).json({
                 error: err
-            }); 
+            });
         });
-});
-
-router.get('/logout', (req, res, next) => {
-    req.session.destroy();
-    res.redirect("/home");
+    }
 });
 
 router.patch('/:userid', (req, res, next) => {
