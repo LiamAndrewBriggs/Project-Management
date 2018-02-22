@@ -123,7 +123,7 @@ class PartyInvites extends Component {
                 const thirdResult = await thirdResponse.json();
 
                 if(thirdStatus === 200) {
-                    //window.location.reload();
+                    window.location.reload();
                 }
                 else {
                     console.log(thirdResult);
@@ -208,9 +208,9 @@ class PartyInvites extends Component {
                         <form onSubmit={this.editResponse.bind(this)}>
                             <label> Responses:</label>
                                 <select ref="responses" id ="inputs" defaultValue={this.state.partys[this.state.inFocus].response}>
-                                    <option value="going">Going</option>
-                                    <option value="declined">Declined</option>
-                                    <option value="invited">Invited</option>
+                                    <option value="Going">Going</option>
+                                    <option value="Declined">Declined</option>
+                                    <option value="Invited">Invited</option>
                                 </select>
                             <input id="editButton" className="btn btn-primary" type="submit" value="Save" />
                         </form>

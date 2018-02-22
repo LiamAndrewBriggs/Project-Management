@@ -487,6 +487,8 @@ class Venue extends Component {
             invitedGuests.push(toAdd);
 
             secondBody[0] = { "propName": "invitedGuests", "value": invitedGuests }
+
+            console.log(secondBody);
             
             const secondOptions = {
                 method: 'PATCH',
@@ -515,7 +517,7 @@ class Venue extends Component {
                     "partyID" : this.state._id,
                     "name": this.state.name,
                     "date": this.state.startDate,
-                    "response": "invited"
+                    "response": "Invited"
                 }
 
                 guestInvite.push(toAdd);
@@ -560,19 +562,19 @@ class Venue extends Component {
         var declinedNames = [];
         for (var i = 0; i < this.state.invitedGuests.length; i++) {
             
-            if(this.state.invitedGuests[i].response === 'invited') {
+            if(this.state.invitedGuests[i].response === 'Invited') {
                 invitedNames.push(
                     <p key={i}> {this.state.invitedGuests[i].userName} </p>
                     
                 );
             } 
-            else if(this.state.invitedGuests[i].response === 'going') {
+            else if(this.state.invitedGuests[i].response === 'Going') {
                 goingNames.push(
                     <p key={i}> {this.state.invitedGuests[i].userName} </p>
                     
                 );
             }
-            else if(this.state.invitedGuests[i].response === 'declined') {
+            else if(this.state.invitedGuests[i].response === 'Declined') {
                 declinedNames.push(
                     <p key={i}> {this.state.invitedGuests[i].userName} </p>
                     
@@ -630,8 +632,8 @@ class Venue extends Component {
 
         if(this.state.user._id === this.state.ownerID || this.state.userlevel === 1) {
             buttons = <div id="adminButtons">
-                            <button id="deleteButton" type="button" onClick={() => this.cancelTrigger()} className="btn btn-primary">Cancel</button>
-                            <input id="editButton" className="btn btn-primary" type="submit" value="Save" />
+                            <button id="editButton" type="button" onClick={() => this.editTrigger()} className="btn btn-primary">Edit</button>
+                            <input id="deleteButton" className="btn btn-primary" type="submit" value="Delete" />
                         </div>
         }
 
