@@ -6,16 +6,15 @@ const partySchema = mongoose.Schema({
     description: { type: String, required: true },
     startDate: { type: String, required: true },
     endDate: { type: String, required: true },
-    //venue: { type: mongoose.Schema.Types.ObjectId, ref: 'Venue', required: true },
-    //catering: { type: mongoose.Schema.Types.ObjectId, ref: 'Catering', required: true },
-    //entertainment: { type: mongoose.Schema.Types.ObjectId, ref: 'Entertainment', required: true },
-    //transport: { type: mongoose.Schema.Types.ObjectId, ref: 'Transport', required: true },
-    invitedGuests: [{ type: mongoose.Schema.Types.ObjectId, ref:  'User' }],
-    confirmedGuests: [{ type: mongoose.Schema.Types.ObjectId, ref:  'User' }],
-    declinedGuests: [{ type: mongoose.Schema.Types.ObjectId, ref:  'User' }],
-    invitedGuestsNames: [{ type: String}],
-    confirmedGuestsNames: [{ type: String}],
-    declinedGuestsNames: [{ type: String}]
+    venue: { type: mongoose.Schema.Types.ObjectId, ref: 'Venue'},
+    catering: { type: mongoose.Schema.Types.ObjectId, ref: 'Catering'},
+    entertainment: { type: mongoose.Schema.Types.ObjectId, ref: 'Entertainment' },
+    transport: { type: mongoose.Schema.Types.ObjectId, ref: 'Transport' },
+    invitedGuests: [{
+        _userID:  { type: mongoose.Schema.Types.ObjectId, ref:  'User' },
+        userName: { type: String, required: true },
+        response: { type: String, required: true }
+    }]
 });
 
 module.exports = mongoose.model('Party', partySchema);

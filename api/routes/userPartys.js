@@ -12,6 +12,37 @@ router.get('/', (req, res, next) => {
             message: "Please log in"
         });  
     }
+    else if (req.session.user.userLevel === 1)
+    {
+        Party.find()
+        .select('name description startDate venue _id')
+        .exec()
+        .then(docs => {
+            const response = {
+                loggedIn: req.session.user,
+                count: docs.length,
+                partys: docs.map(doc => {
+                    return {
+                        name: doc.name,
+                        description: doc.description,
+                        date: doc.startDate,
+                        _id: doc._id,
+                        request: {
+                            type:'GET',
+                            url: 'http://localhost:3000/user/partys/' + doc._id 
+                        }
+                    }
+                })
+            };
+            res.send(response);
+        })
+        .catch(err => {
+                console.log(err)
+                res.status(500).json({
+                    error: err
+                })
+            });
+    }
     else {
         User.findById(req.session.user._id)
         .select('partys')
@@ -64,10 +95,14 @@ router.post('/', (req, res, next) => {
         name: req.body.name,
         description: req.body.description,
         startDate: req.body.startDate,
-        endDate: req.body.endDate
+        endDate: req.body.endDate,
+        venue: req.body.venue,
+        catering: req.body.catering,
+        entertainment: req.body.entertainment,
+        transport: req.body.transport
     });
-    party
-        .save()
+
+    party.save()
         .then(result => {
             res.send({ 
                 express: 'Created Party',

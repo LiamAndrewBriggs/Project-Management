@@ -7,17 +7,36 @@ import 'react-web-tabs/dist/react-web-tabs.css';
 class Venue extends Component {
     state = {
         userlevel: '',
-        user: '',
         _id: '',
+        user: '',
         description: '',
         startDate: '',
         endDate: '',
         invitedGuests: '',
-        confirmedGuests: '',
-        declinedGuests: '',
-        invitedGuestsNames: '',
-        confirmedGuestsNames: '',
-        declinedGuestsNames: '',
+        chosenVenue: {
+            _id: '',
+            name: '',
+            url: ''
+        },
+        chosenCaterer: {
+            _id: '',
+            name: '',
+            url: ''
+        },
+        chosenEntertainment: {
+            _id: '',
+            name: '',
+            url: ''
+        },
+        chosenTransport: {
+            _id: '',
+            name: '',
+            url: ''
+        },
+        venues: '',
+        caterers: '',
+        entertainment: '',
+        transport: '',
         edit: false
     };
     
@@ -40,9 +59,27 @@ class Venue extends Component {
                 description: res.doc.description,
                 startDate: res.doc.startDate,
                 endDate: res.doc.endDate,
-                invitedGuests: res.doc.invitedGuests, 
-                invitedGuestsNames: res.doc.invitedGuestsNames
+                invitedGuests: res.doc.invitedGuests,
+                chosenVenue: {
+                    _id: res.doc.venue,
+                },
+                chosenCaterer: {
+                    _id: res.doc.catering,
+                },
+                chosenEntertainment: {
+                    _id: res.doc.entertainment,
+                },
+                chosenTransport: {
+                    _id: res.doc.transport,
+                }
             })
+
+            this.getChosenVenue();
+            this.getChosenCaterer();
+            this.getChosenEntertainment();
+            this.getChosenTransport();
+
+
         })
         .catch(err => console.log(err));
     }
@@ -56,9 +93,239 @@ class Venue extends Component {
         const body = await response.json();
     
         if (response.status !== 200) throw Error(body.message);
+
+        this.getVenues();
+        this.getCaterers();
+        this.getEntertainment();
+        this.getTransport();
     
         return body;
     };
+
+    getVenues = async () => {
+        const options = {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+        }
+
+        const request = new Request('/venues', options);
+        const response = await fetch(request);
+        const status = await response.status;
+        const result = await response.json();
+
+        if(status === 200)
+        {
+            this.setState({
+                venues: result
+            })
+
+        }
+        else {
+            console.log(result);
+        }
+    }
+
+    getChosenVenue = async () => {
+        const options = {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+        }
+
+        const request = new Request('/venues/' + this.state.chosenVenue._id, options);
+        const response = await fetch(request);
+        const status = await response.status;
+        const result = await response.json();
+
+        if(status === 200)
+        {
+            this.setState({
+                chosenVenue: {
+                    name: result.doc.name,
+                    url: 'http://localhost:3000/venues/' + this.state.chosenVenue._id
+                }
+            })
+
+        }
+        else {
+            console.log(result);
+        }
+    }
+
+    getCaterers = async () => {
+        const options = {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+        }
+
+        const request = new Request('/caterings', options);
+        const response = await fetch(request);
+        const status = await response.status;
+        const result = await response.json();
+
+        if(status === 200)
+        {
+            this.setState({
+                caterers: result
+            })
+        }
+        else {
+            console.log(result);
+        }
+    }
+
+    getChosenCaterer = async () => {
+        const options = {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+        }
+
+        const request = new Request('/caterings/' + this.state.chosenCaterer._id, options);
+        const response = await fetch(request);
+        const status = await response.status;
+        const result = await response.json();
+
+        if(status === 200)
+        {
+            this.setState({
+                chosenCaterer: {
+                    name: result.doc.name,
+                    url: 'http://localhost:3000/caterings/' + this.state.chosenCaterer._id
+                }
+            })
+
+        }
+        else {
+            console.log(result);
+        }
+    }
+
+    getEntertainment = async () => {
+        const options = {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+        }
+
+        const request = new Request('/entertainments', options);
+        const response = await fetch(request);
+        const status = await response.status;
+        const result = await response.json();
+
+        if(status === 200)
+        {
+            this.setState({
+                entertainment: result
+            })
+        }
+        else {
+            console.log(result);
+        }
+    }
+
+    getChosenEntertainment = async () => {
+        const options = {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+        }
+
+        const request = new Request('/entertainments/' + this.state.chosenEntertainment._id, options);
+        const response = await fetch(request);
+        const status = await response.status;
+        const result = await response.json();
+
+        if(status === 200)
+        {
+            this.setState({
+                chosenEntertainment: {
+                    name: result.doc.name,
+                    url: 'http://localhost:3000/entertainments/' + this.state.chosenEntertainment._id
+                }
+            })
+
+        }
+        else {
+            console.log(result);
+        }
+    }
+
+    getTransport = async () => {
+        const options = {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+        }
+
+        const request = new Request('/transports', options);
+        const response = await fetch(request);
+        const status = await response.status;
+        const result = await response.json();
+
+        if(status === 200)
+        {
+            this.setState({
+                transport: result
+            })
+        }
+        else {
+            console.log(result);
+        }
+    }
+
+    getChosenTransport = async () => {
+        const options = {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+        }
+
+        const request = new Request('/transports/' + this.state.chosenTransport._id, options);
+        const response = await fetch(request);
+        const status = await response.status;
+        const result = await response.json();
+
+        if(status === 200)
+        {
+            this.setState({
+                chosenTransport: {
+                    name: result.doc.name,
+                    url: 'http://localhost:3000/transports/' + this.state.chosenTransport._id
+                }
+            })
+
+        }
+        else {
+            console.log(result);
+        }
+    }
 
     onNavigateHome() {
         this.props.history.push("/user/partys");
@@ -67,15 +334,13 @@ class Venue extends Component {
     editTrigger() {
         this.setState({
             edit: true
-        })
-        this.setState(this.state);
+        }, this.setState(this.state))
     }
 
     cancelTrigger() {
         this.setState({
             edit: false
-        })
-        this.setState(this.state);
+        }, this.setState(this.state))
     }
 
     editParty = async (e) => {
@@ -143,11 +408,14 @@ class Venue extends Component {
         
         if(status === 200)
         {
-            var secondBody = [];
-
-            var userPartys = [];
-
-            secondBody[0] = { "propName": "partys", "value": userPartys }
+            var partys = this.state.user.partys;
+            
+            for (var i = partys.length - 1; i >= 0; --i) {
+                if (partys[i] === this.state._id) {
+                    console.log("test");
+                    partys.splice(i,1);
+                }
+            }
 
             const secondOptions = {
                 method: 'PATCH',
@@ -156,9 +424,9 @@ class Venue extends Component {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                   },
-                  body: JSON.stringify(secondBody)
+                  body: JSON.stringify(partys)
             }
-
+    
             const secondRequest = new Request("/user/" + this.state.user._id, secondOptions);
             const secondResponse = await fetch(secondRequest);
             const secondStatus = await secondResponse.status;
@@ -170,16 +438,16 @@ class Venue extends Component {
             }
             else {
                 console.log(secondResult);
-            }   
+            }
         }
-}
+    }
 
     inviteGuest = async (e) => {
         e.preventDefault();
 
         var userID = '';
         var userName = '';
-
+       
         const options = {
             method: 'GET',
             credentials: 'include',
@@ -218,19 +486,16 @@ class Venue extends Component {
 
             var invitedGuests = this.state.invitedGuests;
 
-            var toAdd = userID;
+            var toAdd = {
+                "_userID" : userID,
+                "userName": userName,
+                "response": "invited"
+            }
 
             invitedGuests.push(toAdd);
 
-            var invitedGuestsNames = this.state.invitedGuestsNames;
-
-            toAdd = userName;
-
-            invitedGuestsNames.push(toAdd);
-
             secondBody[0] = { "propName": "invitedGuests", "value": invitedGuests }
-            secondBody[1] = { "propName": "invitedGuestsNames", "value": invitedGuestsNames }
-
+            
             const secondOptions = {
                 method: 'PATCH',
                 credentials: 'include',
@@ -260,38 +525,75 @@ class Venue extends Component {
     render() {
 
         var invitedNames = [];
-        for (var i = 0; i < this.state.invitedGuestsNames.length; i++) {
-            invitedNames.push(
-                    <p key={i}> {this.state.invitedGuestsNames[i]} </p>
-                    
-            );
-        }
-
         var goingNames = [];
-        for (i = 0; i < this.state.confirmedGuestsNames.length; i++) {
-            goingNames.push(
-                    <p key={i}> {this.state.confirmedGuestsNames[i]} </p>
-                    
-            );
-        }
-
         var declinedNames = [];
-        for (i = 0; i < this.state.declinedGuestsNames.length; i++) {
-            declinedNames.push(
-                    <p key={i}> {this.state.declinedGuestsNames[i]} </p>
+        for (var i = 0; i < this.state.invitedGuests.length; i++) {
+            
+            if(this.state.invitedGuests[i].response === 'invited') {
+                invitedNames.push(
+                    <p key={i}> {this.state.invitedGuests[i].userName} </p>
                     
+                );
+            } 
+            else if(this.state.invitedGuests[i].response === 'going') {
+                goingNames.push(
+                    <p key={i}> {this.state.invitedGuests[i].userName} </p>
+                    
+                );
+            }
+            else if(this.state.invitedGuests[i].response === 'declined') {
+                declinedNames.push(
+                    <p key={i}> {this.state.invitedGuests[i].userName} </p>
+                    
+                );
+            }
+            
+        }
+
+        var venues = [];
+
+        for (i = 0; i < this.state.venues.count; i++)
+        {
+            venues.push(
+                <option key={i} value={this.state.venues.venues[i]._id}> {this.state.venues.venues[i].name}</option>
             );
         }
 
-        if (this.state.userlevel === 0)
+        var caterers = [];
+
+        for (i = 0; i < this.state.caterers.count; i++)
         {
-            console.log("test");
-            return (
-                <div id="headerLine">
-                    <h3 id="headererror">Please Login </h3>
-                </div>
+            caterers.push(
+                <option key={i} value={this.state.caterers.caterings[i]._id}> {this.state.caterers.caterings[i].name}</option>
             );
         }
+
+        var entertainment = [];
+
+        for (i = 0; i < this.state.entertainment.count; i++)
+        {
+            entertainment.push(
+                <option key={i} value={this.state.entertainment.entertainment[i]._id}> {this.state.entertainment.entertainment[i].name}</option>
+            );
+        }
+
+        var transport = [];
+
+        for (i = 0; i < this.state.transport.count; i++)
+        {
+            transport.push(
+                <option key={i} value={this.state.transport.transports[i]._id}> {this.state.transport.transports[i].name}</option>
+            );
+        }
+
+        // if (this.state.userlevel === 0)
+        // {
+        //     return (
+        //         <div id="headerLine">
+        //             <h3 id="headererror">Please Login </h3>
+        //         </div>
+        //     );
+        // }
 
         if(this.state.edit) {
             return (
@@ -319,6 +621,22 @@ class Venue extends Component {
                                     <label> End Date: </label>
                                     <input id="inputs" ref= "endDate" type="datetime-local" defaultValue={this.state.endDate} required />
                                     <br/> <br/>
+                                    <label> Venue:</label>
+                                    <select ref="venue" id ="inputs">
+                                        {venues}
+                                    </select>
+                                    <label> Caterers:</label>
+                                    <select ref="caterer" id ="inputs">
+                                        {caterers}
+                                    </select>
+                                    <label> Entertainment:</label>
+                                    <select ref="entertainment" id ="inputs">
+                                        {entertainment}
+                                    </select>
+                                    <label> Transport:</label>
+                                    <select ref="transport" id ="inputs">
+                                        {transport}
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -357,13 +675,13 @@ class Venue extends Component {
                         <div className="row">
                             <div id="left" className="col-sm-5">
                                 <div id="info">
-                                    <p> Venue: </p>
+                                    <p> Venue: <a id="links" href={this.state.chosenVenue.url}> {this.state.chosenVenue.name} </a> </p>
                                     <br/>
-                                    <p> Caterers: </p>
+                                    <p> Caterers: <a id="links" href={this.state.chosenCaterer.url}> {this.state.chosenCaterer.name} </a> </p>
                                     <br/>
-                                    <p> Entertainment: </p>
+                                    <p> Entertainment: <a id="links" href={this.state.chosenEntertainment.url}> {this.state.chosenEntertainment.name} </a> </p>
                                     <br/>
-                                    <p> Transport:  </p>
+                                    <p> Transport:  <a id="links" href={this.state.chosenTransport.url}> {this.state.chosenTransport.name} </a> </p>
                                     <br/> <br/> <br/> <br/> <br/> <br/>
                                 </div>
                             </div>
@@ -381,23 +699,17 @@ class Venue extends Component {
                                         </TabList>
                                         <TabPanel tabId="one">
                                             <div id="content">
-                                                <p>Tab 1 content</p>
+                                                {goingNames}  
                                             </div>
                                         </TabPanel>
                                         <TabPanel tabId="two">
                                             <div id="content">
-                                                <p>Tab 2 content</p>
-                                                <p>Tab 2 content</p>
-                                                <p>Tab 2 content</p>
-                                                <p>Tab 2 content</p>
-                                                <p>Tab 2 content</p>
-                                                <p>Tab 2 content</p>
-                                                <p>Tab 2 content</p>
+                                                {declinedNames}  
                                             </div>
                                         </TabPanel>
                                         <TabPanel tabId="three">
                                             <div id="content">
-                                                {invitedNames}
+                                                {invitedNames}  
                                             </div>
                                         </TabPanel>
                                     </Tabs>

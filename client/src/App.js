@@ -21,6 +21,8 @@ import Transport from './components/Transport';
 import Partys from './components/Partys';
 import Party from './components/Party';
 
+import Users from './components/Users';
+//import Party from './components/User';
 
 class App extends Component {
   
@@ -45,6 +47,7 @@ class App extends Component {
               <Route exact path="/transports/:transportID" component={Transport} />
               <Route exact path="/user/partys" component={Partys} />
               <Route exact path="/user/partys/:partyID" component={Party} />
+              <Route exact path="/user" component={Users} />
             </Switch>
           </Root>
         </div>

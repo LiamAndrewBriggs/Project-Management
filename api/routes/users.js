@@ -7,26 +7,29 @@ const User = require('../models/user');
 
 router.get('/', (req, res, next) => {
     
-    var user;
-
-    if(!req.session.user) {
-        user = "No User";
+    if (!req.session.user) {
+        return res.status(401).json({
+            message: "Please log in"
+        });  
     }
-    else {
-        user = req.session.user;
-       
+    else if (req.session.user.userLevel === 1)
+    {
         User.find()
-        .select('name email _id')
+        .select('name email')
         .exec()
         .then(docs => {
             const response = {
-                loggedIn: user,
+                loggedIn: req.session.user,
                 count: docs.length,
-                users: docs.map(doc => {
+                user: docs.map(doc => {
                     return {
                         name: doc.name,
                         email: doc.email,
-                        _id: doc._id
+                        _id: doc._id,
+                        request: {
+                            type:'GET',
+                            url: 'http://localhost:3000/user/' + doc._id 
+                        }
                     }
                 })
             };
