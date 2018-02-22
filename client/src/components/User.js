@@ -61,11 +61,8 @@ class User extends Component {
                 "propName": "email", "value": this.refs.email.value,
             }
 
-            if(this.refs.oldPassword.value !== '')
-            {
-                body[2] = {
+            body[2] = {
                     "propName": "password", "value": this.refs.newPassword.value,
-                }
             }
 
             const options = {
@@ -136,10 +133,6 @@ class User extends Component {
                                     <br/>
                                     <label> Email: </label>
                                     <input id="inputs" ref= "email" type="text" defaultValue={this.state.type} required />
-                                    <br/>
-                                    <br/>
-                                    <label> Old Password: </label>
-                                    <input id="inputs" ref= "oldPassword" type="password" placeholder="Old Password" />
                                     <br/>
                                     <br/>
                                     <label> New Password: </label>

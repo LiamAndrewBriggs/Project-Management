@@ -178,26 +178,48 @@ router.patch('/:userid', (req, res, next) => {
     if(user._id === userID || user.userLevel === 1)
     {
         const userEmail = user.email
-
-        User.find({email: req.body.email})
+        
+        User.find({email: req.body[1].value})
             .exec()
             .then(user =>{
-                if (user.length >= 1 && userEmail !== req.body.email) {
+                if (user.length >= 1 && userEmail !== req.body[1].value) {
                     return res.status(409).json({
                         message: 'Email exists'
                     });
                 }
-                
-                if(req.body.password) {
-                    bcrypt.compare(req.body.password, user.password, (err, response) => {
-                        if(err) {
-                            return res.status(401).json({
-                                message: "Invalid email or password"
+
+                var edit = req.body;
+                                             
+                if(req.body[2].value) {
+                    bcrypt.hash(req.body[2].value, 10, (err, hash) => {
+                        if (err) {
+                            return res.status(500).json({
+                                error: err,
+                                message: "hash"
+                            });
+                        }
+                        else {
+                            edit[2] = { "propName": 'password', "value": hash };
+
+                            const updateOps = {};
+                            for (const ops of edit) {
+                                updateOps[ops.propName] = ops.value;
+                            }
+                            User.update({ _id: userID }, { $set: updateOps })
+                                .exec()
+                                .then(result => {
+                                    res.send(result);
+                                })
+                                .catch(err => {
+                                    res.status(500).json({
+                                    error: err,
+                                    update: "hash2"
+                                    });
                             });
                         }
                     });
                 }
-                
+
                 const updateOps = {};
                 for (const ops of req.body) {
                     updateOps[ops.propName] = ops.value;
@@ -209,7 +231,8 @@ router.patch('/:userid', (req, res, next) => {
                     })
                     .catch(err => {
                         res.status(500).json({
-                        error: err
+                        error: err,
+                        update: "hash2"
                         });
                     });
             })

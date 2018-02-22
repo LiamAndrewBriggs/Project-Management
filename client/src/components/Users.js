@@ -51,7 +51,6 @@ class Users extends Component {
         for (var i = 0; i < this.state.count; i++) {
             rows.push(
                     <tr key={i}>
-                        <td> {this.state.userLevel} </td>
                         <td> {this.state.users[i].name} </td>
                         <td> {this.state.users[i].email} </td>
                         <td> <a id="tablelink" href={this.state.users[i].request.url}> To Users Page </a> </td>
@@ -70,7 +69,6 @@ class Users extends Component {
                 <table id="tables">
                     <thead>
                         <tr>
-                            <th>Users Level</th>
                             <th>Users Name</th>
                             <th>Users Email</th>
                             <th>More Info</th>
