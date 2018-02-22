@@ -20,6 +20,7 @@ import Transport from './components/Transport';
 
 import Partys from './components/Partys';
 import Party from './components/Party';
+import PartyInvites from './components/PartyInvites';
 
 import Users from './components/Users';
 import User from './components/User';
@@ -46,6 +47,7 @@ class App extends Component {
               <Route exact path="/transports" component={Transports} />
               <Route exact path="/transports/:transportID" component={Transport} />
               <Route exact path="/user/partys" component={Partys} />
+              <Route exact path="/user/partyinvites" component={PartyInvites} />
               <Route exact path="/user/partys/:partyID" component={Party} />
               <Route exact path="/user" component={Users} />
               <Route exact path="/user/:userID" component={User} />

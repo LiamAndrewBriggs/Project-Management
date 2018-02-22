@@ -42,6 +42,37 @@ router.get('/', (req, res, next) => {
                 })
             });
     }
+    else if (req.session.user.userLevel === 2)
+    {
+        User.find()
+        .select('name email invitedTo')
+        .exec()
+        .then(docs => {
+            const response = {
+                loggedIn: req.session.user,
+                count: docs.length,
+                user: docs.map(doc => {
+                    return {
+                        name: doc.name,
+                        email: doc.email,
+                        invitedTo: doc.invitedTo,
+                        _id: doc._id,
+                        request: {
+                            type:'GET',
+                            url: 'http://localhost:3000/user/' + doc._id 
+                        }
+                    }
+                })
+            };
+            res.send(response);
+        })
+        .catch(err => {
+                console.log(err)
+                res.status(500).json({
+                    error: err
+                })
+            });
+    }
 });
 
 router.get('/login', (req, res, next) => {
@@ -175,74 +206,94 @@ router.patch('/:userid', (req, res, next) => {
         user = req.session.user;
     }
 
-    if(user._id === userID || user.userLevel === 1)
+    if(req.body.length !== 1)
     {
-        const userEmail = user.email
-        
-        User.find({email: req.body[1].value})
-            .exec()
-            .then(user =>{
-                if (user.length >= 1 && userEmail !== req.body[1].value) {
-                    return res.status(409).json({
-                        message: 'Email exists'
-                    });
-                }
-
-                var edit = req.body;
-                                             
-                if(req.body[2].value) {
-                    bcrypt.hash(req.body[2].value, 10, (err, hash) => {
-                        if (err) {
-                            return res.status(500).json({
-                                error: err,
-                                message: "hash"
-                            });
-                        }
-                        else {
-                            edit[2] = { "propName": 'password', "value": hash };
-
-                            const updateOps = {};
-                            for (const ops of edit) {
-                                updateOps[ops.propName] = ops.value;
-                            }
-                            User.update({ _id: userID }, { $set: updateOps })
-                                .exec()
-                                .then(result => {
-                                    res.send(result);
-                                })
-                                .catch(err => {
-                                    res.status(500).json({
-                                    error: err,
-                                    update: "hash2"
-                                    });
-                            });
-                        }
-                    });
-                }
-
-                const updateOps = {};
-                for (const ops of req.body) {
-                    updateOps[ops.propName] = ops.value;
-                }
-                User.update({ _id: userID }, { $set: updateOps })
-                    .exec()
-                    .then(result => {
-                        res.send(result);
-                    })
-                    .catch(err => {
-                        res.status(500).json({
-                        error: err,
-                        update: "hash2"
+        if(user._id === userID || user.userLevel === 1)
+        {
+            const userEmail = user.email
+            
+            User.find({email: req.body[1].value})
+                .exec()
+                .then(user =>{
+                    if (user.length >= 1 && userEmail !== req.body[1].value) {
+                        return res.status(409).json({
+                            message: 'Email exists'
                         });
-                    });
+                    }
+
+                    var edit = req.body;
+                                                
+                    if(req.body[2].value) {
+                        bcrypt.hash(req.body[2].value, 10, (err, hash) => {
+                            if (err) {
+                                return res.status(500).json({
+                                    error: err,
+                                    message: "hash"
+                                });
+                            }
+                            else {
+                                edit[2] = { "propName": 'password', "value": hash };
+
+                                const updateOps = {};
+                                for (const ops of edit) {
+                                    updateOps[ops.propName] = ops.value;
+                                }
+                                User.update({ _id: userID }, { $set: updateOps })
+                                    .exec()
+                                    .then(result => {
+                                        res.send(result);
+                                    })
+                                    .catch(err => {
+                                        res.status(500).json({
+                                        error: err,
+                                        update: "hash2"
+                                        });
+                                });
+                            }
+                        });
+                    }
+
+                    const updateOps = {};
+                    for (const ops of req.body) {
+                        updateOps[ops.propName] = ops.value;
+                    }
+                    User.update({ _id: userID }, { $set: updateOps })
+                        .exec()
+                        .then(result => {
+                            res.send(result);
+                        })
+                        .catch(err => {
+                            res.status(500).json({
+                            error: err,
+                            update: "hash2"
+                            });
+                        });
+                })
+                .catch(err => {
+                    res.status(404).json({
+                        error: err
+                    });          
+                    
+                });
+        }  
+    }
+    else {
+        const updateOps = {};
+        for (const ops of req.body) {
+            updateOps[ops.propName] = ops.value;
+        }
+        User.update({ _id: userID }, { $set: updateOps })
+            .exec()
+            .then(result => {
+                res.send(result);
             })
             .catch(err => {
-                res.status(404).json({
-                    error: err
-                });          
-                
+                res.status(500).json({
+                error: err,
+                update: "hash2"
             });
-    }   
+        });
+    }
 });
 
 router.delete('/:userId', (req, res, next) => {

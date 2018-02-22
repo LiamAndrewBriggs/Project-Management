@@ -272,8 +272,6 @@ class Partys extends Component {
   
     render() {
 
-        console.log(this.state.user);
-
         var venues = [];
 
         for (var i = 0; i < this.state.venues.count; i++)
@@ -326,7 +324,7 @@ class Partys extends Component {
         {
             return (
                 <div id="headerLine">
-                    <h3 id="headererror">Please Login </h3>
+                    <h3 id="headererror">Please Wait Or Try Logging In </h3>
                 </div>
             );
         }
@@ -367,10 +365,10 @@ class Partys extends Component {
                                     <textarea id="areainputs" ref="description" type="text" placeholder="Description" required />
                                     <br/> <br/>
                                     <label> Start Date: </label>
-                                    <input id="inputs" ref="startDate" type="datetime-local" min={today} placeholder={today} required />
+                                    <input id="inputs" ref="startDate" type="datetime-local" min={today} max="3000-01-01T00:00" required />
                                     <br/> <br/>
                                     <label> End Date: </label>
-                                    <input id="inputs" ref="endDate" type="datetime-local" min={today} placeholder={today} required />
+                                    <input id="inputs" ref="endDate" type="datetime-local" min={today} max="3000-01-01T00:00" required />
                                     <br/> <br/>
                                     <label> Venue:</label>
                                     <select ref="venue" id ="inputs">
@@ -403,7 +401,6 @@ class Partys extends Component {
                 date = date.toUTCString();
                 rows.push(
                         <tr key={i}>
-                            <td> <img src={this.state.partys[i].image} height="150" width="300" alt={this.state.partys[i].name}/> </td>
                             <td> {this.state.partys[i].name} </td>
                             <td> {date} </td>
                             <td> <a id="tablelink" href={this.state.partys[i].request.url}> To Party Page </a> </td>
@@ -423,7 +420,6 @@ class Partys extends Component {
                 <table id="tables">
                     <thead>
                         <tr>
-                            <th>Party </th>
                             <th>Party Name</th>
                             <th>Event Date</th>
                             <th>More Info</th>

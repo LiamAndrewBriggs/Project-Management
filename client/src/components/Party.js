@@ -8,6 +8,7 @@ class Venue extends Component {
     state = {
         userlevel: '',
         _id: '',
+        ownerID: '',
         user: '',
         description: '',
         startDate: '',
@@ -55,6 +56,7 @@ class Venue extends Component {
                 userlevel: userLevel,
                 user: res.loggedIn,
                 _id: res.doc._id,
+                ownerID: res.doc.ownerID,
                 name: res.doc.name,
                 description: res.doc.description,
                 startDate: res.doc.startDate,
@@ -365,6 +367,22 @@ class Venue extends Component {
             "propName": "endDate", "value": this.refs.endDate.value,
         }  
 
+        body[4] = {
+            "propName": "venue", "value": this.refs.venue.value,
+        }  
+
+        body[1] = {
+            "propName": "catering", "value": this.refs.caterer.value,
+        }  
+
+        body[2] = {
+            "propName": "entertainment", "value": this.refs.entertainment.value,
+        }  
+
+        body[3] = {
+            "propName": "transport", "value": this.refs.transport.value,
+        } 
+
         const options = {
             method: 'PATCH',
             credentials: 'include',
@@ -408,37 +426,7 @@ class Venue extends Component {
         
         if(status === 200)
         {
-            var partys = this.state.user.partys;
-            
-            for (var i = partys.length - 1; i >= 0; --i) {
-                if (partys[i] === this.state._id) {
-                    console.log("test");
-                    partys.splice(i,1);
-                }
-            }
-
-            const secondOptions = {
-                method: 'PATCH',
-                credentials: 'include',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify(partys)
-            }
-    
-            const secondRequest = new Request("/user/" + this.state.user._id, secondOptions);
-            const secondResponse = await fetch(secondRequest);
-            const secondStatus = await secondResponse.status;
-            const secondResult = await secondResponse.json();
-    
-            if(secondStatus === 200)
-            {
-                this.props.history.push("/user/partys");
-            }
-            else {
-                console.log(secondResult);
-            }
+            this.props.history.push("/user/partys");
         }
     }
 
@@ -447,6 +435,7 @@ class Venue extends Component {
 
         var userID = '';
         var userName = '';
+        var invitedTo = '';
        
         const options = {
             method: 'GET',
@@ -465,16 +454,19 @@ class Venue extends Component {
         if(status === 200) {
             for(var i = 0; i < result.count; i++)
             {
-                if(this.refs.invite.value === result.users[i].email)
+                if(this.refs.invite.value === result.user[i].email)
                 {
-                    userID = result.users[i]._id;
-                    userName = result.users[i].name;
+                    userID = result.user[i]._id;
+                    userName = result.user[i].name;
+                    invitedTo = result.user[i].invitedTo;
                 }
             }
         }
         else {
             console.log(result);
         }
+
+        
 
         if(userID === '')
         {
@@ -489,7 +481,7 @@ class Venue extends Component {
             var toAdd = {
                 "_userID" : userID,
                 "userName": userName,
-                "response": "invited"
+                "response": "Invited"
             }
 
             invitedGuests.push(toAdd);
@@ -513,7 +505,46 @@ class Venue extends Component {
     
             if(secondStatus === 200)
             {
-                window.location.reload();
+                var thirdBody = [];
+
+                var guestInvite = [];
+                
+                guestInvite = invitedTo;
+
+                toAdd = {
+                    "partyID" : this.state._id,
+                    "name": this.state.name,
+                    "date": this.state.startDate,
+                    "response": "invited"
+                }
+
+                guestInvite.push(toAdd);
+
+                thirdBody[0] = { "propName": "invitedTo", "value": guestInvite }
+                
+                const thirdOptions = {
+                    method: 'PATCH',
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(thirdBody)
+                }
+
+                        
+                const thirdRequest = new Request("/user/" + userID, thirdOptions);
+                const thirdResponse = await fetch(thirdRequest);
+                const thirdStatus = await thirdResponse.status;
+                const thirdResult = await thirdResponse.json();
+        
+                if(thirdStatus === 200)
+                {
+                    window.location.reload();
+                }
+                else {
+                    console.log(thirdResult);
+                }
             }
             else {
                 console.log(secondResult);
@@ -586,14 +617,24 @@ class Venue extends Component {
             );
         }
 
-        // if (this.state.userlevel === 0)
-        // {
-        //     return (
-        //         <div id="headerLine">
-        //             <h3 id="headererror">Please Login </h3>
-        //         </div>
-        //     );
-        // }
+        if (this.state.userlevel === 0)
+        {
+            return (
+                <div id="headerLine">
+                    <h3 id="headererror">Please Wait Or Try Logging In </h3>
+                </div>
+            );
+        }
+
+        var buttons = '';
+
+        if(this.state.user._id === this.state.ownerID || this.state.userlevel === 1) {
+            buttons = <div id="adminButtons">
+                            <button id="deleteButton" type="button" onClick={() => this.cancelTrigger()} className="btn btn-primary">Cancel</button>
+                            <input id="editButton" className="btn btn-primary" type="submit" value="Save" />
+                        </div>
+        }
+
 
         if(this.state.edit) {
             return (
@@ -660,8 +701,7 @@ class Venue extends Component {
                         <h3> {this.state.name} </h3>
                         <div id="adminButtons">
                         <form onSubmit={this.deleteParty.bind(this)}>
-                            <button id="editButton" type="button" onClick={() => this.editTrigger()} className="btn btn-primary">Edit</button>
-                            <input id="deleteButton" className="btn btn-primary" type="submit" value="Delete" />
+                            {buttons}
                         </form>
                         </div>
                     </div>

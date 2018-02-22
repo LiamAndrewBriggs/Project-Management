@@ -9,6 +9,7 @@ const port = process.env.PORT || 5000;
 
 const venueRoutes = require('./api/routes/venues');
 const userPartyRoutes = require('./api/routes/userPartys');
+const partyInviteRoutes= require('./api/routes/partyInvites');
 const userRoutes = require('./api/routes/users');
 const cateringRoutes = require('./api/routes/caterings');
 const entertainmentRoutes = require('./api/routes/entertainments');
@@ -47,6 +48,7 @@ app.get('/home', (req, res) => {
 //Routes to handle requests
 app.use('/venues', venueRoutes);
 app.use('/user/partys', userPartyRoutes);
+app.use('/user/partyinvites', partyInviteRoutes);
 app.use('/user', userRoutes);
 app.use('/caterings', cateringRoutes);
 app.use('/entertainments', entertainmentRoutes);

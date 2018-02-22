@@ -52,7 +52,6 @@ router.get('/', (req, res, next) => {
                     '_id': { $in: docs.partys }
                 })
                 .select('name description startDate venue _id')
-                .populate('venue', 'name')
                 .exec()
                 .then(docss => {
                     const response = {
@@ -90,8 +89,13 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
+    var user = req.session.user;
+
+    console.log(req.session.user._id);
+
     const party = new Party({
         _id: mongoose.Types.ObjectId(),
+        ownerID: user._id,
         name: req.body.name,
         description: req.body.description,
         startDate: req.body.startDate,
