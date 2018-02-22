@@ -133,20 +133,59 @@ router.get('/logout', (req, res, next) => {
 
 router.patch('/:userid', (req, res, next) => {
     const userID = req.params.userid;
-    const updateOps = {};
-    for (const ops of req.body) {
-        updateOps[ops.propName] = ops.value;
+    
+    if(!req.session.user) {
+        user = "No User";
     }
-    User.update({ _id: userID }, { $set: updateOps })
-    .exec()
-    .then(result => {
-      res.send(result);
-    })
-    .catch(err => {
-      res.status(500).json({
-        error: err
-      });
-    });
+    else {
+        user = req.session.user;
+    }
+
+    if(user._id === userID || user.userLevel === 1)
+    {
+        const userEmail = user.email
+
+        User.find({email: req.body.email})
+            .exec()
+            .then(user =>{
+                if (user.length >= 1 && userEmail !== req.body.email) {
+                    return res.status(409).json({
+                        message: 'Email exists'
+                    });
+                }
+                
+                if(req.body.password) {
+                    bcrypt.compare(req.body.password, user.password, (err, response) => {
+                        if(err) {
+                            return res.status(401).json({
+                                message: "Invalid email or password"
+                            });
+                        }
+                    });
+                }
+                
+                const updateOps = {};
+                for (const ops of req.body) {
+                    updateOps[ops.propName] = ops.value;
+                }
+                User.update({ _id: userID }, { $set: updateOps })
+                    .exec()
+                    .then(result => {
+                        res.send(result);
+                    })
+                    .catch(err => {
+                        res.status(500).json({
+                        error: err
+                        });
+                    });
+            })
+            .catch(err => {
+                res.status(404).json({
+                    error: err
+                });          
+                
+            });
+    }   
 });
 
 router.delete('/:userId', (req, res, next) => {

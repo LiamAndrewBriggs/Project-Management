@@ -22,7 +22,7 @@ import Partys from './components/Partys';
 import Party from './components/Party';
 
 import Users from './components/Users';
-//import Party from './components/User';
+import User from './components/User';
 
 class App extends Component {
   
@@ -34,8 +34,8 @@ class App extends Component {
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/home" component={Home} />
-              <Route exact path="/user/login" component={LogIn} />
               <Route exact path="/user/logout" component={Home} />
+              <Route exact path="/user/login" component={LogIn} />
               <Route exact path="/user/signup" component={SignUp} />
               <Route exact path="/venues" component={Venues} />
               <Route exact path="/venues/:venueID" component={Venue} />
@@ -48,6 +48,7 @@ class App extends Component {
               <Route exact path="/user/partys" component={Partys} />
               <Route exact path="/user/partys/:partyID" component={Party} />
               <Route exact path="/user" component={Users} />
+              <Route exact path="/user/:userID" component={User} />
             </Switch>
           </Root>
         </div>

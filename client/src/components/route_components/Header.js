@@ -13,9 +13,11 @@ const Header = (props) => {
             </ul>
     }
     else {
+        var userLink = "/user/" + props.user._id;
+
         button =
             <ul className="nav navbar-nav navbar-right">
-                <li><a href="/user"><span className="glyphicon glyphicon-user"></span> Welcome {props.user.name}</a></li>
+                <li><a href={userLink}><span className="glyphicon glyphicon-user"></span> Welcome {props.user.name}</a></li>
                 <li><a href="/user/logout"><span className="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
     }
