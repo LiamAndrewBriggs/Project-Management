@@ -22,6 +22,7 @@ class Signup extends Component {
                 var data = {
                     email: this.refs.email.value,
                     password: this.refs.password.value,
+                    //userLevel 1 is for admins
                     userLevel: 2,
                     name: this.refs.name.value
                 }

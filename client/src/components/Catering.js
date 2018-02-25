@@ -54,21 +54,21 @@ class Venue extends Component {
     };
 
     onNavigateHome() {
-        this.props.history.push("/venues");
+        this.props.history.push("/caterings");
     }
 
+    //swap the views from viewing the object to editing it
     editTrigger() {
         this.setState({
             edit: true
-        })
-        this.setState(this.state);
+        }, this.setState(this.state))
     }
 
+    //swap the views back with on changes
     cancelTrigger() {
         this.setState({
             edit: false
-        })
-        this.setState(this.state);
+        }, this.setState(this.state))
     }
 
     editVenue = async (e) => {

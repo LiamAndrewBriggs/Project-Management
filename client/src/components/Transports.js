@@ -153,7 +153,7 @@ class Transports extends Component {
                                     <input id="inputs" ref= "website" type="text" placeholder="Website" required />
                                     <br/> <br/>
                                     <label> Minumum Car Size: </label>
-                                    <input id="inputs" ref= "mincarsize" type="number" placeholder="Maximum Car Size" required />
+                                    <input id="inputs" ref= "mincarsize" type="number" placeholder="Minumum Car Size" required />
                                     <label> Maximum Car Size: </label>
                                     <input id="inputs" ref= "maxcarsize" type="number" placeholder="Maximum Car Size" required />
                                     <br/> <br/>

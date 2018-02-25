@@ -331,6 +331,8 @@ class Partys extends Component {
 
         if(this.state.create) {
 
+            //Source to get todays date
+            //https://stackoverflow.com/questions/32378590/set-date-input-fields-max-date-to-today
             var today = new Date();
             var dd = today.getDate();
             var mm = today.getMonth()+1; 

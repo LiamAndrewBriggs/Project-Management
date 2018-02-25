@@ -15,7 +15,7 @@ router.get('/', (req, res, next) => {
     else if (req.session.user.userLevel === 1)
     {
         User.find()
-        .select('name email')
+        .select('name email invitedTo')
         .exec()
         .then(docs => {
             const response = {
@@ -25,6 +25,7 @@ router.get('/', (req, res, next) => {
                     return {
                         name: doc.name,
                         email: doc.email,
+                        invitedTo: doc.invitedTo,
                         _id: doc._id,
                         request: {
                             type:'GET',
@@ -36,7 +37,6 @@ router.get('/', (req, res, next) => {
             res.send(response);
         })
         .catch(err => {
-                console.log(err)
                 res.status(500).json({
                     error: err
                 })
@@ -67,7 +67,6 @@ router.get('/', (req, res, next) => {
             res.send(response);
         })
         .catch(err => {
-                console.log(err)
                 res.status(500).json({
                     error: err
                 })
@@ -188,7 +187,6 @@ router.get('/:userid', (req, res, next) => {
             }
         })
         .catch(err => {
-            console.log(err)
             res.status(404).json({
                 error: err
             });
@@ -222,8 +220,8 @@ router.patch('/:userid', (req, res, next) => {
                     }
 
                     var edit = req.body;
-                                                
-                    if(req.body[2].value) {
+
+                    if(req.body[2].value !== '') {
                         bcrypt.hash(req.body[2].value, 10, (err, hash) => {
                             if (err) {
                                 return res.status(500).json({
@@ -251,6 +249,9 @@ router.patch('/:userid', (req, res, next) => {
                                 });
                             }
                         });
+                    }
+                    else {
+                        edit.splice(2,1);
                     }
 
                     const updateOps = {};

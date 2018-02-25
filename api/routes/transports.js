@@ -37,7 +37,7 @@ router.get('/', (req, res, next) => {
         res.send(response);
     })
     .catch(err => {
-            console.log(err)
+
             res.status(500).json({
                 error: err
             })
@@ -101,7 +101,6 @@ router.get('/:id', (req, res, next) => {
             }
         })
         .catch(err => {
-            console.log(err)
             res.status(404).json({
                 error: err
             });
@@ -117,11 +116,9 @@ router.patch('/:id', (req, res, next) => {
     Transport.update({ _id: transportID }, { $set: updateOps })
     .exec()
     .then(result => {
-      console.log(result);
       res.send(result);
     })
     .catch(err => {
-      console.log(err);
       res.status(500).json({
         error: err
       });

@@ -121,6 +121,8 @@ class Venues extends Component {
                        </div>;
         }  
 
+        //Source to help set up forms
+        //https://www.w3schools.com/css/css_form.asp
         if(this.state.create) {
             return (
                 <div id="singleBody">

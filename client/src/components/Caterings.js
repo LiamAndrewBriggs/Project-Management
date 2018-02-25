@@ -48,7 +48,7 @@ class Caterings extends Component {
             caterings: this.state.caterings,
             userLevel: this.state.userLevel,
             create: false
-        })
+        }, this.setState(this.state))
     }
 
     createTrigger() {
@@ -57,7 +57,7 @@ class Caterings extends Component {
             caterings: this.state.caterings,
             userLevel: this.state.userLevel,
             create: true
-        })
+        }, this.setState(this.state))
     }
 
     createVenue = async (e) => {
@@ -102,7 +102,6 @@ class Caterings extends Component {
 
     render() {
 
-        console.log(this.state.caterings);
         var rows = [];
         for (var i = 0; i < this.state.count; i++) {
             rows.push(

@@ -49,8 +49,6 @@ class PartyInvites extends Component {
         
         e.preventDefault();
 
-        console.log(this.refs.responses.value);
-
         var body =  [];
 
         var toChange = this.state.user;
@@ -58,8 +56,6 @@ class PartyInvites extends Component {
         toChange.invitedTo[this.state.inFocus].response = this.refs.responses.value;
 
         body[0] = { "propName": "invitedTo", "value": toChange.invitedTo }
-
-        console.log(body);
 
         const options = {
             method: 'PATCH',
@@ -148,8 +144,6 @@ class PartyInvites extends Component {
 
     render() {
 
-        console.log(this.state);
-
         if (this.state.userLevel === 0)
         {
             return (
@@ -159,6 +153,8 @@ class PartyInvites extends Component {
             );
         }
 
+        //Source to help me produce several table rows based on mongoose queries
+        //https://stackoverflow.com/questions/22876978/loop-inside-react-jsx?page=1&tab=votes#tab-top
         var rows = [];
             for (var i = 0; i < this.state.partys.length; i++) {
                 var url = "http://localhost:3000/user/partys/" + this.state.partys[i].partyID;
@@ -205,8 +201,8 @@ class PartyInvites extends Component {
                         <div id="headerLine">
                             <h3> {this.state.partys[this.state.inFocus].name} </h3>
                         </div>
-                        <form onSubmit={this.editResponse.bind(this)}>
-                            <label> Responses:</label>
+                        <form id="responseForm" onSubmit={this.editResponse.bind(this)}>
+                            <label> Response:</label>
                                 <select ref="responses" id ="inputs" defaultValue={this.state.partys[this.state.inFocus].response}>
                                     <option value="Going">Going</option>
                                     <option value="Declined">Declined</option>

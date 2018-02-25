@@ -61,15 +61,13 @@ class Transport extends Component {
     editTrigger() {
         this.setState({
             edit: true
-        })
-        this.setState(this.state);
+        }, this.setState(this.state))
     }
 
     cancelTrigger() {
         this.setState({
             edit: false
-        })
-        this.setState(this.state);
+        }, this.setState(this.state))
     }
 
     editVenue = async (e) => {

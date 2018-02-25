@@ -37,7 +37,6 @@ router.get('/', (req, res, next) => {
             res.send(response);
         })
         .catch(err => {
-                console.log(err)
                 res.status(500).json({
                     error: err
                 })
@@ -73,14 +72,12 @@ router.get('/', (req, res, next) => {
                     res.send(response);
                 })
                 .catch(err => {
-                        console.log(err)
                         res.status(500).json({
                             error: err
                         })
                     });
             })
             .catch(err => {
-                console.log(err)
                 res.status(500).json({
                     error: err
                 })
@@ -90,8 +87,6 @@ router.get('/', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
     var user = req.session.user;
-
-    console.log(req.session.user._id);
 
     const party = new Party({
         _id: mongoose.Types.ObjectId(),
@@ -124,7 +119,6 @@ router.post('/', (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err)
             res.status(500).json({
                 error: err
             })
@@ -155,7 +149,6 @@ router.get('/:partyid', (req, res, next) => {
             }
         })
         .catch(err => {
-            console.log(err)
             res.status(404).json({
                 error: err
             });
@@ -174,7 +167,6 @@ router.patch('/:partyid', (req, res, next) => {
       res.send(result);
     })
     .catch(err => {
-      console.log(err);
       res.status(500).json({
         error: err
       });

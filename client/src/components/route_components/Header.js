@@ -1,3 +1,5 @@
+//Sourse to help set up bootstrap nav bar
+//https://www.w3schools.com/bootstrap/bootstrap_navbar.asp
 import React from 'react';
 import { NavLink } from "react-router-dom";
 import '../../styles/header.css';

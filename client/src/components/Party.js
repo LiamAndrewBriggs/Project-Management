@@ -333,18 +333,20 @@ class Venue extends Component {
         this.props.history.push("/user/partys");
     }
 
+    //swap the views from viewing the object to editing it
     editTrigger() {
         this.setState({
             edit: true
         }, this.setState(this.state))
     }
 
+    //swap the views back with on changes
     cancelTrigger() {
         this.setState({
             edit: false
         }, this.setState(this.state))
     }
-
+    
     editParty = async (e) => {
 
         e.preventDefault();
@@ -459,6 +461,7 @@ class Venue extends Component {
                     userID = result.user[i]._id;
                     userName = result.user[i].name;
                     invitedTo = result.user[i].invitedTo;
+                    console.log(result.user[i]);
                 }
             }
         }
@@ -488,8 +491,6 @@ class Venue extends Component {
 
             secondBody[0] = { "propName": "invitedGuests", "value": invitedGuests }
 
-            console.log(secondBody);
-            
             const secondOptions = {
                 method: 'PATCH',
                 credentials: 'include',
@@ -510,8 +511,12 @@ class Venue extends Component {
                 var thirdBody = [];
 
                 var guestInvite = [];
+
+                console.log(invitedTo);
                 
                 guestInvite = invitedTo;
+
+                console.log()
 
                 toAdd = {
                     "partyID" : this.state._id,
@@ -696,6 +701,8 @@ class Venue extends Component {
             endDate = endDate.toUTCString();
             endDate = endDate.replace('GMT', '');
 
+            //Source to help set up tabs 
+            //https://www.npmjs.com/package/react-web-tabs
             return (
                 <div id="singleBody">
                     <div id="headerLine">
