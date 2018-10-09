@@ -18,6 +18,7 @@ router.get('/', (req, res, next) => {
     .select('name userName _id foodType image')
     .exec()
     .then(docs => {
+        console.log(docs);
         const response = {
             loggedIn: user,
             count: docs.length,

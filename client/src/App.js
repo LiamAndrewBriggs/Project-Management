@@ -51,6 +51,7 @@ class App extends Component {
               <Route exact path="/user/partys/:partyID" component={Party} />
               <Route exact path="/user" component={Users} />
               <Route exact path="/user/:userID" component={User} />
+              <Route component={Home} />
             </Switch>
           </Root>
         </div>

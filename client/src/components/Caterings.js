@@ -101,8 +101,6 @@ class Caterings extends Component {
 
 
     render() {
-
-        console.log(this.state.caterings);
         var rows = [];
         for (var i = 0; i < this.state.count; i++) {
             rows.push(

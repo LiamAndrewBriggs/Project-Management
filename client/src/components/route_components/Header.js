@@ -26,7 +26,7 @@ const Header = (props) => {
         <nav className="navbar navbar-inverse">
             <div className="container-fluid">
                 <div className="navbar-header">
-                    <a className="navbar-brand" href="/home">Party Management</a>
+                    <a className="navbar-brand" href="/home">Sky Betting & Gaming</a>
                 </div>
                 <ul className="nav navbar-nav">
                     <li><NavLink  to={"/home"} activeStyle={{color: "red"}}>Home</NavLink ></li>

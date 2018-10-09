@@ -15,7 +15,7 @@ const cateringRoutes = require('./api/routes/caterings');
 const entertainmentRoutes = require('./api/routes/entertainments');
 const transportRoutes = require('./api/routes/transports');
 
-mongoose.connect('mongodb://LiamTwiggy:University13@project-management-shard-00-00-oeb62.mongodb.net:27017,project-management-shard-00-01-oeb62.mongodb.net:27017,project-management-shard-00-02-oeb62.mongodb.net:27017/test?ssl=true&replicaSet=project-management-shard-0&authSource=admin');
+mongoose.connect('mongodb://localhost:27017/ProjectManagment', { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
 
 app.use(cors({credentials: true, origin: true}));
