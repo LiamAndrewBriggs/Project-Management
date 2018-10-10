@@ -22,7 +22,6 @@ class Signup extends Component {
                 var data = {
                     email: this.refs.email.value,
                     password: this.refs.password.value,
-                    userLevel: 2,
                     name: this.refs.name.value
                 }
 
@@ -70,7 +69,7 @@ class Signup extends Component {
                             <input id="inputfield" ref= "name" type="text" placeholder="Full Name" required />
                             <p id="errortext">{this.state.nameerror}</p>
                             <p id="signupp"> Email </p>
-                            <input id="inputfield" ref= "email" type="text" placeholder="Email" required />
+                            <input id="inputfield" ref= "email" type="email" placeholder="Email" required />
                             <p id="errortext">{this.state.emailerror}</p>
                             <p id="signupp"> Password </p>
                             <input type="password" id="inputfield" ref="password" placeholder="Password" required />

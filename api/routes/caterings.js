@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 
-const Catering = require('../models/catering');
+const Catering = require('../models/task');
 
 router.get('/', (req, res, next) => {
     var user;

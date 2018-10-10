@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 
-const Party = require('../models/party');
+const Party = require('../models/project');
 const User = require('../models/user');
 
 router.get('/', (req, res, next) => {

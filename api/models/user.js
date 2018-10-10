@@ -10,13 +10,11 @@ const userSchema = mongoose.Schema({
     },
     password: { type: String, required: true },
     name: { type: String, required: true },
-    userLevel: { type: Number, required: true },
-    partys: [{ type: mongoose.Schema.Types.ObjectId, ref:  'Party' }],
-    invitedTo: [{
-        partyID:  { type: mongoose.Schema.Types.ObjectId, ref:  'Party', required: true },
-        name: { type: String, required: true },
-        response: { type: String, required: true },
-        date: {type: Date, required: true }
+    userProjects: [{ type: mongoose.Schema.Types.ObjectId, ref:  'Project' }],
+    projects: [{
+        projectID:  { type: mongoose.Schema.Types.ObjectId, ref:  'Project', required: true },
+        projectLevel: { type: Number, required: true },
+ 
     }]
 });
 
