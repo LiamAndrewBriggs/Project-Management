@@ -10,7 +10,7 @@ suite("Route checks", () => {
         .expect(/Everything you need to plan a party, all in one place/)
     })
     test('Should not load projects as need to log in', () => {
-        request(frm).get("/user/partys")
+        request(frm).get("/user/dashboard")
         .expect(401)
     })
     test('Should not be able to find venue as does not exist', () => {

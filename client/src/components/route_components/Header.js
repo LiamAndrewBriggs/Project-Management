@@ -29,7 +29,7 @@ const Header = (props) => {
                     <a className="navbar-brand" href="/home">Sky Betting & Gaming</a>
                 </div>
                 <ul className="nav navbar-nav">
-                    <li><NavLink  to={"/user/partys"} activeStyle={{color: "red"}}>Your Dashboard</NavLink></li>
+                    <li><NavLink  to={"/user/dashboard"} activeStyle={{color: "red"}}>Your Dashboard</NavLink></li>
                 </ul>
                 {button}
             </div>

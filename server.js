@@ -7,7 +7,7 @@ var cors = require('cors');
 
 const port = process.env.PORT || 5000;
 
-const userPartyRoutes = require('./api/routes/userPartys');
+const userProjectRoutes = require('./api/routes/userProjects');
 const partyInviteRoutes= require('./api/routes/partyInvites');
 const userRoutes = require('./api/routes/users');
 
@@ -42,7 +42,7 @@ app.get('/', (req, res) => {
 });
 
 //Routes to handle requests
-app.use('/user/partys', userPartyRoutes);
+app.use('/user/dashboard', userProjectRoutes);
 app.use('/user/partyinvites', partyInviteRoutes);
 app.use('/user', userRoutes);
 

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 
-const Party = require('../models/project');
+const Project = require('../models/project');
 const User = require('../models/user');
 
 router.get('/', (req, res, next) => {
@@ -12,44 +12,13 @@ router.get('/', (req, res, next) => {
             message: "Please log in"
         });  
     }
-    else if (req.session.user.userLevel === 1)
-    {
-        Party.find()
-        .select('name description startDate venue _id')
-        .exec()
-        .then(docs => {
-            const response = {
-                loggedIn: req.session.user,
-                count: docs.length,
-                partys: docs.map(doc => {
-                    return {
-                        name: doc.name,
-                        description: doc.description,
-                        date: doc.startDate,
-                        _id: doc._id,
-                        request: {
-                            type:'GET',
-                            url: 'http://localhost:3000/user/partys/' + doc._id 
-                        }
-                    }
-                })
-            };
-            res.send(response);
-        })
-        .catch(err => {
-                console.log(err)
-                res.status(500).json({
-                    error: err
-                })
-            });
-    }
     else {
         User.findById(req.session.user._id)
-        .select('partys')
+        .select('userProjects')
         .exec()
         .then(docs => {
-             Party.find({
-                    '_id': { $in: docs.partys }
+             Project.find({
+                    '_id': { $in: docs.userProjects }
                 })
                 .select('name description startDate venue _id')
                 .exec()
@@ -57,7 +26,7 @@ router.get('/', (req, res, next) => {
                     const response = {
                         loggedIn: req.session.user,
                         count: docss.length,
-                        partys: docss.map(doc => {
+                        Projects: docss.map(doc => {
                             return {
                                 name: doc.name,
                                 description: doc.description,
@@ -65,7 +34,7 @@ router.get('/', (req, res, next) => {
                                 _id: doc._id,
                                 request: {
                                     type:'GET',
-                                    url: 'http://localhost:3000/user/partys/' + doc._id 
+                                    url: 'http://localhost:3000/user/dashboard/project/' + doc._id 
                                 }
                             }
                         })
@@ -93,24 +62,20 @@ router.post('/', (req, res, next) => {
 
     console.log(req.session.user._id);
 
-    const party = new Party({
+    const project = new Project({
         _id: mongoose.Types.ObjectId(),
         ownerID: user._id,
         name: req.body.name,
         description: req.body.description,
         startDate: req.body.startDate,
         endDate: req.body.endDate,
-        venue: req.body.venue,
-        catering: req.body.catering,
-        entertainment: req.body.entertainment,
-        transport: req.body.transport
     });
 
-    party.save()
+    project.save()
         .then(result => {
             res.send({ 
-                express: 'Created Party',
-                Party: {
+                express: 'Created Project',
+                Project: {
                     name: result.name,
                     description: result.description,
                     startDate: result.startDate,
@@ -118,7 +83,7 @@ router.post('/', (req, res, next) => {
                     _id: result._id,
                     request: {
                         type:'GET',
-                        url: 'http://localhost:3000/user/partys/' + result._id 
+                        url: 'http://localhost:3000/user/dashboard/project/' + result._id 
                     }
                 }
             });
@@ -131,7 +96,7 @@ router.post('/', (req, res, next) => {
         });
 });
 
-router.get('/:partyid', (req, res, next) => {
+router.get('/project/:Projectid', (req, res, next) => {
     var user;
 
     if(!req.session.user) {
@@ -141,8 +106,8 @@ router.get('/:partyid', (req, res, next) => {
         user = req.session.user;
     }
     
-    const partyID = req.params.partyid;
-    Party.findById(partyID)
+    const ProjectID = req.params.Projectid;
+    Project.findById(ProjectID)
         .exec()
         .then(doc => {
             if(doc) {
@@ -150,7 +115,7 @@ router.get('/:partyid', (req, res, next) => {
             }
             else {
                 res.status(404).json({
-                    message: "Party not found"
+                    message: "Project not found"
                 });
             }
         })
@@ -162,13 +127,13 @@ router.get('/:partyid', (req, res, next) => {
         });
 });
 
-router.patch('/:partyid', (req, res, next) => {
-    const partyID = req.params.partyid;
+router.put('/project/:Projectid', (req, res, next) => {
+    const ProjectID = req.params.Projectid;
     const updateOps = {};
     for (const ops of req.body) {
         updateOps[ops.propName] = ops.value;
     }
-    Party.update({ _id: partyID }, { $set: updateOps })
+    Project.update({ _id: ProjectID }, { $set: updateOps })
     .exec()
     .then(result => {
       res.send(result);
@@ -181,13 +146,13 @@ router.patch('/:partyid', (req, res, next) => {
     });
 });
 
-router.delete('/:partyid', (req, res, next) => {
-    const partyID = req.params.partyid;
-    Party.remove({ _id: partyID })
+router.delete('/project/:Projectid', (req, res, next) => {
+    const ProjectID = req.params.Projectid;
+    Project.remove({ _id: ProjectID })
         .exec()
         .then(result => {
             res.send(result => {
-                message: 'Party Deleted'
+                message: 'Project Deleted'
             });
         })
         .catch(err => {

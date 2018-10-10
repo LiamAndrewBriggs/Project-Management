@@ -196,7 +196,7 @@ router.get('/:userid', (req, res, next) => {
     }
 });
 
-router.patch('/:userid', (req, res, next) => {
+router.put('/:userid', (req, res, next) => {
     const userID = req.params.userid;
     
     if(!req.session.user) {
@@ -257,6 +257,8 @@ router.patch('/:userid', (req, res, next) => {
                     for (const ops of req.body) {
                         updateOps[ops.propName] = ops.value;
                     }
+
+                    console.log(updateOps['project']);
                     User.update({ _id: userID }, { $set: updateOps })
                         .exec()
                         .then(result => {

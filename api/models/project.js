@@ -7,10 +7,9 @@ const projectSchema = mongoose.Schema({
     description: { type: String, required: true },
     startDate: { type: String, required: true },
     endDate: { type: String, required: true },
-    invitedGuests: [{
+    projectTeam: [{
         _userID:  { type: mongoose.Schema.Types.ObjectId, ref:  'User'},
         userName: { type: String, required: true },
-        response: { type: String, required: true }
     }]
 });
 

@@ -33,7 +33,7 @@ class LogIn extends Component {
         
         if(status === 200)
         {
-            this.props.history.push("/user/partys");
+            this.props.history.push("/user/dashboard");
         }
         else {
             this.state.error = body.message;
