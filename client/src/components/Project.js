@@ -4,7 +4,7 @@ import '../styles/singleElement.css';
 import '../styles/party.css';
 import 'react-web-tabs/dist/react-web-tabs.css';
 
-class Venue extends Component {
+class Project extends Component {
     state = {
         userlevel: '',
         _id: '',
@@ -27,7 +27,6 @@ class Venue extends Component {
                 else {
                     userLevel = res.loggedIn.userLevel;
                 }
-                console.log(res.doc)
 
                 this.setState({
                     userlevel: userLevel,
@@ -164,7 +163,7 @@ class Venue extends Component {
 
         var userID = '';
         var userName = '';
-        var invitedTo = '';
+        var projectInvite = '';
 
         const options = {
             method: 'GET',
@@ -185,15 +184,13 @@ class Venue extends Component {
                 if (this.refs.invite.value === result.user[i].email) {
                     userID = result.user[i]._id;
                     userName = result.user[i].name;
-                    invitedTo = result.user[i].invitedTo;
+                    projectInvite = result.user[i].projects;
                 }
             }
         }
         else {
             console.log(result);
         }
-
-
 
         if (userID === '') {
             this.refs.invite.value = "Email is invalid"
@@ -203,10 +200,11 @@ class Venue extends Component {
 
             var projectTeam = this.state.projectTeam;
 
+            console.log(projectTeam);
+
             var toAdd = {
                 "_userID": userID,
-                "userName": userName,
-                "response": "Invited"
+                "userName": userName
             }
 
             projectTeam.push(toAdd);
@@ -216,7 +214,7 @@ class Venue extends Component {
             console.log(secondBody);
 
             const secondOptions = {
-                method: 'PATCH',
+                method: 'PUT',
                 credentials: 'include',
                 headers: {
                     'Accept': 'application/json',
@@ -225,31 +223,29 @@ class Venue extends Component {
                 body: JSON.stringify(secondBody)
             }
 
-            const secondRequest = new Request("/user/partys/" + this.state._id, secondOptions);
+            const secondRequest = new Request("/user/dashboard/project/" + this.state._id, secondOptions);
             const secondResponse = await fetch(secondRequest);
             const secondStatus = await secondResponse.status;
             const secondResult = await secondResponse.json();
 
             if (secondStatus === 200) {
+
                 var thirdBody = [];
 
-                var guestInvite = [];
+                var teamInvite = [];
 
-                guestInvite = invitedTo;
+                teamInvite = projectInvite;
 
                 toAdd = {
-                    "partyID": this.state._id,
-                    "name": this.state.name,
-                    "date": this.state.startDate,
-                    "response": "Invited"
+                    "projectID": this.state._id,
                 }
 
-                guestInvite.push(toAdd);
+                teamInvite.push(toAdd);
 
-                thirdBody[0] = { "propName": "invitedTo", "value": guestInvite }
+                thirdBody[0] = { "propName": "projects", "value": teamInvite }
 
                 const thirdOptions = {
-                    method: 'PATCH',
+                    method: 'PUT',
                     credentials: 'include',
                     headers: {
                         'Accept': 'application/json',
@@ -281,6 +277,8 @@ class Venue extends Component {
     render() {
 
         var teamMembers = [];
+
+        console.log(this.state.projectTeam);
 
         for (var i = 0; i < this.state.projectTeam.length; i++) {
 
@@ -395,4 +393,4 @@ class Venue extends Component {
     }
 }
 
-export default Venue;
+export default Project;

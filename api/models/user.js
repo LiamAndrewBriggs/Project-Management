@@ -12,10 +12,8 @@ const userSchema = mongoose.Schema({
     name: { type: String, required: true },
     userProjects: [{ type: mongoose.Schema.Types.ObjectId, ref:  'Project' }],
     projects: [{
-        projectID:  { type: mongoose.Schema.Types.ObjectId, ref:  'Project', required: true },
-        projectLevel: { type: Number, required: true },
- 
-    }]
+        projectID:  { type: mongoose.Schema.Types.ObjectId, ref:  'Project', required: true }
+     }]
 });
 
 module.exports = mongoose.model('User', userSchema);

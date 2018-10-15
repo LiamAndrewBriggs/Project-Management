@@ -24,8 +24,6 @@ router.get('/', (req, res, next) => {
                 invitedTo: docs.invitedTo
             }
 
-
-
                 res.send(response);
                 })
                 .catch(err => {

@@ -69,12 +69,12 @@ class Signup extends Component {
                             <input id="inputfield" ref= "name" type="text" placeholder="Full Name" required />
                             <p id="errortext">{this.state.nameerror}</p>
                             <p id="signupp"> Email </p>
-                            <input id="inputfield" ref= "email" type="email" placeholder="Email" required />
+                            <input id="emailfield" ref= "email" type="email" placeholder="Email" required />
                             <p id="errortext">{this.state.emailerror}</p>
                             <p id="signupp"> Password </p>
-                            <input type="password" id="inputfield" ref="password" placeholder="Password" required />
+                            <input type="password" id="passwordfield" ref="password" placeholder="Password" required />
                             <p id="signupp"> Confirm Password </p>
-                            <input type="password" id="inputfield" ref="confirmpassword" placeholder="Confirm Password" required />
+                            <input type="password" id="confirmfield" ref="confirmpassword" placeholder="Confirm Password" required />
                             <br/>
                             <p id="errortext">{this.state.passworderror}</p>
                             <input id="signupbutton" className="btn btn-primary" type="submit" value="Sign Up" />

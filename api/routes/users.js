@@ -12,10 +12,10 @@ router.get('/', (req, res, next) => {
             message: "Please log in"
         });  
     }
-    else if (req.session.user.userLevel === 1)
+    else
     {
         User.find()
-        .select('name email')
+        .select('name email projects')
         .exec()
         .then(docs => {
             const response = {
@@ -25,37 +25,7 @@ router.get('/', (req, res, next) => {
                     return {
                         name: doc.name,
                         email: doc.email,
-                        _id: doc._id,
-                        request: {
-                            type:'GET',
-                            url: 'http://localhost:3000/user/' + doc._id 
-                        }
-                    }
-                })
-            };
-            res.send(response);
-        })
-        .catch(err => {
-                console.log(err)
-                res.status(500).json({
-                    error: err
-                })
-            });
-    }
-    else if (req.session.user.userLevel === 2)
-    {
-        User.find()
-        .select('name email invitedTo')
-        .exec()
-        .then(docs => {
-            const response = {
-                loggedIn: req.session.user,
-                count: docs.length,
-                user: docs.map(doc => {
-                    return {
-                        name: doc.name,
-                        email: doc.email,
-                        invitedTo: doc.invitedTo,
+                        projects: doc.projects,
                         _id: doc._id,
                         request: {
                             type:'GET',

@@ -6,7 +6,7 @@ import LogIn from './components/user_components/LogIn';
 import SignUp from './components/user_components/Signup';
 
 import Partys from './components/Projects';
-import Party from './components/Party';
+import Party from './components/Project';
 import PartyInvites from './components/PartyInvites';
 
 import Users from './components/Users';

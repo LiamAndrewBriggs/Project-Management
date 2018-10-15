@@ -15,7 +15,6 @@ class Projects extends Component {
     componentDidMount() {
         this.callApi()
             .then(res => {
-                console.log(res);
                 var userLevel = '';
                 if (res.loggedIn === "No User") {
                     userLevel = 0;
@@ -190,7 +189,6 @@ class Projects extends Component {
         else {
 
             var rows = [];
-            console.log(this.state);
             for (var i = 0; i < this.state.count; i++) {
                 var date = new Date(this.state.projects[i].date);
                 date = date.toUTCString();
@@ -198,7 +196,7 @@ class Projects extends Component {
                     <tr key={i}>
                         <td> {this.state.projects[i].name} </td>
                         <td> {date} </td>
-                        <td> <a id="tablelink" href={this.state.projects[i].request.url}> To Party Page </a> </td>
+                        <td> <a id="tablelink" href={this.state.projects[i].request.url}> To Project Page </a> </td>
                     </tr>
 
                 );

@@ -18,7 +18,7 @@ const Header = (props) => {
         button =
             <ul className="nav navbar-nav navbar-right">
                 <li><a href={userLink}><span className="glyphicon glyphicon-user"></span> Welcome {props.user.name}</a></li>
-                <li><a href="/user/logout"><span className="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                <li><a href="/user/login/"><span className="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
     }
 
