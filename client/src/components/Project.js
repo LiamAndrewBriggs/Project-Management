@@ -5,31 +5,35 @@ import '../styles/party.css';
 import 'react-web-tabs/dist/react-web-tabs.css';
 
 class Project extends Component {
-    state = {
-        userlevel: '',
-        _id: '',
-        ownerID: '',
-        user: '',
-        description: '',
-        startDate: '',
-        endDate: '',
-        projectTeam: '',
-        edit: false
-    };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            _id: '',
+            ownerID: '',
+            user: '',
+            description: '',
+            startDate: '',
+            endDate: '',
+            projectTeam: '',
+            edit: false,
+            memberToDelete: ''
+        };
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleMemberDelete = this.handleMemberDelete.bind(this);
+    }
 
     componentDidMount() {
         this.callApi()
             .then(res => {
-                var userLevel = '';
+
                 if (res.loggedIn === "No User") {
-                    userLevel = 0;
-                }
-                else {
-                    userLevel = res.loggedIn.userLevel;
+                    this.props.history.push("/user/login");
                 }
 
                 this.setState({
-                    userlevel: userLevel,
                     user: res.loggedIn,
                     _id: res.doc._id,
                     ownerID: res.doc.ownerID,
@@ -39,7 +43,6 @@ class Project extends Component {
                     endDate: res.doc.endDate,
                     projectTeam: res.doc.projectTeam,
                 })
-
 
             })
             .catch(err => console.log(err));
@@ -75,7 +78,44 @@ class Project extends Component {
         }, this.setState(this.state))
     }
 
-    editParty = async (e) => {
+    handleChange(e) {
+        this.setState({
+            memberToDelete: e.target.value
+        }, this.setState(this.state))
+    }
+
+    handleMemberDelete = async (e) =>  {
+
+        if (this.state.memberToDelete === "") {
+            alert('Please select a team member');
+            this.setState({
+                edit: true
+            }, this.setState(this.state))
+
+        }
+        else {
+            e.preventDefault();
+
+            const options = {
+                method: 'DELETE',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            }
+
+            const request = new Request(window.location.pathname + "/" + this.state.memberToDelete, options);
+            const response = await fetch(request);
+            const status = await response.status;
+
+            if (status === 200) {
+                this.props.history.push("/user/dashboard");
+            }
+        }
+    }
+
+    editProject = async (e) => {
 
         e.preventDefault();
 
@@ -136,7 +176,7 @@ class Project extends Component {
         }
     }
 
-    deleteParty = async (e) => {
+    deleteProject = async (e) => {
 
         e.preventDefault();
 
@@ -158,7 +198,7 @@ class Project extends Component {
         }
     }
 
-    inviteGuest = async (e) => {
+    inviteTeamMember = async (e) => {
         e.preventDefault();
 
         var userID = '';
@@ -200,8 +240,6 @@ class Project extends Component {
 
             var projectTeam = this.state.projectTeam;
 
-            console.log(projectTeam);
-
             var toAdd = {
                 "_userID": userID,
                 "userName": userName
@@ -210,8 +248,6 @@ class Project extends Component {
             projectTeam.push(toAdd);
 
             secondBody[0] = { "propName": "projectTeam", "value": projectTeam }
-
-            console.log(secondBody);
 
             const secondOptions = {
                 method: 'PUT',
@@ -271,24 +307,24 @@ class Project extends Component {
                 console.log(secondResult);
             }
         }
-
     }
+
 
     render() {
 
         var teamMembers = [];
-
-        console.log(this.state.projectTeam);
+        var teamOptions = [];
 
         for (var i = 0; i < this.state.projectTeam.length; i++) {
 
             teamMembers.push(
                 <p key={i}> {this.state.projectTeam[i].userName} </p>
             );
+
+            teamOptions.push(
+                <option key={i} value={this.state.projectTeam[i]._userID}>{this.state.projectTeam[i].userName}</option>
+            );
         }
-
-
-
 
         var buttons = '';
 
@@ -299,11 +335,10 @@ class Project extends Component {
             </div>
         }
 
-
         if (this.state.edit) {
             return (
                 <div id="singleBody">
-                    <form onSubmit={this.editParty.bind(this)}>
+                    <form onSubmit={this.editProject.bind(this)}>
                         <div id="headerLine">
                             <h3>Edit {this.state.name} </h3>
                             <div id="adminButtons">
@@ -330,6 +365,16 @@ class Project extends Component {
                             </div>
                         </div>
                     </form>
+                    <form onSubmit={this.handleMemberDelete}>
+                        <label>
+                            Choose member to delete:
+                            <select value={this.state.memberToDelete} onChange={this.handleChange}>
+                                <option value="null">Please select a member</option>
+                                {teamOptions}
+                            </select>
+                        </label>
+                        <input type="submit" value="Submit" />
+                    </form>
                 </div>
             );
         }
@@ -348,7 +393,7 @@ class Project extends Component {
                         <button id="backButton" onClick={() => this.onNavigateHome()} className="btn btn-primary">Back To Partys</button>
                         <h3> {this.state.name} </h3>
                         <div id="adminButtons">
-                            <form onSubmit={this.deleteParty.bind(this)}>
+                            <form onSubmit={this.deleteProject.bind(this)}>
                                 {buttons}
                             </form>
                         </div>
@@ -367,8 +412,8 @@ class Project extends Component {
                                 </div>
                             </div>
                             <div className="col-sm-6">
-                                <form onSubmit={this.inviteGuest.bind(this)}>
-                                    <input id="inviteInput" ref= "invite" type="text" placeholder="Enter Email Address" required />
+                                <form onSubmit={this.inviteTeamMember.bind(this)}>
+                                    <input id="inviteInput" ref="invite" type="text" placeholder="Enter Email Address" required />
                                     <input id="inviteButton" className="btn btn-primary" type="submit" value="Invite" />
                                 </form>
                                 <div id="tabs">
@@ -378,7 +423,7 @@ class Project extends Component {
                                         </TabList>
                                         <TabPanel tabId="one">
                                             <div id="content">
-                                                {teamMembers}  
+                                                {teamMembers}
                                             </div>
                                         </TabPanel>
                                     </Tabs>

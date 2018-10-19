@@ -106,7 +106,7 @@ router.get('/project/:Projectid', (req, res, next) => {
     }
     else {
         user = req.session.user;
-        
+
         const ProjectID = req.params.Projectid;
         Project.findById(ProjectID)
             .exec()
@@ -164,6 +164,67 @@ router.delete('/project/:Projectid', (req, res, next) => {
 
         });
 });
+
+router.delete('/project/:Projectid/:UserID', (req, res, next) => {
+    const ProjectID = req.params.Projectid;
+    const UserID = req.params.UserID;
+
+    Project.findById(ProjectID)
+        .exec()
+        .then(doc => {
+            doc.projectTeam.forEach(member => {
+                if (UserID == member._userID) {
+                    Project.findByIdAndUpdate(ProjectID, {
+                        $pull: {
+                            projectTeam: { _id: member._id }
+                        }
+                    })
+                        .exec()
+                        .then(result => {
+                            User.findById(UserID)
+                                .exec()
+                                .then(doc => {
+                                    doc.projects.forEach(project => {
+                                        if (ProjectID == project.projectID) {
+                                            User.findByIdAndUpdate(UserID, {
+                                                $pull: {
+                                                    projects: { _id: project._id }
+                                                }
+                                            })
+                                                .exec()
+                                                .then(result => {
+                                                    res.send(result => {
+                                                        message: 'User Deleted'
+                                                    });
+
+                                                })
+                                                .catch(err => {
+                                                    res.status(404).json({
+                                                        error: err
+                                                    });
+
+                                                })
+                                        }
+                                    })
+                                })
+                                .catch(err => {
+                                    res.status(404).json({
+                                        error: err
+                                    });
+
+                                });
+                        })
+                }
+            })
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(404).json({
+                error: err
+            });
+        });
+});
+
 
 module.exports = router;
 
