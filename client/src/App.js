@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 
 import Root from './components/route_components/Root';
 import LogIn from './components/user_components/LogIn';
@@ -30,7 +30,7 @@ class App extends Component {
               <Route exact path="/user/dashboard/project/:partyID" component={Party} />
               <Route exact path="/user" component={Users} />
               <Route exact path="/user/:userID" component={User} />
-              <Route component={LogIn} />
+              <Redirect to="/" />
             </Switch>
           </Root>
         </div>
