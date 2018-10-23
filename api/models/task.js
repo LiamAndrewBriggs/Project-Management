@@ -5,7 +5,11 @@ const taskSchema = mongoose.Schema({
     name: { type: String, required: true },
     desciption: { type: Number, required: true },
     storyPoints:  { type: String, required: true },
-    stage: { type: String, required: true }
+    stage: { type: String, required: true },
+    assignedUsers: [{
+        _userID:  { type: mongoose.Schema.Types.ObjectId, ref:  'User'},
+        userName: { type: String, required: true },
+    }]
 });
 
 module.exports = mongoose.model('Task', taskSchema);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Tabs, Tab, TabPanel, TabList } from 'react-web-tabs';
 import '../styles/singleElement.css';
-import '../styles/party.css';
+import '../styles/project.css';
 import 'react-web-tabs/dist/react-web-tabs.css';
 
 class Project extends Component {
@@ -51,6 +51,7 @@ class Project extends Component {
     callApi = async () => {
 
         var path = this.props.location.pathname;
+        console.log(path);
         const response = await fetch(path, {
             credentials: "include"
         });
@@ -84,7 +85,7 @@ class Project extends Component {
         }, this.setState(this.state))
     }
 
-    handleMemberDelete = async (e) =>  {
+    handleMemberDelete = async (e) => {
 
         if (this.state.memberToDelete === "") {
             alert('Please select a team member');
@@ -314,6 +315,9 @@ class Project extends Component {
 
         var teamMembers = [];
         var teamOptions = [];
+        var toDo = [];
+        var doing = [];
+        var done = [];
 
         for (var i = 0; i < this.state.projectTeam.length; i++) {
 
@@ -407,8 +411,19 @@ class Project extends Component {
                     <div id="container" className="container">
                         <div className="row">
                             <div id="left" className="col-sm-5">
-                                <div id="info">
-
+                                <div className="tabs" id="tasks">
+                                    <Tabs defaultTab="one">
+                                        <TabList>
+                                            <Tab tabFor="one">To Do</Tab>
+                                            <Tab tabFor="two">Doing</Tab>
+                                            <Tab tabFor="three">Done</Tab>
+                                        </TabList>
+                                        <TabPanel tabId="one">
+                                            <div id="content">
+                                                {teamMembers}
+                                            </div>
+                                        </TabPanel>
+                                    </Tabs>
                                 </div>
                             </div>
                             <div className="col-sm-6">
@@ -416,10 +431,10 @@ class Project extends Component {
                                     <input id="inviteInput" ref="invite" type="text" placeholder="Enter Email Address" required />
                                     <input id="inviteButton" className="btn btn-primary" type="submit" value="Invite" />
                                 </form>
-                                <div id="tabs">
+                                <div className="tabs">
                                     <Tabs defaultTab="one">
                                         <TabList>
-                                            <Tab tabFor="one">Members</Tab>
+                                            <Tab tabFor="one" disabled>Team Members</Tab>
                                         </TabList>
                                         <TabPanel tabId="one">
                                             <div id="content">

@@ -1,12 +1,14 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
+import { NavDropdown, MenuItem } from "react-bootstrap";
 import '../../styles/header.css';
 
 const Header = (props) => {
     var button;
     var headerOptions
+    var userProjects = []
 
-    if (props.user === "No User" || !props.user) {
+    if (props.state.user === "No User" || !props.state.user) {
         button =
             <ul className="nav navbar-nav navbar-right">
                 <li><a href="/user/signup"><span className="glyphicon glyphicon-user"></span> Sign Up</a></li>
@@ -14,21 +16,31 @@ const Header = (props) => {
             </ul>
     }
     else {
-        var userLink = "/user/" + props.user._id;
+        var userLink = "/user/" + props.state.user._id;
 
         button =
             <ul className="nav navbar-nav navbar-right">
-                <li><a href={userLink}><span className="glyphicon glyphicon-user"></span> Welcome {props.user.name}</a></li>
+                <li><a href={userLink}><span className="glyphicon glyphicon-user"></span> Welcome {props.state.user.name}</a></li>
                 <li><a href="/user/login/"><span className="glyphicon glyphicon-log-out"></span> Logout</a></li>
             </ul>
 
+
+        props.state.projects.forEach(element => {
+
+            userProjects.push(
+                <MenuItem href={"/project/" + element._id + "?view=false&activetask=none"}  key={element._id}>{element.name}</MenuItem>
+            );
+        });
+
         headerOptions =
-            <>
-                <li><NavLink to={"/projects"} activeStyle={{ color: "red" }}>Projects</NavLink></li>
-                <li><NavLink to={"/boards"} activeStyle={{ color: "red" }}>Boards</NavLink></li>
-                <li><NavLink to={"/tasks"} activeStyle={{ color: "red" }}>Tasks</NavLink></li> 
-            </>
+            <NavDropdown title="Projects" id="basic-nav-dropdown">
+                <MenuItem header>Your Projects</MenuItem>
+                {userProjects}
+                <MenuItem divider />
+                <MenuItem header>Projects</MenuItem>
+            </NavDropdown>
     }
+
 
     return (
         <nav className="navbar navbar-inverse">
@@ -42,7 +54,7 @@ const Header = (props) => {
                 </ul>
                 {button}
             </div>
-        </nav>
+        </nav >
     );
 }
 

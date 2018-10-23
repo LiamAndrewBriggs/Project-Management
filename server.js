@@ -8,8 +8,8 @@ var cors = require('cors');
 const port = process.env.PORT || 5000;
 
 const userProjectRoutes = require('./api/routes/userProjects');
-const partyInviteRoutes= require('./api/routes/partyInvites');
 const userRoutes = require('./api/routes/users');
+const boardRoutes = require('./api/routes/boards');
 
 mongoose.connect('mongodb://localhost:27017/ProjectManagment', { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
@@ -43,8 +43,8 @@ app.get('/', (req, res) => {
 
 //Routes to handle requests
 app.use('/user/dashboard', userProjectRoutes);
-app.use('/user/partyinvites', partyInviteRoutes);
 app.use('/user', userRoutes);
+app.use('/project', boardRoutes)
 
 
 app.use((req, res, next) => {

@@ -38,11 +38,14 @@
     box-sizing: border-box;
 }
 
-#tabs {
+.tabs {
     margin-top: 20px;
-    margin-left:32%;
-    width: 41%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
 }
+
 
 #content {
     margin-left: 0px;
@@ -52,6 +55,7 @@
     border-top: none;
     overflow-y: auto;
     width: 105%;
+    color: black;
 }
 
 

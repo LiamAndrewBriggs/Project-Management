@@ -10,6 +10,9 @@ const projectSchema = mongoose.Schema({
     projectTeam: [{
         _userID:  { type: mongoose.Schema.Types.ObjectId, ref:  'User'},
         userName: { type: String, required: true },
+    }],
+    projectTasks: [{
+        _userID:  { type: mongoose.Schema.Types.ObjectId, ref:  'Task'}
     }]
 });
 
