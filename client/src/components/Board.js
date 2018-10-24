@@ -3,12 +3,15 @@ import '../styles/singleElement.css';
 import '../styles/kanban.css';
 import 'react-web-tabs/dist/react-web-tabs.css';
 
+import SideMenu from "./board_components/side_menu";
+
 class Project extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
+            sideDrawerOpen: false,
             user: '',
             tasks: [
                 { name: "Learn Angular", id: "1", category: "toDo", bgcolor: "yellow" },
@@ -76,6 +79,17 @@ class Project extends Component {
         console.log(this.state);
     }
 
+    toggleHandler = () => {
+        this.setState((prevState) => {
+            return { sideDrawerOpen: !prevState.sideDrawerOpen };
+        });
+    };
+
+    backdropClickHandler = () => {
+        this.setState({ sideDrawerOpen: false });
+    };
+
+
     render() {
 
         var tasks = {
@@ -90,7 +104,6 @@ class Project extends Component {
                     onDragStart={(e) => this.onDragStart(e, t.id)}
                     draggable
                     className="draggable"
-                    style={{ backgroundColor: t.bgcolor }}
                 >
                     {t.name}
                 </div>
@@ -101,6 +114,9 @@ class Project extends Component {
             <div id="teamBody">
                 <div id="headerLine">
                     <h3> Your Projects </h3>
+                    <div id="adminButtons">
+                        <button id="editButton" type="button" onClick={() => this.toggleHandler()} className="btn btn-primary">Create</button>
+                    </div>
                 </div>
                 <div className="container-drag">
                     <div className="toDo"
@@ -121,8 +137,8 @@ class Project extends Component {
                         <span className="task-header">DONE</span>
                         {tasks.complete}
                     </div>
-
                 </div>
+                <SideMenu show={this.state.sideDrawerOpen} />
             </div>
 
         )
