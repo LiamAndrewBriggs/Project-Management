@@ -1,25 +1,37 @@
 .container-drag {
     text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    width: 98%;
+    margin-left: 10px;
+}
+
+.container-drag.open {
+    padding-right:400px;
 }
 
 .toDo {
-    position: absolute;
-    width: 150px;
+    width: 150vh;
     height: 100vh;
-    left: 0;
-    top: 10;
     background-color: #eeeeee;
     border-right: 1px dotted;
 }
 
 .doing {
-    position: absolute;
-    width: 150px;
+    margin-left: 25px;
+    width: 150vh;
     height: 100vh;
-    left: 150px;
-    top: 10;
     background-color: #eeeeee;
     border-right: 1px dotted;
+}
+
+.done {
+    margin-left: 25px;
+    width: 150vh;
+    height: 100vh;
+    background-color: #eeeeee;
+    border-left: 1px dotted;
 }
 
 .task-header {
@@ -28,18 +40,8 @@
     width: 100%;
 }
 
-.done {
-    position: absolute;
-    width: 150px;
-    height: 100vh;
-    left: 300px;
-    top: 10;
-    background-color: #eeeeee;
-    border-left: 1px dotted;
-}
-
 .draggable {
-    width: 100px;
+    width: 98%;
     height: 100px;
     background-color: white;
     margin: 5px auto;

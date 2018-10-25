@@ -110,6 +110,13 @@ class Project extends Component {
             );
         });
 
+        let container = "container-drag";
+
+        if(this.state.sideDrawerOpen === true) {
+            container = "container-drag open"
+        }
+
+
         return (
             <div id="teamBody">
                 <div id="headerLine">
@@ -118,7 +125,7 @@ class Project extends Component {
                         <button id="editButton" type="button" onClick={() => this.toggleHandler()} className="btn btn-primary">Create</button>
                     </div>
                 </div>
-                <div className="container-drag">
+                <div className={container}>
                     <div className="toDo"
                         onDragOver={(e) => this.onDragOver(e)}
                         onDrop={(e) => { this.onDrop(e, "toDo") }}>
@@ -137,8 +144,8 @@ class Project extends Component {
                         <span className="task-header">DONE</span>
                         {tasks.complete}
                     </div>
+                    <SideMenu show={this.state.sideDrawerOpen} content={this.props.location.search} />
                 </div>
-                <SideMenu show={this.state.sideDrawerOpen} />
             </div>
 
         )

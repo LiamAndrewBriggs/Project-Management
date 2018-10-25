@@ -1,5 +1,5 @@
 .side-menu {
-    height: 100%;
+    height: 100vh;
     background: white;
     box-shadow: 1px 0px 7px rgba(0, 0, 0, 0.5);
     border: 1px blue;
@@ -9,9 +9,17 @@
     max-width: 400px;
     z-index: 200;
     transform: translateX(+100%);
-    transition: transform 0.3s ease-out;
   }
   
   .side-menu.open {
     transform: translateX(0);
+  }
+
+  #createForm {
+      margin-top: 30px;
+  }
+
+  .inputfield { 
+      margin-bottom: 20px;
+      margin-top: 5px;
   }

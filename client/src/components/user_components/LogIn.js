@@ -62,7 +62,8 @@ class LogIn extends Component {
                     <a id="logInA" href="/user/signup">Sign Up</a>
                 </div>
               </div>
-          );
+          )
+          
       }
 }
 
