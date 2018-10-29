@@ -5,19 +5,14 @@ import queryString from 'query-string'
 
 import '../../styles/sideMenu.css';
 
-// const options = [
-//     { value: 'chocolate', label: 'Chocolate' },
-//     { value: 'strawberry', label: 'Strawberry' },
-//     { value: 'vanilla', label: 'Vanilla' }
-//   ];
-
 class sideMenu extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            selectedOption: null
+            selectedOption: null,
+            error: ""
         };
 
     }
@@ -30,14 +25,12 @@ class sideMenu extends Component {
                     this.props.history.push("/user/login");
                 }
 
-                console.log(res)
-
                 var options = [];
 
                 res.user.forEach(e => {
-                    options.push({value: e._id, label: e.name })
+                    options.push({ value: e._id, label: e.name })
                 });
-                
+
 
                 this.setState({
                     user: res.loggedIn,
@@ -71,49 +64,53 @@ class sideMenu extends Component {
     createTask = async (e) => {
 
         e.preventDefault();
-        //DO FOR MULTIPLE USERS
-        var body = {
-            // "name": this.refs.taskName.value,
-            // "description": this.refs.description.value,
-            // "storyPoints": this.refs.points.value,
-            "stage": "toDo",
-            "assignedUsers": {
-                _userID : this.state.selectedOption[0].value,
-                userName: this.state.selectedOption[0].label
-            },
+
+        var users = [];
+
+        if(this.state.selectedOption != null) {
+            this.state.selectedOption.forEach(e => {
+                users.push({ _userID: e.value, userName: e.label })
+            });
         }
 
-        console.log(this.state)
-        console.log(body);
+        var body = {
+            "name": this.refs.taskName.value,
+            "description": this.refs.description.value,
+            "storyPoints": this.refs.points.value,
+            "stage": "toDo",
+            "assignedUsers": users,
+            "url": window.location.pathname
+        }
 
-        // const options = {
-        //     method: 'POST',
-        //     credentials: 'include',
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(body)
-        // }
+        const options = {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        }
 
-        // const request = new Request(window.location.pathname + this.props.content, options);
-        // const response = await fetch(request);
-        // const status = await response.status;
-        // const result = await response.json();
+        const request = new Request(window.location.pathname + this.props.content, options);
+        const response = await fetch(request);
+        const status = await response.status;
+        const result = await response.json();
 
-        // if (status === 200) {
-        //     window.location.reload();
-        // }
-        // else {
-        //     console.log(result);
-        // }
+        if (status === 200) {
+            window.location.reload();
+        }
+        else {
+            this.state.error = result.message;
+            this.setState(this.state);
+        }
     }
 
     render() {
 
         let drawerClass = 'side-menu';
         const query = queryString.parse(this.props.content)
-        const selectedOption  = this.state.selectedOption;
+        const selectedOption = this.state.selectedOption;
 
         if (this.props.show) {
             drawerClass = 'side-menu open';
@@ -133,9 +130,9 @@ class sideMenu extends Component {
                     <form id="createForm" onSubmit={this.createTask.bind(this)}>
                         <div id="input">
                             <p id="loginp"> Task Name </p>
-                            <input className="inputfield" ref="taskName" type="text" placeholder="Task name" />
+                            <input className="inputfield" ref="taskName" type="text" placeholder="Task name" required/>
                             <p id="loginp"> Description </p>
-                            <textarea className="inputfield" ref="desciption" type="text" placeholder="Description" rows="8" cols="45" />
+                            <textarea className="inputfield" ref="description" type="text" placeholder="Description" rows="8" cols="45" required/>
                             <p id="loginp"> Story Points </p>
                             <select className="inputfield" ref="points" name="points">
                                 <option value="16">16</option>
@@ -154,8 +151,8 @@ class sideMenu extends Component {
                                 />
                             </div>
                             <br />
-                            {/* <p id="errortext">{this.state.error}</p> */}
-                            <input id="loginbutton" className="btn btn-primary" type="submit" value="Log In" />
+                            <p id="errortext">{this.state.error}</p>
+                            <input id="loginbutton" className="btn btn-primary" type="submit" value="Create" />
                         </div>
                     </form>
                 </nav>
