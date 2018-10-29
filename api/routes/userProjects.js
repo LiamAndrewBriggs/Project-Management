@@ -60,8 +60,6 @@ router.get('/', (req, res, next) => {
 router.post('/', (req, res, next) => {
     var user = req.session.user;
 
-    console.log(req.session.user._id);
-
     const project = new Project({
         _id: mongoose.Types.ObjectId(),
         ownerID: user._id,
@@ -136,7 +134,6 @@ router.put('/project/:Projectid', (req, res, next) => {
         updateOps[ops.propName] = ops.value;
     }
 
-    console.log("AAAAAAAAAAAAA" + updateOps);
     Project.update({ _id: ProjectID }, { $set: updateOps })
         .exec()
         .then(result => {

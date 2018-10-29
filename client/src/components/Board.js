@@ -14,9 +14,7 @@ class Project extends Component {
             sideDrawerOpen: false,
             user: '',
             tasks: [
-                { name: "Learn Angular", id: "1", category: "toDo", bgcolor: "yellow" },
-                { name: "React", id: "2", category: "doing", bgcolor: "pink" },
-                { name: "Vue", id: "3", category: "complete", bgcolor: "skyblue" }
+                { name: "Default", id: "1", stage: "toDo" }
             ]
         };
 
@@ -32,6 +30,7 @@ class Project extends Component {
 
                 this.setState({
                     user: res.loggedIn,
+                    tasks: res.Task
                 })
 
             })
@@ -45,8 +44,6 @@ class Project extends Component {
             credentials: "include"
         });
         const body = await response.json();
-
-        console.log(body);
 
         if (response.status !== 200) throw Error(body.message);
 
@@ -66,7 +63,7 @@ class Project extends Component {
         let id = ev.dataTransfer.getData("id");
         let tasks = this.state.tasks.filter((task) => {
             if (task.id === id) {
-                task.category = cat;
+                task.stage = cat;
             }
             return task;
         });
@@ -99,7 +96,7 @@ class Project extends Component {
         }
 
         this.state.tasks.forEach((t) => {
-            tasks[t.category].push(
+            tasks[t.stage].push(
                 <div key={t.name}
                     onDragStart={(e) => this.onDragStart(e, t.id)}
                     draggable
