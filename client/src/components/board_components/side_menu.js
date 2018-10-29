@@ -66,8 +66,10 @@ class sideMenu extends Component {
         e.preventDefault();
 
         var users = [];
+        var tasks = [];
+        var taskID;
 
-        if(this.state.selectedOption != null) {
+        if (this.state.selectedOption != null) {
             this.state.selectedOption.forEach(e => {
                 users.push({ _userID: e.value, userName: e.label })
             });
@@ -94,16 +96,78 @@ class sideMenu extends Component {
 
         const request = new Request(window.location.pathname + this.props.content, options);
         const response = await fetch(request);
+        const result = await response.json()
         const status = await response.status;
-        const result = await response.json();
 
         if (status === 200) {
-            window.location.reload();
+
+            taskID = await result.Task._id;
         }
         else {
             this.state.error = result.message;
             this.setState(this.state);
         }
+
+        console.log(taskID)
+
+        const secondoptions = {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        }
+
+        const secondrequest = new Request('/user/dashboard' + window.location.pathname, secondoptions);
+        const secondresponse = await fetch(secondrequest);
+        const secondresult = await secondresponse.json();
+        const secondstatus = await secondresponse.status;
+
+        if (secondstatus === 200) {
+            tasks = secondresult.doc.projectTasks;
+        }
+        else {
+            console.log(secondresult);
+            window.location.reload();
+        }
+
+        var toAdd = {
+            "_taskID": taskID,
+        }
+
+        tasks.push(toAdd);
+        
+        
+        var secondBody = [];
+        
+        secondBody[0] = { "propName": "projectTasks", "value": tasks }
+
+        const thirdOptions = {
+            method: 'PUT',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(secondBody)
+        }
+
+        console.log(thirdOptions)
+
+
+        const thirdRequest = new Request('/user/dashboard' + window.location.pathname, thirdOptions);
+        const thirdResponse = await fetch(thirdRequest);
+        const thirdStatus = await thirdResponse.status;
+        const thirdResult = await thirdResponse.json();
+
+        if (thirdStatus === 200) {
+            window.location.reload();
+        }
+        else {
+            console.log(thirdResult);
+        }
+        
     }
 
     render() {
@@ -130,9 +194,9 @@ class sideMenu extends Component {
                     <form id="createForm" onSubmit={this.createTask.bind(this)}>
                         <div id="input">
                             <p id="loginp"> Task Name </p>
-                            <input className="inputfield" ref="taskName" type="text" placeholder="Task name" required/>
+                            <input className="inputfield" ref="taskName" type="text" placeholder="Task name" required />
                             <p id="loginp"> Description </p>
-                            <textarea className="inputfield" ref="description" type="text" placeholder="Description" rows="8" cols="45" required/>
+                            <textarea className="inputfield" ref="description" type="text" placeholder="Description" rows="8" cols="45" required />
                             <p id="loginp"> Story Points </p>
                             <select className="inputfield" ref="points" name="points">
                                 <option value="16">16</option>
