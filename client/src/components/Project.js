@@ -138,24 +138,8 @@ class Project extends Component {
             "propName": "endDate", "value": this.refs.endDate.value,
         }
 
-        body[4] = {
-            "propName": "venue", "value": this.refs.venue.value,
-        }
-
-        body[1] = {
-            "propName": "catering", "value": this.refs.caterer.value,
-        }
-
-        body[2] = {
-            "propName": "entertainment", "value": this.refs.entertainment.value,
-        }
-
-        body[3] = {
-            "propName": "transport", "value": this.refs.transport.value,
-        }
-
         const options = {
-            method: 'PATCH',
+            method: 'PUT',
             credentials: 'include',
             headers: {
                 'Accept': 'application/json',

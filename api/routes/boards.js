@@ -25,6 +25,7 @@ router.get('/:board', (req, res) => {
                         loggedIn: req.session.user,
                         count: docss.length,
                         projName: docs.name,
+                        sliderOpen: false,
                         Task: docss.map(doc => {
                             return {
                                 name: doc.name,
@@ -35,7 +36,7 @@ router.get('/:board', (req, res) => {
                                 id: doc._id,
                                 request: {
                                     type: 'GET',
-                                    url: 'http://localhost:3000/project/' + req.params.board + '?view=false&activetask=none'
+                                    url: 'http://localhost:3000/project/' + req.params.board + '?view=true&activetask=' + doc._id
                                 }
                             }
                         })
@@ -113,6 +114,30 @@ router.post('/:board', (req, res) => {
                 })
             });
     }
+});
+
+router.put('/:board', (req, res) => {
+
+    console.log(req.params.board);
+    console.log(req.body);
+
+    const taskID = req.query.activetask
+    const updateOps = {};
+    for (const ops of req.body) {
+        updateOps[ops.propName] = ops.value;
+    }
+    Task.update({ _id: taskID }, { $set: updateOps }) 
+        .exec()
+        .then(result => {
+            res.send(result);
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            });
+
+        })
+
 });
 
 module.exports = router;

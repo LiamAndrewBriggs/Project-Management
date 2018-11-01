@@ -15,9 +15,9 @@ class Project extends Component {
             user: '',
             tasks: [
                 { name: "Default", id: "1", stage: "toDo" }
-            ]
+            ],
+            moved: ''
         };
-
     }
 
     componentDidMount() {
@@ -29,6 +29,7 @@ class Project extends Component {
                 }
 
                 this.setState({
+                    sideDrawerOpen: res.sliderOpen,
                     user: res.loggedIn,
                     tasks: res.Task
                 })
@@ -61,19 +62,58 @@ class Project extends Component {
 
     onDrop = (ev, cat) => {
         let id = ev.dataTransfer.getData("id");
+        var taskState;
         let tasks = this.state.tasks.filter((task) => {
             if (task.id === id) {
                 task.stage = cat;
+                taskState = cat;
             }
             return task;
         });
 
         this.setState({
-            ...this.state,
-            tasks
-        });
+            tasks: tasks
+        }, this.setState(this.state))
 
+        this.callUpdate(ev, id, taskState);
+    }
+
+    callUpdate = async (e, id, taskState) => {
         console.log(this.state);
+        console.log(id);
+        console.log(taskState);
+
+        e.preventDefault();
+
+        var body = [];
+
+        body[0] = {
+            "propName": "stage", "value": taskState,
+        }
+
+        const options = {
+            method: 'PUT',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        }
+
+        console.log(window.location.pathname + "?view=false&activetask=" + id)
+
+        const request = new Request(window.location.pathname + "?view=false&activetask=" + id, options);
+        const response = await fetch(request);
+        const status = await response.status;
+        const result = await response.json();
+
+        if (status === 200) {
+            window.location.reload();
+        }
+        else {
+            console.log(result);
+        }
     }
 
     toggleHandler = () => {
@@ -109,7 +149,7 @@ class Project extends Component {
 
         let container = "container-drag";
 
-        if(this.state.sideDrawerOpen === true) {
+        if (this.state.sideDrawerOpen === true) {
             container = "container-drag open"
         }
 
