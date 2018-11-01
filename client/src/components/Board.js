@@ -18,6 +18,8 @@ class Project extends Component {
             ],
             moved: ''
         };
+
+        this.getData = this.getData.bind(this);
     }
 
     componentDidMount() {
@@ -31,7 +33,8 @@ class Project extends Component {
                 this.setState({
                     sideDrawerOpen: res.sliderOpen,
                     user: res.loggedIn,
-                    tasks: res.Task
+                    tasks: res.Tasks,
+                    moved: res.activeTask
                 })
 
             })
@@ -79,9 +82,6 @@ class Project extends Component {
     }
 
     callUpdate = async (e, id, taskState) => {
-        console.log(this.state);
-        console.log(id);
-        console.log(taskState);
 
         e.preventDefault();
 
@@ -101,8 +101,6 @@ class Project extends Component {
             body: JSON.stringify(body)
         }
 
-        console.log(window.location.pathname + "?view=false&activetask=" + id)
-
         const request = new Request(window.location.pathname + "?view=false&activetask=" + id, options);
         const response = await fetch(request);
         const status = await response.status;
@@ -116,11 +114,41 @@ class Project extends Component {
         }
     }
 
-    toggleHandler = () => {
-        this.setState((prevState) => {
-            return { sideDrawerOpen: !prevState.sideDrawerOpen };
-        });
+    taskToggleHandler = async (ev, id) => {
+        
+        if(this.state.moved === id) {
+            this.setState((prevState) => {
+                return { sideDrawerOpen: !prevState.sideDrawerOpen, moved: '' };
+            });
+            this.props.history.push(window.location.pathname + "?view=false&activetask=none")
+        }
+        else 
+        {
+            this.setState((prevState) => {
+                return { sideDrawerOpen: true, moved: id };
+            });
+            this.props.history.push(window.location.pathname + "?view=true&activetask=" + id)
+        }
     };
+
+    toggleHandler = () => {
+
+        this.setState((prevState) => {
+            if(this.state.moved) {
+                return { sideDrawerOpen: true, moved: '' };
+            }
+            else {
+                return { sideDrawerOpen: !prevState.sideDrawerOpen, moved: '' };
+            }
+            
+        });
+        this.props.history.push(window.location.pathname + "?view=false&activetask=none")
+    };
+
+    getData(val){
+        this.setState({ sideDrawerOpen: false });
+        this.props.history.push(window.location.pathname + "?view=false&activetask=none")
+    }
 
     backdropClickHandler = () => {
         this.setState({ sideDrawerOpen: false });
@@ -139,6 +167,7 @@ class Project extends Component {
             tasks[t.stage].push(
                 <div key={t.name}
                     onDragStart={(e) => this.onDragStart(e, t.id)}
+                    onClick={(e) => this.taskToggleHandler(e, t.id)}
                     draggable
                     className="draggable"
                 >
@@ -152,7 +181,6 @@ class Project extends Component {
         if (this.state.sideDrawerOpen === true) {
             container = "container-drag open"
         }
-
 
         return (
             <div id="teamBody">
@@ -181,7 +209,7 @@ class Project extends Component {
                         <span className="task-header">DONE</span>
                         {tasks.complete}
                     </div>
-                    <SideMenu show={this.state.sideDrawerOpen} content={this.props.location.search} />
+                    <SideMenu tasks={this.state.tasks} show={this.state.sideDrawerOpen} content={this.props.location.search} sendData={this.getData} />
                 </div>
             </div>
 

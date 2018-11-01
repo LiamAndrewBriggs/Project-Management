@@ -7,8 +7,11 @@ const Task = require('../models/task');
 
 router.get('/:board', (req, res) => {
 
-    console.log(req.params.board);
-    console.log(req.query);
+    var open = false;
+    
+    if(req.query.view === 'true') {
+        open = true;
+    }
 
     Project.findById(req.params.board)
         .select('name projectTasks')
@@ -25,8 +28,9 @@ router.get('/:board', (req, res) => {
                         loggedIn: req.session.user,
                         count: docss.length,
                         projName: docs.name,
-                        sliderOpen: false,
-                        Task: docss.map(doc => {
+                        sliderOpen: open,
+                        activeTask: req.query.activetask,
+                        Tasks: docss.map(doc => {
                             return {
                                 name: doc.name,
                                 description: doc.description,
@@ -117,9 +121,6 @@ router.post('/:board', (req, res) => {
 });
 
 router.put('/:board', (req, res) => {
-
-    console.log(req.params.board);
-    console.log(req.body);
 
     const taskID = req.query.activetask
     const updateOps = {};

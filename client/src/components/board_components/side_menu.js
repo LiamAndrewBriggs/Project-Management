@@ -11,6 +11,7 @@ class sideMenu extends Component {
         super(props);
 
         this.state = {
+            tasks: props.tasks,
             selectedOption: null,
             error: ""
         };
@@ -31,7 +32,6 @@ class sideMenu extends Component {
                     options.push({ value: e._id, label: e.name })
                 });
 
-
                 this.setState({
                     user: res.loggedIn,
                     options: options,
@@ -40,6 +40,31 @@ class sideMenu extends Component {
 
             })
             .catch(err => console.log(err));
+    }
+
+    componentWillReceiveProps(props) {
+
+        var selectedUsers = [];
+        const query = queryString.parse(props.content)
+        console.log(query);
+
+        props.tasks.forEach(task => {
+            if (task.id === query.activetask) {
+                task.assignedUsers.forEach(e => {                       
+                    selectedUsers.push({ value: e._id, label: e.userName })                 
+                });
+            }
+        })
+
+        console.log(selectedUsers)
+
+        this.setState({ 
+            tasks: props.tasks,
+            selectedOption: selectedUsers
+        }, this.setState(this.state));
+
+        console.log(this.state);
+        
     }
 
     callApi = async () => {
@@ -59,6 +84,8 @@ class sideMenu extends Component {
     handleChange = (selectedOption) => {
         this.setState({ selectedOption });
         console.log(`Option selected:`, selectedOption);
+
+        console.log(this.state.selectedOption);
     }
 
     createTask = async (e) => {
@@ -108,8 +135,6 @@ class sideMenu extends Component {
             this.setState(this.state);
         }
 
-        console.log(taskID)
-
         const secondoptions = {
             method: 'GET',
             credentials: 'include',
@@ -137,10 +162,9 @@ class sideMenu extends Component {
         }
 
         tasks.push(toAdd);
-        
-        
+
         var secondBody = [];
-        
+
         secondBody[0] = { "propName": "projectTasks", "value": tasks }
 
         const thirdOptions = {
@@ -152,8 +176,6 @@ class sideMenu extends Component {
             },
             body: JSON.stringify(secondBody)
         }
-
-        console.log(thirdOptions)
 
 
         const thirdRequest = new Request('/user/dashboard' + window.location.pathname, thirdOptions);
@@ -167,16 +189,22 @@ class sideMenu extends Component {
         else {
             console.log(thirdResult);
         }
-        
+
+    }
+
+    close() {
+        this.props.sendData(false);
     }
 
     render() {
+
+        console.log(this.state);
 
         let drawerClass = 'side-menu';
         const query = queryString.parse(this.props.content)
         const selectedOption = this.state.selectedOption;
 
-        if (this.props.show) {
+        if (this.props.show || query.view === 'true') {
             drawerClass = 'side-menu open';
         }
 
@@ -184,6 +212,9 @@ class sideMenu extends Component {
 
             return (
                 <nav className={drawerClass}>
+                    <div className="closeButton">
+                        <button id="xButton" type="button" onClick={() => this.close()} className="btn btn-primary">X</button>
+                    </div>
                     <h1>New Task</h1>
                     <View
                         style={{
@@ -194,11 +225,11 @@ class sideMenu extends Component {
                     <form id="createForm" onSubmit={this.createTask.bind(this)}>
                         <div id="input">
                             <p id="loginp"> Task Name </p>
-                            <input className="inputfield" ref="taskName" type="text" placeholder="Task name" required />
+                            <input className="inputfield" ref="taskName" type="text" placeholder="Task name" defaultValue="" required />
                             <p id="loginp"> Description </p>
-                            <textarea className="inputfield" ref="description" type="text" placeholder="Description" rows="8" cols="45" required />
+                            <textarea className="inputfield" ref="description" type="text" placeholder="Description" value="" rows="8" cols="45" required />
                             <p id="loginp"> Story Points </p>
-                            <select className="inputfield" ref="points" name="points">
+                            <select className="inputfield" ref="points" value="16" name="points">
                                 <option value="16">16</option>
                                 <option value="8">8</option>
                                 <option value="4">4</option>
@@ -223,7 +254,57 @@ class sideMenu extends Component {
             );
         }
         else {
-            return null;
+
+            var selectedTask = [];
+
+            this.state.tasks.forEach(task => {
+                if (task.id === query.activetask) {
+                    selectedTask = task
+                }
+            })
+
+            return (
+                <nav className={drawerClass}>
+                    <div className="closeButton">
+                        <button id="xButton" type="button" onClick={() => this.close()} className="btn btn-primary">X</button>
+                    </div>
+                    <h1>{selectedTask.name}</h1>
+                    <View
+                        style={{
+                            borderBottomColor: 'black',
+                            borderBottomWidth: 1,
+                        }}
+                    />
+                    <form id="createForm" onSubmit={this.createTask.bind(this)}>
+                        <div id="input">
+                            <p id="loginp"> Task Name </p>
+                            <input className="inputfield" ref="taskName" type="text" placeholder="Task name" defaultValue={selectedTask.name} required />
+                            <p id="loginp"> Description </p>
+                            <textarea className="inputfield" ref="description" type="text" placeholder="Description" value={selectedTask.description} rows="8" cols="45" required />
+                            <p id="loginp"> Story Points </p>
+                            <select className="inputfield" ref="points" name="points" value={selectedTask.storyPoints}>
+                                <option value="16">16</option>
+                                <option value="8">8</option>
+                                <option value="4">4</option>
+                                <option value="2">2</option>
+                                <option value="1">1</option>
+                            </select>
+                            <p id="loginp"> User </p>
+                            <div id="selectBox">
+                                <Select
+                                    value={selectedOption}
+                                    isMulti
+                                    onChange={this.handleChange}
+                                    options={this.state.options}
+                                />
+                            </div>
+                            <br />
+                            <p id="errortext">{this.state.error}</p>
+                            <input id="loginbutton" className="btn btn-primary" type="submit" value="Save" />
+                        </div>
+                    </form>
+                </nav>
+            );
         }
     }
 }
