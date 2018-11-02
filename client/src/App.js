@@ -9,8 +9,6 @@ import Projects from './components/Projects';
 import Project from './components/Project';
 
 import Board from './components/Board';
-
-import Users from './components/Users';
 import User from './components/User';
 
 class App extends Component {
@@ -28,7 +26,6 @@ class App extends Component {
               <Route exact path="/user/signup" component={SignUp} />
               <Route exact path="/user/dashboard" component={Projects} />
               <Route exact path="/user/dashboard/project/:projectID" component={Project} />
-              <Route exact path="/user" component={Users} />
               <Route exact path="/user/:userID" component={User} />
               <Route exact path="/project/:projID" component={Board} />
               <Redirect to="/user/dashboard" />

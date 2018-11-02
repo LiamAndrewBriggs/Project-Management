@@ -15,7 +15,6 @@
     width: 150vh;
     height: 100vh;
     background-color: #eeeeee;
-    border-right: 1px dotted;
 }
 
 .doing {
@@ -23,7 +22,6 @@
     width: 150vh;
     height: 100vh;
     background-color: #eeeeee;
-    border-right: 1px dotted;
 }
 
 .done {
@@ -31,13 +29,14 @@
     width: 150vh;
     height: 100vh;
     background-color: #eeeeee;
-    border-left: 1px dotted;
 }
 
 .task-header {
     display: inline-block;
-    background-color: skyblue;
+    background-color: black;
     width: 100%;
+    color: white;
+    border: 1px solid black;
 }
 
 .draggable {
@@ -47,4 +46,19 @@
     margin: 5px auto;
     border: 1px black solid;
     line-height: 5em;
+    position:relative
+}
+
+.squad {
+    position: absolute;
+    float: left;
+    bottom: 0;
+    margin-left: 5px;
+}
+
+.points {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin-right: 10px;
 }

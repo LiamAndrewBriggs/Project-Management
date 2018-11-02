@@ -20,7 +20,7 @@ router.get('/', (req, res, next) => {
                 Project.find({
                     '_id': { $in: docs.userProjects }
                 })
-                    .select('name description startDate _id')
+                    .select('name description endDate _id')
                     .exec()
                     .then(docss => {
                         var projIDs = docs.projects.map(proj => proj.projectID);
@@ -37,7 +37,7 @@ router.get('/', (req, res, next) => {
                                         return {
                                             name: doc.name,
                                             description: doc.description,
-                                            date: doc.startDate,
+                                            date: doc.endDate,
                                             _id: doc._id,
                                             request: {
                                                 type: 'GET',
@@ -157,8 +157,6 @@ router.put('/project/:Projectid', (req, res, next) => {
     for (const ops of req.body) {
         updateOps[ops.propName] = ops.value;
     }
-
-    console.log(updateOps);
 
     Project.update({ _id: ProjectID }, { $set: updateOps })
         .exec()

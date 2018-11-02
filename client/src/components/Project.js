@@ -298,6 +298,14 @@ class Project extends Component {
 
     render() {
 
+        if (!this.state.user) {
+            return (
+                <div id="headerLine">
+                    <h3 id="headererror">Please Log In </h3>
+                </div>
+            );
+        }
+
         var teamMembers = [];
         var teamOptions = [];
         var toDo = [];
@@ -402,7 +410,7 @@ class Project extends Component {
             return (
                 <div id="singleBody">
                     <div id="headerLine">
-                        <button id="backButton" onClick={() => this.onNavigateHome()} className="btn btn-primary">Back To Partys</button>
+                        <button id="backButton" onClick={() => this.onNavigateHome()} className="btn btn-primary">Back To Projects</button>
                         <h3> {this.state.name} </h3>
                         <div id="adminButtons">
                             <form onSubmit={this.deleteProject.bind(this)}>

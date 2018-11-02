@@ -83,7 +83,8 @@ router.post('/login', (req, res, next) => {
 });
 
 router.get('/logout', (req, res, next) => {
-    req.session.destroy();
+    req.session.user.destroy();
+    req.session = null
     res.redirect("/home");
 });
 
@@ -227,8 +228,6 @@ router.put('/:userid', (req, res, next) => {
                     for (const ops of req.body) {
                         updateOps[ops.propName] = ops.value;
                     }
-
-                    console.log(updateOps['project']);
                     User.update({ _id: userID }, { $set: updateOps })
                         .exec()
                         .then(result => {

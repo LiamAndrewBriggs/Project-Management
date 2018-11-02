@@ -158,7 +158,7 @@ class Project extends Component {
             const thirdResult = await thirdResponse.json();
 
             if (thirdStatus === 200) {
-                //window.location.reload();
+                window.location.reload();
             }
             else {
                 console.log(thirdResult);
@@ -187,6 +187,8 @@ class Project extends Component {
 
     toggleHandler = () => {
 
+
+
         this.setState((prevState) => {
             if (this.state.moved) {
                 return { sideDrawerOpen: true, moved: '' };
@@ -211,6 +213,14 @@ class Project extends Component {
 
     render() {
 
+        if (!this.state.user) {
+            return (
+                <div id="headerLine">
+                    <h3 id="headererror">Please Log In </h3>
+                </div>
+            );
+        }
+
         var tasks = {
             toDo: [],
             doing: [],
@@ -219,6 +229,10 @@ class Project extends Component {
         }
 
         this.state.tasks.forEach((t) => {
+            var p ="";
+            t.assignedUsers.forEach((sq) => {
+                p = p + sq.userName;
+            })
             tasks[t.stage].push(
                 <div key={t.name}
                     onDragStart={(e) => this.onDragStart(e, t.id)}
@@ -227,6 +241,8 @@ class Project extends Component {
                     className="draggable"
                 >
                     {t.name}
+                    <div className="squad">{p}</div>
+                    <div className="points">{t.storyPoints}</div>
                 </div>
             );
         });

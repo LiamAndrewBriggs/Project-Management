@@ -244,12 +244,12 @@ class sideMenu extends Component {
                     'Content-Type': 'application/json'
                 },
             }
-    
+
             const secondrequest = new Request('/user/dashboard' + window.location.pathname, secondoptions);
             const secondresponse = await fetch(secondrequest);
             const secondresult = await secondresponse.json();
             const secondstatus = await secondresponse.status;
-    
+
             if (secondstatus === 200) {
                 tasks = secondresult.doc.projectTasks;
             }
@@ -260,17 +260,16 @@ class sideMenu extends Component {
 
             const query = queryString.parse(this.props.content)
 
-            for (var i = 0; i < tasks.length; i++) 
-            {
-                if(query.activetask === tasks[i]._taskID) {
+            for (var i = 0; i < tasks.length; i++) {
+                if (query.activetask === tasks[i]._taskID) {
                     tasks[i].taskName = this.refs.taskName.value;
                 }
             }
-                
+
             var secondBody = [];
-    
+
             secondBody[0] = { "propName": "projectTasks", "value": tasks }
-    
+
             const thirdOptions = {
                 method: 'PUT',
                 credentials: 'include',
@@ -280,14 +279,15 @@ class sideMenu extends Component {
                 },
                 body: JSON.stringify(secondBody)
             }
-    
-    
+
+
             const thirdRequest = new Request('/user/dashboard' + window.location.pathname, thirdOptions);
             const thirdResponse = await fetch(thirdRequest);
             const thirdStatus = await thirdResponse.status;
             const thirdResult = await thirdResponse.json();
-    
+
             if (thirdStatus === 200) {
+                this.props.sendData(false);
                 window.location.reload();
             }
             else {
@@ -304,6 +304,8 @@ class sideMenu extends Component {
     }
 
     render() {
+
+        console.log("render");
 
         let drawerClass = 'side-menu';
         const query = queryString.parse(this.props.content)
@@ -330,11 +332,11 @@ class sideMenu extends Component {
                     <form id="createForm" onSubmit={this.createTask.bind(this)}>
                         <div id="input">
                             <p id="loginp"> Task Name </p>
-                            <input className="inputfield" ref="taskName" type="text" placeholder="Task name" defaultValue="" required />
+                            <input className="inputfield" id="taskName" ref="taskName" type="text" placeholder="Task name" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue="" required />
                             <p id="loginp"> Description </p>
-                            <textarea className="inputfield" ref="description" type="text" placeholder="Description" defaultValue="" rows="8" cols="45" required />
+                            <textarea className="inputfield" ref="description" type="text" placeholder="Description" key={`${Math.floor((Math.random() * 1000))}-min`}  defaultValue="" rows="8" cols="45" required />
                             <p id="loginp"> Story Points </p>
-                            <select className="inputfield" ref="points" defaultValue="16" name="points">
+                            <select className="inputfield" ref="points" key={`${Math.floor((Math.random() * 1000))}-min`}  defaultValue="16" name="points">
                                 <option value="16">16</option>
                                 <option value="8">8</option>
                                 <option value="4">4</option>
@@ -383,11 +385,11 @@ class sideMenu extends Component {
                     <form id="createForm" onSubmit={this.updateTask.bind(this)}>
                         <div id="input">
                             <p id="loginp"> Task Name </p>
-                            <input className="inputfield" ref="taskName" type="text" placeholder="Task name" defaultValue={selectedTask.name} required />
+                            <input className="inputfield" ref="taskName" type="text" placeholder="Task name" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={selectedTask.name} required />
                             <p id="loginp"> Description </p>
-                            <textarea className="inputfield" ref="description" type="text" placeholder="Description" value={selectedTask.description} rows="8" cols="45" required />
+                            <textarea className="inputfield" ref="description" type="text" placeholder="Description" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={selectedTask.description} rows="8" cols="45" required />
                             <p id="loginp"> Story Points </p>
-                            <select className="inputfield" ref="points" name="points" value={selectedTask.storyPoints}>
+                            <select className="inputfield" ref="points" name="points" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={selectedTask.storyPoints}>
                                 <option value="16">16</option>
                                 <option value="8">8</option>
                                 <option value="4">4</option>

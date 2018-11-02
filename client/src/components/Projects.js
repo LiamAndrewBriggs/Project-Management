@@ -7,7 +7,6 @@ class Projects extends Component {
         count: '',
         projects: '',
         user: '',
-        userLevel: 0,
         team: '',
         create: false
     };
@@ -15,17 +14,9 @@ class Projects extends Component {
     componentDidMount() {
         this.callApi()
             .then(res => {
-                var userLevel = '';
-                if (res.loggedIn === "No User") {
-                    userLevel = 0;
-                }
-                else {
-                    userLevel = 1;
-                }
                 this.setState({
                     count: res.count,
                     projects: res.Projects,
-                    userLevel: userLevel,
                     user: res.loggedIn
                 })
             })
@@ -130,7 +121,7 @@ class Projects extends Component {
 
     render() {
 
-        if (this.state.userLevel === 0) {
+        if (!this.state.user) {
             return (
                 <div id="headerLine">
                     <h3 id="headererror">Please Log In </h3>
@@ -214,7 +205,7 @@ class Projects extends Component {
                         <thead>
                             <tr>
                                 <th>Project Name</th>
-                                <th>Event Date</th>
+                                <th>Project Deadline</th>
                                 <th>More Info</th>
                             </tr>
                         </thead>
