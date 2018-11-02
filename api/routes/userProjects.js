@@ -14,32 +14,56 @@ router.get('/', (req, res, next) => {
     }
     else {
         User.findById(req.session.user._id)
-            .select('userProjects')
+            .select('userProjects projects')
             .exec()
             .then(docs => {
                 Project.find({
                     '_id': { $in: docs.userProjects }
                 })
-                    .select('name description startDate venue _id')
+                    .select('name description startDate _id')
                     .exec()
                     .then(docss => {
-                        const response = {
-                            loggedIn: req.session.user,
-                            count: docss.length,
-                            Projects: docss.map(doc => {
-                                return {
-                                    name: doc.name,
-                                    description: doc.description,
-                                    date: doc.startDate,
-                                    _id: doc._id,
-                                    request: {
-                                        type: 'GET',
-                                        url: 'http://localhost:3000/user/dashboard/project/' + doc._id
-                                    }
-                                }
+                        var projIDs = docs.projects.map(proj => proj.projectID);
+                        Project.find({
+                            '_id': { $in: projIDs }
+                        })
+                            .select('name _id')
+                            .exec()
+                            .then(docsss => {
+                                const response = {
+                                    loggedIn: req.session.user,
+                                    count: docss.length,
+                                    Projects: docss.map(doc => {
+                                        return {
+                                            name: doc.name,
+                                            description: doc.description,
+                                            date: doc.startDate,
+                                            _id: doc._id,
+                                            request: {
+                                                type: 'GET',
+                                                url: 'http://localhost:3000/user/dashboard/project/' + doc._id
+                                            }
+                                        }
+                                    }),
+                                    UserProjects: docsss.map(doc => {
+                                        return {
+                                            name: doc.name,
+                                            _id: doc._id,
+                                            request: {
+                                                type: 'GET',
+                                                url: 'http://localhost:3000/project/' + doc._id + '?view=false&activetask=none'
+                                            }
+                                        }
+                                    })
+                                };
+                                res.send(response);
                             })
-                        };
-                        res.send(response);
+                            .catch(err => {
+                                console.log(err)
+                                res.status(500).json({
+                                    error: err
+                                })
+                            });
                     })
                     .catch(err => {
                         console.log(err)

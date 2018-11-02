@@ -14,7 +14,7 @@ class Project extends Component {
             sideDrawerOpen: false,
             user: '',
             tasks: [
-                { name: "Default", id: "1", stage: "toDo" }
+                { name: "", id: "1", stage: "default" }
             ],
             moved: ''
         };
@@ -160,7 +160,8 @@ class Project extends Component {
         var tasks = {
             toDo: [],
             doing: [],
-            complete: []
+            complete: [],
+            default: []
         }
 
         this.state.tasks.forEach((t) => {

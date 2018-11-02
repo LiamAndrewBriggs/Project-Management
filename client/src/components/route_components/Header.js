@@ -7,6 +7,7 @@ const Header = (props) => {
     var button;
     var headerOptions
     var userProjects = []
+    var projects = []
 
     if (props.state.user === "No User" || !props.state.user) {
         button =
@@ -26,9 +27,14 @@ const Header = (props) => {
 
 
         props.state.projects.forEach(element => {
-
             userProjects.push(
                 <MenuItem href={"/project/" + element._id + "?view=false&activetask=none"}  key={element._id}>{element.name}</MenuItem>
+            );
+        });
+
+        props.state.userprojects.forEach(element => {
+            projects.push(
+                <MenuItem href={element.request.url}  key={element._id}>{element.name}</MenuItem>
             );
         });
 
@@ -38,6 +44,7 @@ const Header = (props) => {
                 {userProjects}
                 <MenuItem divider />
                 <MenuItem header>Projects</MenuItem>
+                {projects}
             </NavDropdown>
     }
 

@@ -50,21 +50,21 @@ class sideMenu extends Component {
 
         props.tasks.forEach(task => {
             if (task.id === query.activetask) {
-                task.assignedUsers.forEach(e => {                       
-                    selectedUsers.push({ value: e._id, label: e.userName })                 
+                task.assignedUsers.forEach(e => {
+                    selectedUsers.push({ value: e._id, label: e.userName })
                 });
             }
         })
 
         console.log(selectedUsers)
 
-        this.setState({ 
+        this.setState({
             tasks: props.tasks,
             selectedOption: selectedUsers
         }, this.setState(this.state));
 
         console.log(this.state);
-        
+
     }
 
     callApi = async () => {
@@ -192,6 +192,58 @@ class sideMenu extends Component {
 
     }
 
+    updateTask = async (e) => {
+        e.preventDefault();
+
+        var users = [];
+        var body = [];
+
+        if (this.state.selectedOption != null) {
+            this.state.selectedOption.forEach(e => {
+                users.push({ _userID: e.value, userName: e.label })
+            });
+        }
+
+        body[0] = {
+            "propName": "name", "value": this.refs.taskName.value,
+        }
+
+        body[1] = {
+            "propName": "description", "value": this.refs.description.value,
+        }
+
+        body[2] = {
+            "propName": "storyPoints", "value": this.refs.points.value,
+        }
+
+        body[3] = {
+            "propName": "assignedUsers", "value": users,
+        }
+
+
+        const options = {
+            method: 'PUT',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        }
+
+        const request = new Request(window.location.pathname + this.props.content, options);
+        const response = await fetch(request);
+        const status = await response.status;
+        const result = await response.json();
+
+        if (status === 200) {
+            window.location.reload();
+        }
+        else {
+            console.log(result);
+        }
+    }
+
     close() {
         this.props.sendData(false);
     }
@@ -227,9 +279,9 @@ class sideMenu extends Component {
                             <p id="loginp"> Task Name </p>
                             <input className="inputfield" ref="taskName" type="text" placeholder="Task name" defaultValue="" required />
                             <p id="loginp"> Description </p>
-                            <textarea className="inputfield" ref="description" type="text" placeholder="Description" value="" rows="8" cols="45" required />
+                            <textarea className="inputfield" ref="description" type="text" placeholder="Description" defaultValue="" rows="8" cols="45" required />
                             <p id="loginp"> Story Points </p>
-                            <select className="inputfield" ref="points" value="16" name="points">
+                            <select className="inputfield" ref="points" defaultValue="16" name="points">
                                 <option value="16">16</option>
                                 <option value="8">8</option>
                                 <option value="4">4</option>
@@ -275,7 +327,7 @@ class sideMenu extends Component {
                             borderBottomWidth: 1,
                         }}
                     />
-                    <form id="createForm" onSubmit={this.createTask.bind(this)}>
+                    <form id="createForm" onSubmit={this.updateTask.bind(this)}>
                         <div id="input">
                             <p id="loginp"> Task Name </p>
                             <input className="inputfield" ref="taskName" type="text" placeholder="Task name" defaultValue={selectedTask.name} required />

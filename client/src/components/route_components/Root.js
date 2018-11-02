@@ -4,7 +4,8 @@ import Header from './Header';
 class Root extends Component {
     state = {
         user: '',
-        projects: ''
+        projects: '',
+        userprojects: ''
     };
     
     getUser = async () => {
@@ -36,9 +37,11 @@ class Root extends Component {
             .then(res => {
                 this.getProjects()
                 .then(proj => {
+                    console.log(proj);
                     this.setState({ 
                         user: res.loggedIn,
-                        projects: proj.Projects
+                        projects: proj.Projects,
+                        userprojects: proj.UserProjects
                     })
                 })
                 .catch(err => console.log(err));       
