@@ -37,7 +37,6 @@ class Root extends Component {
             .then(res => {
                 this.getProjects()
                 .then(proj => {
-                    console.log(proj);
                     this.setState({ 
                         user: res.loggedIn,
                         projects: proj.Projects,

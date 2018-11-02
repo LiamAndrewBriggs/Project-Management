@@ -107,7 +107,62 @@ class Project extends Component {
         const result = await response.json();
 
         if (status === 200) {
-            window.location.reload();
+            var tasks = [];
+
+            const secondoptions = {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            }
+
+            const secondrequest = new Request('/user/dashboard' + window.location.pathname, secondoptions);
+            const secondresponse = await fetch(secondrequest);
+            const secondresult = await secondresponse.json();
+            const secondstatus = await secondresponse.status;
+
+            if (secondstatus === 200) {
+                tasks = secondresult.doc.projectTasks;
+            }
+            else {
+                console.log(secondresult);
+                window.location.reload();
+            }
+
+            for (var i = 0; i < tasks.length; i++) {
+                if (id === tasks[i]._taskID) {
+                    tasks[i].taskStage = taskState;
+                }
+            }
+
+            var secondBody = [];
+
+            secondBody[0] = { "propName": "projectTasks", "value": tasks }
+
+            const thirdOptions = {
+                method: 'PUT',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(secondBody)
+            }
+
+
+            const thirdRequest = new Request('/user/dashboard' + window.location.pathname, thirdOptions);
+            const thirdResponse = await fetch(thirdRequest);
+            const thirdStatus = await thirdResponse.status;
+            const thirdResult = await thirdResponse.json();
+
+            if (thirdStatus === 200) {
+                //window.location.reload();
+            }
+            else {
+                console.log(thirdResult);
+            }
         }
         else {
             console.log(result);
@@ -115,15 +170,14 @@ class Project extends Component {
     }
 
     taskToggleHandler = async (ev, id) => {
-        
-        if(this.state.moved === id) {
+
+        if (this.state.moved === id) {
             this.setState((prevState) => {
                 return { sideDrawerOpen: !prevState.sideDrawerOpen, moved: '' };
             });
             this.props.history.push(window.location.pathname + "?view=false&activetask=none")
         }
-        else 
-        {
+        else {
             this.setState((prevState) => {
                 return { sideDrawerOpen: true, moved: id };
             });
@@ -134,18 +188,18 @@ class Project extends Component {
     toggleHandler = () => {
 
         this.setState((prevState) => {
-            if(this.state.moved) {
+            if (this.state.moved) {
                 return { sideDrawerOpen: true, moved: '' };
             }
             else {
                 return { sideDrawerOpen: !prevState.sideDrawerOpen, moved: '' };
             }
-            
+
         });
         this.props.history.push(window.location.pathname + "?view=false&activetask=none")
     };
 
-    getData(val){
+    getData(val) {
         this.setState({ sideDrawerOpen: false });
         this.props.history.push(window.location.pathname + "?view=false&activetask=none")
     }

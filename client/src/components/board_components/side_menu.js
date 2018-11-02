@@ -46,7 +46,6 @@ class sideMenu extends Component {
 
         var selectedUsers = [];
         const query = queryString.parse(props.content)
-        console.log(query);
 
         props.tasks.forEach(task => {
             if (task.id === query.activetask) {
@@ -56,14 +55,11 @@ class sideMenu extends Component {
             }
         })
 
-        console.log(selectedUsers)
-
         this.setState({
             tasks: props.tasks,
             selectedOption: selectedUsers
         }, this.setState(this.state));
 
-        console.log(this.state);
 
     }
 
@@ -83,9 +79,6 @@ class sideMenu extends Component {
 
     handleChange = (selectedOption) => {
         this.setState({ selectedOption });
-        console.log(`Option selected:`, selectedOption);
-
-        console.log(this.state.selectedOption);
     }
 
     createTask = async (e) => {
@@ -95,6 +88,7 @@ class sideMenu extends Component {
         var users = [];
         var tasks = [];
         var taskID;
+        var taskName;
 
         if (this.state.selectedOption != null) {
             this.state.selectedOption.forEach(e => {
@@ -129,6 +123,7 @@ class sideMenu extends Component {
         if (status === 200) {
 
             taskID = await result.Task._id;
+            taskName = await result.Task.name;
         }
         else {
             this.state.error = result.message;
@@ -159,6 +154,8 @@ class sideMenu extends Component {
 
         var toAdd = {
             "_taskID": taskID,
+            "taskName": taskName,
+            "taskStage": "toDo"
         }
 
         tasks.push(toAdd);
@@ -237,7 +234,65 @@ class sideMenu extends Component {
         const result = await response.json();
 
         if (status === 200) {
-            window.location.reload();
+            var tasks = [];
+
+            const secondoptions = {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            }
+    
+            const secondrequest = new Request('/user/dashboard' + window.location.pathname, secondoptions);
+            const secondresponse = await fetch(secondrequest);
+            const secondresult = await secondresponse.json();
+            const secondstatus = await secondresponse.status;
+    
+            if (secondstatus === 200) {
+                tasks = secondresult.doc.projectTasks;
+            }
+            else {
+                console.log(secondresult);
+                window.location.reload();
+            }
+
+            const query = queryString.parse(this.props.content)
+
+            for (var i = 0; i < tasks.length; i++) 
+            {
+                if(query.activetask === tasks[i]._taskID) {
+                    tasks[i].taskName = this.refs.taskName.value;
+                }
+            }
+                
+            var secondBody = [];
+    
+            secondBody[0] = { "propName": "projectTasks", "value": tasks }
+    
+            const thirdOptions = {
+                method: 'PUT',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(secondBody)
+            }
+    
+    
+            const thirdRequest = new Request('/user/dashboard' + window.location.pathname, thirdOptions);
+            const thirdResponse = await fetch(thirdRequest);
+            const thirdStatus = await thirdResponse.status;
+            const thirdResult = await thirdResponse.json();
+    
+            if (thirdStatus === 200) {
+                window.location.reload();
+            }
+            else {
+                console.log(thirdResult);
+            }
         }
         else {
             console.log(result);
@@ -249,8 +304,6 @@ class sideMenu extends Component {
     }
 
     render() {
-
-        console.log(this.state);
 
         let drawerClass = 'side-menu';
         const query = queryString.parse(this.props.content)

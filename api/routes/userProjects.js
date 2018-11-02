@@ -158,6 +158,8 @@ router.put('/project/:Projectid', (req, res, next) => {
         updateOps[ops.propName] = ops.value;
     }
 
+    console.log(updateOps);
+
     Project.update({ _id: ProjectID }, { $set: updateOps })
         .exec()
         .then(result => {

@@ -17,6 +17,7 @@ class Project extends Component {
             startDate: '',
             endDate: '',
             projectTeam: '',
+            tasks: '',
             edit: false,
             memberToDelete: ''
         };
@@ -42,6 +43,7 @@ class Project extends Component {
                     startDate: res.doc.startDate,
                     endDate: res.doc.endDate,
                     projectTeam: res.doc.projectTeam,
+                    tasks: res.doc.projectTasks
                 })
 
             })
@@ -51,7 +53,6 @@ class Project extends Component {
     callApi = async () => {
 
         var path = this.props.location.pathname;
-        console.log(path);
         const response = await fetch(path, {
             credentials: "include"
         });
@@ -314,6 +315,29 @@ class Project extends Component {
             );
         }
 
+        for (i = 0; i < this.state.tasks.length; i++) {
+            if(this.state.tasks[i].taskStage === 'toDo')
+            {
+                toDo.push(
+                    <p key={i}> {this.state.tasks[i].taskName} </p>
+                )
+            }
+            else if(this.state.tasks[i].taskStage === 'doing')
+            {
+                doing.push(
+                    <p key={i}> {this.state.tasks[i].taskName} </p>
+                )
+            }
+            else if(this.state.tasks[i].taskStage === 'complete')
+            {
+                done.push(
+                    <p key={i}> {this.state.tasks[i].taskName} </p>
+                )
+            }
+
+
+        }
+
         var buttons = '';
 
         if (this.state.user._id === this.state.ownerID || this.state.userlevel === 1) {
@@ -404,7 +428,17 @@ class Project extends Component {
                                         </TabList>
                                         <TabPanel tabId="one">
                                             <div id="content">
-                                                {teamMembers}
+                                                {toDo}
+                                            </div>
+                                        </TabPanel>
+                                        <TabPanel tabId="two">
+                                            <div id="content">
+                                                {doing}
+                                            </div>
+                                        </TabPanel>
+                                        <TabPanel tabId="three">
+                                            <div id="content">
+                                                {done}
                                             </div>
                                         </TabPanel>
                                     </Tabs>

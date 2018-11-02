@@ -12,7 +12,9 @@ const projectSchema = mongoose.Schema({
         userName: { type: String, required: true },
     }],
     projectTasks: [{
-        _taskID:  { type: mongoose.Schema.Types.ObjectId, ref:  'Task'}
+        _taskID:  { type: mongoose.Schema.Types.ObjectId, ref:  'Task'},
+        taskName: { type: String, required: true },
+        taskStage: { type: String, required: true }
     }]
 });
 
