@@ -13,7 +13,10 @@ class sideMenu extends Component {
         this.state = {
             tasks: props.tasks,
             selectedOption: null,
-            error: ""
+            error: "",
+            name: "",
+            description: "",
+            value: "16"
         };
 
     }
@@ -55,10 +58,29 @@ class sideMenu extends Component {
             }
         })
 
-        this.setState({
-            tasks: props.tasks,
-            selectedOption: selectedUsers
-        }, this.setState(this.state));
+        if (query.activetask === "none") {
+            this.setState({
+                tasks: props.tasks,
+                selectedOption: selectedUsers,
+                name: "",
+                description: "",
+                value: "16"
+            }, this.setState(this.state));
+        }
+        else {
+            this.state.tasks.forEach(task => {
+                if (task.id === query.activetask) {
+                    this.setState({
+                        tasks: props.tasks,
+                        selectedOption: selectedUsers,
+                        name: task.name,
+                        description: task.description,
+                        value: task.storyPoints
+                    }, this.setState(this.state));
+                }
+            })
+        }
+
 
 
     }
@@ -78,7 +100,12 @@ class sideMenu extends Component {
 
 
     handleChange = (selectedOption) => {
-        this.setState({ selectedOption });
+        this.setState({
+            selectedOption,
+            name: this.refs.taskName.value,
+            description: this.refs.description.value,
+            value: this.refs.points.value
+        });
     }
 
     createTask = async (e) => {
@@ -181,6 +208,11 @@ class sideMenu extends Component {
         const thirdResult = await thirdResponse.json();
 
         if (thirdStatus === 200) {
+            this.setState({
+                name: "",
+                description: "",
+                value: "16"
+            });
             window.location.reload();
         }
         else {
@@ -305,8 +337,6 @@ class sideMenu extends Component {
 
     render() {
 
-        console.log("render");
-
         let drawerClass = 'side-menu';
         const query = queryString.parse(this.props.content)
         const selectedOption = this.state.selectedOption;
@@ -332,11 +362,11 @@ class sideMenu extends Component {
                     <form id="createForm" onSubmit={this.createTask.bind(this)}>
                         <div id="input">
                             <p id="loginp"> Task Name </p>
-                            <input className="inputfield" id="taskName" ref="taskName" type="text" placeholder="Task name" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue="" required />
+                            <input className="inputfield" id="taskName" ref="taskName" type="text" placeholder="Task name" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={this.state.name} required />
                             <p id="loginp"> Description </p>
-                            <textarea className="inputfield" ref="description" type="text" placeholder="Description" key={`${Math.floor((Math.random() * 1000))}-min`}  defaultValue="" rows="8" cols="45" required />
+                            <textarea className="inputfield" ref="description" type="text" placeholder="Description" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={this.state.description} rows="8" cols="45" required />
                             <p id="loginp"> Story Points </p>
-                            <select className="inputfield" ref="points" key={`${Math.floor((Math.random() * 1000))}-min`}  defaultValue="16" name="points">
+                            <select className="inputfield" ref="points" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={this.state.value} name="points">
                                 <option value="16">16</option>
                                 <option value="8">8</option>
                                 <option value="4">4</option>
@@ -361,21 +391,12 @@ class sideMenu extends Component {
             );
         }
         else {
-
-            var selectedTask = [];
-
-            this.state.tasks.forEach(task => {
-                if (task.id === query.activetask) {
-                    selectedTask = task
-                }
-            })
-
             return (
                 <nav className={drawerClass}>
                     <div className="closeButton">
                         <button id="xButton" type="button" onClick={() => this.close()} className="btn btn-primary">X</button>
                     </div>
-                    <h1>{selectedTask.name}</h1>
+                    <h1>{this.state.name}</h1>
                     <View
                         style={{
                             borderBottomColor: 'black',
@@ -385,11 +406,11 @@ class sideMenu extends Component {
                     <form id="createForm" onSubmit={this.updateTask.bind(this)}>
                         <div id="input">
                             <p id="loginp"> Task Name </p>
-                            <input className="inputfield" ref="taskName" type="text" placeholder="Task name" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={selectedTask.name} required />
+                            <input className="inputfield" ref="taskName" type="text" placeholder="Task name" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={this.state.name} required />
                             <p id="loginp"> Description </p>
-                            <textarea className="inputfield" ref="description" type="text" placeholder="Description" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={selectedTask.description} rows="8" cols="45" required />
+                            <textarea className="inputfield" ref="description" type="text" placeholder="Description" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={this.state.description} rows="8" cols="45" required />
                             <p id="loginp"> Story Points </p>
-                            <select className="inputfield" ref="points" name="points" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={selectedTask.storyPoints}>
+                            <select className="inputfield" ref="points" name="points" key={`${Math.floor((Math.random() * 1000))}-min`} defaultValue={this.state.value}>
                                 <option value="16">16</option>
                                 <option value="8">8</option>
                                 <option value="4">4</option>

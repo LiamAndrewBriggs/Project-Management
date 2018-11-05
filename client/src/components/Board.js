@@ -229,9 +229,11 @@ class Project extends Component {
         }
 
         this.state.tasks.forEach((t) => {
-            var p ="";
+            var p = "";
             t.assignedUsers.forEach((sq) => {
-                p = p + sq.userName;
+                var initials = sq.userName.match(/\b\w/g) || [];
+                initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+                p = p + initials + " ";
             })
             tasks[t.stage].push(
                 <div key={t.name}
