@@ -81,8 +81,11 @@ class Project extends Component {
         });
 
         this.setState({
-            tasks: tasks
+            tasks: tasks,
+            sideDrawerOpen: false
         }, this.setState(this.state))
+
+        this.props.history.push(window.location.pathname + "?view=false&activetask=none")
 
         this.callUpdate(ev, id, taskState);
     }
@@ -163,7 +166,7 @@ class Project extends Component {
             const thirdResult = await thirdResponse.json();
 
             if (thirdStatus === 200) {
-                window.location.reload();
+                //window.location.reload();
             }
             else {
                 console.log(thirdResult);
@@ -174,7 +177,7 @@ class Project extends Component {
         }
     }
 
-    taskToggleHandler = async (ev, id) => {
+    taskToggleHandler = async (id) => {
 
         if (this.state.moved === id) {
             this.setState((prevState) => {
@@ -205,8 +208,8 @@ class Project extends Component {
     };
 
     getData(val) {
-        console.log(val)
-        this.setState({ sideDrawerOpen: false });
+        this.taskToggleHandler(val);
+        this.setState({ sideDrawerOpen: false, moved: '' });
         this.props.history.push(window.location.pathname + "?view=false&activetask=none")
     }
 
@@ -242,7 +245,7 @@ class Project extends Component {
             tasks[t.stage].push(
                 <div key={t.name}
                     onDragStart={(e) => this.onDragStart(e, t.id)}
-                    onClick={(e) => this.taskToggleHandler(e, t.id)}
+                    onClick={(e) => this.taskToggleHandler(t.id)}
                     draggable
                     className="draggable"
                 >
