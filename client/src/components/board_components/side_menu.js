@@ -9,9 +9,10 @@ class sideMenu extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             tasks: props.tasks,
+            owner: props.owner,
+            team: props.team,
             selectedOption: null,
             error: "",
             name: "",
@@ -30,14 +31,19 @@ class sideMenu extends Component {
                 }
 
                 var options = [];
-
                 res.user.forEach(e => {
-                    options.push({ value: e._id, label: e.name })
+                    this.state.team.forEach(p => {
+
+                        if (p._userID === e._id || e._id === this.state.owner) {
+                            options.push({ value: e._id, label: e.name })
+                        }
+                    })
+
                 });
 
                 this.setState({
                     user: res.loggedIn,
-                    options: options,
+                    originalOptions: options,
                     selectedOption: null
                 })
 
@@ -53,10 +59,12 @@ class sideMenu extends Component {
         props.tasks.forEach(task => {
             if (task.id === query.activetask) {
                 task.assignedUsers.forEach(e => {
-                    selectedUsers.push({ value: e._id, label: e.userName })
+                    selectedUsers.push({ value: e._userID, label: e.userName })
                 });
             }
         })
+
+        this.rerenderList(selectedUsers);
 
         if (query.activetask === "none") {
             this.setState({
@@ -80,9 +88,6 @@ class sideMenu extends Component {
                 }
             })
         }
-
-
-
     }
 
     callApi = async () => {
@@ -98,14 +103,33 @@ class sideMenu extends Component {
         return body;
     };
 
-
     handleChange = (selectedOption) => {
+        this.rerenderList(selectedOption);
         this.setState({
             selectedOption,
             name: this.refs.taskName.value,
             description: this.refs.description.value,
             value: this.refs.points.value
         });
+    }
+
+    rerenderList = async (selectedUsers) => {
+        var option = [];
+        let insert = true;
+        this.state.originalOptions.forEach(o => {
+            selectedUsers.forEach(u => {
+                if (o.value === u.value) {
+                    insert = false
+                }
+            })
+            if (insert === true) {
+                option.push({ value: o.value, label: o.label })
+            }
+        })
+
+        this.setState({
+            options: option
+        });        
     }
 
     createTask = async (e) => {
@@ -332,7 +356,8 @@ class sideMenu extends Component {
     }
 
     close() {
-        this.props.sendData(false);
+        const query = queryString.parse(this.props.content)
+        this.props.sendData(query.activeTask);
     }
 
     render() {

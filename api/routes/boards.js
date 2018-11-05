@@ -14,7 +14,7 @@ router.get('/:board', (req, res) => {
     }
 
     Project.findById(req.params.board)
-        .select('name projectTasks')
+        .select('name ownerID projectTasks projectTeam')
         .exec()
         .then(docs => {
             var taskArray = docs.projectTasks;
@@ -28,6 +28,8 @@ router.get('/:board', (req, res) => {
                         loggedIn: req.session.user,
                         count: docss.length,
                         projName: docs.name,
+                        owner: docs.ownerID,
+                        projTeam: docs.projectTeam,
                         sliderOpen: open,
                         activeTask: req.query.activetask,
                         Tasks: docss.map(doc => {

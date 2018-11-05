@@ -12,6 +12,9 @@ class Project extends Component {
 
         this.state = {
             sideDrawerOpen: false,
+            projectName: "",
+            owner: "",
+            projectTeam: "",
             user: '',
             tasks: [
                 { name: "", id: "1", stage: "default" }
@@ -32,6 +35,9 @@ class Project extends Component {
 
                 this.setState({
                     sideDrawerOpen: res.sliderOpen,
+                    projectName: res.projName,
+                    owner: res.owner,
+                    projectTeam: res.projTeam,
                     user: res.loggedIn,
                     tasks: res.Tasks,
                     moved: res.activeTask
@@ -151,7 +157,6 @@ class Project extends Component {
                 body: JSON.stringify(secondBody)
             }
 
-
             const thirdRequest = new Request('/user/dashboard' + window.location.pathname, thirdOptions);
             const thirdResponse = await fetch(thirdRequest);
             const thirdStatus = await thirdResponse.status;
@@ -187,8 +192,6 @@ class Project extends Component {
 
     toggleHandler = () => {
 
-
-
         this.setState((prevState) => {
             if (this.state.moved) {
                 return { sideDrawerOpen: true, moved: '' };
@@ -202,6 +205,7 @@ class Project extends Component {
     };
 
     getData(val) {
+        console.log(val)
         this.setState({ sideDrawerOpen: false });
         this.props.history.push(window.location.pathname + "?view=false&activetask=none")
     }
@@ -258,7 +262,7 @@ class Project extends Component {
         return (
             <div id="teamBody">
                 <div id="headerLine">
-                    <h3> Your Projects </h3>
+                    <h3> {this.state.projectName} </h3>
                     <div id="adminButtons">
                         <button id="editButton" type="button" onClick={() => this.toggleHandler()} className="btn btn-primary">Create</button>
                     </div>
@@ -282,13 +286,10 @@ class Project extends Component {
                         <span className="task-header">DONE</span>
                         {tasks.complete}
                     </div>
-                    <SideMenu tasks={this.state.tasks} show={this.state.sideDrawerOpen} content={this.props.location.search} sendData={this.getData} />
+                    <SideMenu owner={this.state.owner} team={this.state.projectTeam} tasks={this.state.tasks} show={this.state.sideDrawerOpen} content={this.props.location.search} sendData={this.getData} />
                 </div>
             </div>
-
         )
-
-
     }
 }
 
