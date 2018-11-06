@@ -39,3 +39,8 @@
 #tablelink:hover {
     color: black;
 }
+
+.filter {
+    margin-left: 13px;
+    margin-bottom: 25px;
+}
