@@ -9,6 +9,12 @@ class Projects extends Component {
         user: '',
         team: '',
         typed: '',
+        fromDate: '',
+        toDate: '',
+        minTaskAmount: '',
+        maxTaskAmount: '',
+        minTeamAmount: '',
+        maxTeamAmount: '',
         create: false,
         nameSort: false,
         timeSort: false,
@@ -135,8 +141,32 @@ class Projects extends Component {
         }
     }
 
-    onChange(event) {
+    onNameSearch(event) {
         this.setState({ typed: event.target.value });
+    }
+
+    onFromSearch(event) {
+        this.setState({ fromDate: event.target.value });
+    }
+
+    onToSearch(event) {
+        this.setState({ toDate: event.target.value });
+    }
+
+    minTaskSearch(event) {
+        this.setState({ minTaskAmount: event.target.value });
+    }
+
+    maxTaskSearch(event) {
+        this.setState({ maxTaskAmount: event.target.value });
+    }
+
+    minTeamSearch(event) {
+        this.setState({ minTeamAmount: event.target.value });
+    }
+
+    maxTeamSearch(event) {
+        this.setState({ maxTeamAmount: event.target.value });
     }
 
     sort(row) {
@@ -302,12 +332,103 @@ class Projects extends Component {
             for (i = 0; i < this.state.allCount; i++) {
                 date = new Date(this.state.allProjects[i].date);
                 date = date.toUTCString().replace("GMT", "");
-                var toInsert = false;
-                if (this.state.typed === undefined) {
-                    toInsert = true;
+
+                var toInsert = true;
+
+                if (this.state.typed !== "") {
+                    if (this.state.allProjects[i].name.toUpperCase().includes(this.state.typed.toUpperCase())) {
+                        toInsert = true
+                    }
+                    else {
+                        toInsert = false
+                    }
                 }
-                else if (this.state.allProjects[i].name.toUpperCase().includes(this.state.typed.toUpperCase())) {
-                    toInsert = true
+                
+                if ((this.state.fromDate !== "" || this.state.toDate !== "") && toInsert) {
+
+                    if (this.state.fromDate !== "" && this.state.toDate !== "") {
+
+                        if (this.state.allProjects[i].date >= this.state.fromDate && this.state.allProjects[i].date <= this.state.toDate) {
+                            toInsert = true
+                        }
+                        else {
+                            toInsert = false
+                        }
+                    }
+                    else if (this.state.fromDate !== "") {
+                        if (this.state.allProjects[i].date >= this.state.fromDate) {
+                            toInsert = true
+                        }
+                        else {
+                            toInsert = false
+                        }
+                    }
+                    else if (this.state.toDate !== "") {
+                        if (this.state.allProjects[i].date <= this.state.toDate) {
+                            toInsert = true
+                        }
+                        else {
+                            toInsert = false
+                        }
+                    }
+                }
+
+                if ((this.state.minTaskAmount !== "" || this.state.maxTaskAmount !== "") && toInsert) {
+
+                    if (this.state.minTaskAmount !== "" && this.state.maxTaskAmount !== "") {
+
+                        if (this.state.allProjects[i].tasks.length >= this.state.minTaskAmount && this.state.allProjects[i].tasks.length <= this.state.maxTaskAmount) {
+                            toInsert = true
+                        }
+                        else {
+                            toInsert = false
+                        }
+                    }
+                    else if (this.state.minTaskAmount !== "") {
+                        if (this.state.allProjects[i].tasks.length >= this.state.minTaskAmount) {
+                            toInsert = true
+                        }
+                        else {
+                            toInsert = false
+                        }
+                    }
+                    else if (this.state.maxTaskAmount !== "") {
+                        if (this.state.allProjects[i].tasks.length <= this.state.maxTaskAmount) {
+                            toInsert = true
+                        }
+                        else {
+                            toInsert = false
+                        }
+                    }
+                }
+
+                if ((this.state.minTeamAmount !== "" || this.state.maxTeamAmount !== "")  && toInsert) {
+
+                    if (this.state.minTeamAmount !== "" && this.state.maxTeamAmount !== "") {
+
+                        if (this.state.allProjects[i].team.length + 1 >= this.state.minTeamAmount && this.state.allProjects[i].team.length + 1 <= this.state.maxTeamAmount) {
+                            toInsert = true
+                        }
+                        else {
+                            toInsert = false
+                        }
+                    }
+                    else if (this.state.minTeamAmount !== "") {
+                        if (this.state.allProjects[i].team.length + 1 >= this.state.minTeamAmount) {
+                            toInsert = true
+                        }
+                        else {
+                            toInsert = false
+                        }
+                    }
+                    else if (this.state.maxTeamAmount !== "") {
+                        if (this.state.allProjects[i].team.length + 1 <= this.state.maxTeamAmount) {
+                            toInsert = true
+                        }
+                        else {
+                            toInsert = false
+                        }
+                    }
                 }
 
                 if (toInsert) {
@@ -345,7 +466,22 @@ class Projects extends Component {
                     <div id="searchHeaderLine">
                         <h3> Search For Projects </h3>
                     </div>
-                    <input type="text" className="filter" placeholder="Filter..." onChange={this.onChange.bind(this)} />
+                    <div className="filter">
+                        <label className="label">Project Name: </label>
+                        <input className="input" type="text" placeholder="Filter..." onChange={this.onNameSearch.bind(this)} />
+                        <label className="label">Deadline From: </label>
+                        <input className="input" type="date" onChange={this.onFromSearch.bind(this)} />
+                        <label className="label">To: </label>
+                        <input className="input" type="date" onChange={this.onToSearch.bind(this)} />
+                        <label className="label">Tasks Remaining From: </label>
+                        <input className="input" type="number" onChange={this.minTaskSearch.bind(this)} />
+                        <label className="label">To: </label>
+                        <input className="input" type="number" onChange={this.maxTaskSearch.bind(this)} />
+                        <label className="label">Team Members From: </label>
+                        <input className="input" type="number" onChange={this.minTeamSearch.bind(this)} />
+                        <label className="label">To: </label>
+                        <input className="input" type="number" onChange={this.maxTeamSearch.bind(this)} />
+                    </div>
                     <table className="tables" id="allTable">
                         <thead>
                             <tr>

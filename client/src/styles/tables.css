@@ -42,5 +42,20 @@
 
 .filter {
     margin-left: 13px;
-    margin-bottom: 25px;
+    margin-bottom: 40px;
+    margin-top: 20px;
+    width:98%;
+}
+
+.label {
+    font-size: 18px;
+    color: black;
+}
+
+.input {
+    margin-right: 20px;
+}
+
+.input[type=number] {
+    width: 75px;
 }
