@@ -40,6 +40,13 @@ label {
     position: relative;
 }
 
+#searchHeaderLine {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
 #backButton {
     position: absolute;
     left: 0;

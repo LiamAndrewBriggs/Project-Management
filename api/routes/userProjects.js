@@ -81,6 +81,48 @@ router.get('/', (req, res, next) => {
     }
 });
 
+router.get('/allProjects', (req, res, next) => {
+
+    if (!req.session.user) {
+        return res.status(401).json({
+            message: "Please log in"
+        });
+    }
+    else {
+        Project.find({})
+            .select('name description endDate _id projectTeam projectTasks')
+            .exec()
+            .then(docs => {
+                const response = {
+                    loggedIn: req.session.user,
+                    count: docs.length,
+                    Projects: docs.map(doc => {
+                        return {
+                            name: doc.name,
+                            description: doc.description,
+                            date: doc.endDate,
+                            tasks: doc.projectTasks,
+                            team: doc.projectTeam,
+                            _id: doc._id,
+                            request: {
+                                type: 'GET',
+                                url: 'http://localhost:3000/user/dashboard/project/' + doc._id
+                            }
+                        }
+                    })
+                };
+                res.send(response);
+            })
+            .catch(err => {
+                console.log(err)
+                res.status(500).json({
+                    error: err
+                })
+            });
+    }
+
+});
+
 router.post('/', (req, res, next) => {
     var user = req.session.user;
 
